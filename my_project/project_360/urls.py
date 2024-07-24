@@ -51,6 +51,7 @@ urlpatterns = [
     path('load_state_team', inviteTeam.load_states, name='load_state_team'), 
     path('teaminvitesend/', inviteTeam.TeamInvite, name = 'teaminvitesend')
     
+    
 
   
 
