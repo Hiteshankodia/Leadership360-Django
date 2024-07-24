@@ -1,0 +1,238 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form with JavaScript and jQuery Validation</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        .registration-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+        .form-group .valid-message {
+            color: green;
+            margin-top: 5px;
+        }
+        .form-group .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .form-group .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-form">
+        <form id="registrationForm" method="post" action="{% url 'inviteparticipant' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name1">name:</label>
+                <input type="text" id="name1" name="name" required>
+                <span class="error-message" id="usernameError"></span>
+            </div>
+            <div class="form-group">
+                <label for="designation1">Designation:</label>
+                <input type="text" id="designation1" name="designation" required>
+                <span class="error-message" id="designationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="department1">Department:</label>
+                <input type="text" id="department1" name="department" required>
+                <span class="error-message" id="designationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="location1">Location:</label>
+                <input type="text" id="location1" name="location" required>
+                <span class="error-message" id="designationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="email1">Email:</label>
+                <input type="email" id="email1" name="email" required>
+                <span class="error-message" id="emailError"></span>
+            </div>
+            <div class="form-group">
+                <label for="dob1">Date of Birth:</label>
+                <input type="date" id="dob1" name="dob" required>
+                <span class="error-message" id="dobError"></span>
+            </div>
+            <div class="form-group">
+                <label for="country1">Country:</label>
+                <select id="country1" name="country" required>
+                    <option value="">Select a country</option>
+                    <option value="USA">United States</option>
+                    <option value="CAN">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <span class="error-message" id="countryError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="state1">State:</label>
+                <select id="state1" name="state" required>
+                    <option value="">Select a State</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="UP">UP</option>
+                    <option value="MP">MP</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <span class="error-message" id="countryError"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label for="name2">name:</label>
+                <input type="text" id="name2" name="name" required>
+                <span class="error-message" id="usernameError"></span>
+            </div>
+            <div class="form-group">
+                <label for="designation2">Designation:</label>
+                <input type="text" id="designation2" name="designation" required>
+                <span class="error-message" id="designationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="department2">Department:</label>
+                <input type="text" id="department2" name="department" required>
+                <span class="error-message" id="designationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="location2">Location:</label>
+                <input type="text" id="location2" name="location" required>
+                <span class="error-message" id="designationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="email2">Email:</label>
+                <input type="email2" id="email" name="email" required>
+                <span class="error-message" id="emailError"></span>
+            </div>
+            <div class="form-group">
+                <label for="dob2">Date of Birth:</label>
+                <input type="date" id="dob2" name="dob" required>
+                <span class="error-message" id="dobError"></span>
+            </div>
+            <div class="form-group">
+                <label for="country2">Country:</label>
+                <select id="country2" name="country" required>
+                    <option value="">Select a country</option>
+                    <option value="USA">United States</option>
+                    <option value="CAN">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <span class="error-message" id="countryError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="state2">State:</label>
+                <select id="state2" name="state" required>
+                    <option value="">Select a State</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="UP">UP</option>
+                    <option value="MP">MP</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <span class="error-message" id="countryError"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <label for="name3">name:</label>
+                <input type="text" id="name3" name="name" required>
+                <span class="error-message" id="usernameError"></span>
+            </div>
+            <div class="form-group">
+                <label for="designation3">Designation:</label>
+                <input type="text" id="designation3" name="designation" required>
+                <span class="error-message" id="designationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="department3">Department:</label>
+                <input type="text" id="department3" name="department" required>
+                <span class="error-message" id="designationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="location3">Location:</label>
+                <input type="text" id="location3" name="location" required>
+                <span class="error-message" id="designationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="email3">Email:</label>
+                <input type="email3" id="email" name="email" required>
+                <span class="error-message" id="emailError"></span>
+            </div>
+            <div class="form-group">
+                <label for="dob3">Date of Birth:</label>
+                <input type="date" id="dob3" name="dob" required>
+                <span class="error-message" id="dobError"></span>
+            </div>
+            <div class="form-group">
+                <label for="country3">Country:</label>
+                <select id="country3" name="country" required>
+                    <option value="">Select a country</option>
+                    <option value="USA">United States</option>
+                    <option value="CAN">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <span class="error-message" id="countryError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="state3">State:</label>
+                <select id="state3" name="state" required>
+                    <option value="">Select a State</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="UP">UP</option>
+                    <option value="MP">MP</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <span class="error-message" id="countryError"></span>
+            </div>
+
+            
+            <div class="form-group">
+                <input type="submit" class="submit-btn" value="Register">
+            </div>
+        </form>
+    </div>
+
+    
+</body>
+</html>

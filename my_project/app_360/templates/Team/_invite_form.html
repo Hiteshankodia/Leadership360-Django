@@ -1,0 +1,220 @@
+
+
+<div class="row mb-3">
+    <div class="col"><input type="text" class="form-control" id="txtname_{{ index }}" name="txtnamename" placeholder="Name" required></div>
+    
+    <div class="col"><input type="email" class="form-control" id="txtEmail_{{ index }}" name="txtnameEmail" placeholder="Email" required>
+        <div class="invalid-feedback" id="emailError_{{ index }}">Invalid email format</div>
+        <div class="invalid-feedback" id="emailDuplicateError_{{ index }}">Email already entered above</div></div>
+    
+
+        
+    <div class="col"><input type="tel" class="form-control" placeholder="Contact" id = "contact_{{ index }}" name = txtnamecontact></div>
+    
+    <div class="col"><input type="text" class="form-control" placeholder="Location" id = "location_{{ index }}" name = txtnamelocation></div>
+    
+
+    <div class="col">
+        <select id="intnameteamtype{{ index }}" name="intnameteamtype" class="form-control" required>
+            <option value="" disabled selected>Select Team Type</option>
+            {% for id, label in teamtype.items %}
+                <option value="{{ id }}" data-name="{{ label }}">{{ label }}</option>
+                
+            {% endfor %}
+        </select>
+        <input type="hidden" name="teamtype_name[]" id="teamtype_name{{ index }}">
+        
+    </div>
+    
+
+
+    <div class="col">
+        <input type="hidden" id="country_name_{{ index }}" name="country_name[]" value="">
+        <select id="intcountry_{{ index }}" name="intnamecountry" class="form-control" required>
+            <option value="" disabled selected>Select a Country</option>
+            {% for country in countries %}
+                <option value="{{ country.id }}" data-name="{{ country.countryname }}">{{ country.countryname }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+
+    <div class="col">
+        
+        <input type="hidden" id="state_name_{{ index }}" name="state_name[]" value="">
+        <select id="intstate_{{ index }}" name="intnamestate" class="form-control" required>
+            <option value="" disabled selected>Select a State</option>
+            {% for state in states %}
+                <option value="{{ state.id }}" data-name="{{ state.statename }}">{{ state.statename }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    function validateEmail(email) {
+        var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email);
+    }
+    
+    $('select[name=intnamecountry]').change(function() {
+        var country_id = $(this).val();
+        var country_name = $(this).find('option:selected').data('name');
+        var index = $(this).attr('id').split('_')[1];
+
+        $('#country_name_' + index).val(country_name);
+
+        $.ajax({
+            url: '{% url "load_states" %}',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'country_id': country_id
+            },
+            success: function(data) {
+                var options = '<option value="" disabled selected>Select a State</option>';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].id + '" data-name="' + data[i].statename + '">' + data[i].statename + '</option>';
+                }
+                $('#intstate_' + index).html(options);
+                $('#intstate_' + index).change();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    $('select[name=intnamestate]').change(function() {
+        var state_name = $(this).find('option:selected').data('name');
+        var index = $(this).attr('id').split('_')[1];
+        $('#state_name_' + index).val(state_name);
+    });
+
+    $('input[name=datenamedob]').change(function() {
+        var dob = new Date($(this).val());
+        var today = new Date();
+        var age = today.getFullYear() - dob.getFullYear();
+        var m = today.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+
+        var index = $(this).attr('id').split('_')[1];
+        if (age < 18) {
+            $(this).addClass('is-invalid');
+            $('#dobError_' + index).show();
+        } else {
+            $(this).removeClass('is-invalid');
+            $('#dobError_' + index).hide();
+        }
+    });
+
+    $('input[name=txtnameEmail]').change(function() {
+        var currentEmail = $(this).val();
+        var currentIndex = $(this).attr('id').split('_')[1];
+        var emailExists = false;
+        var isValidEmail = validateEmail(currentEmail);
+
+        if (!isValidEmail) {
+            $(this).addClass('is-invalid');
+            $('#emailError_' + currentIndex).show();
+            $('#emailDuplicateError_' + currentIndex).hide();
+        } else {
+            $(this).removeClass('is-invalid');
+            $('#emailError_' + currentIndex).hide();
+
+            $('input[name=txtnameEmail]').each(function() {
+                var email = $(this).val();
+                var index = $(this).attr('id').split('_')[1];
+                if (index !== currentIndex && email === currentEmail) {
+                    emailExists = true;
+                    return false;
+                }
+            });
+
+            if (emailExists) {
+                $(this).addClass('is-invalid');
+                $('#emailDuplicateError_' + currentIndex).show();
+            } else {
+                $(this).removeClass('is-invalid');
+                $('#emailDuplicateError_' + currentIndex).hide();
+            }
+        }
+    });
+
+    $('form').submit(function(event) {
+        var isValid = true;
+        var emails = [];
+
+        $('input[required], select[required]').each(function() {
+            if ($(this).val() === '') {
+                isValid = false;
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+
+        $('input[type=email]').each(function() {
+            var email = $(this).val();
+            var index = $(this).attr('id').split('_')[1];
+            if (!validateEmail(email) || emails.includes(email)) {
+                isValid = false;
+                $(this).addClass('is-invalid');
+                if (emails.includes(email)) {
+                    $('#emailDuplicateError_' + index).show();
+                } else {
+                    $('#emailError_' + index).show();
+                }
+            } else {
+                $(this).removeClass('is-invalid');
+                $('#emailError_' + index).hide();
+                $('#emailDuplicateError_' + index).hide();
+                emails.push(email);
+            }
+        });
+
+        $('input[name=datenamedob]').each(function() {
+            var dob = new Date($(this).val());
+            var today = new Date();
+            var age = today.getFullYear() - dob.getFullYear();
+            var m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            if (age < 18) {
+                isValid = false;
+                $(this).addClass('is-invalid');
+                var index = $(this).attr('id').split('_')[1];
+                $('#dobError_' + index).show();
+            } else {
+                $(this).removeClass('is-invalid');
+                var index = $(this).attr('id').split('_')[1];
+                $('#dobError_' + index).hide();
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();
+            alert('Please fill out all required fields correctly.');
+        }
+    });
+});
+</script>
+
+<style>
+.is-invalid {
+    border-color: #dc3545;
+}
+.invalid-feedback {
+    display: none;
+    color: #dc3545;
+}
+</style>

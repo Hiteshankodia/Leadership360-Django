@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>page12</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .header-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .table {
+            font-size: 1.1rem;
+        }
+        .btn-custom-dark-blue {
+            background-color: #000080;
+            border-color: #000080;
+            color: white;
+            font-size: 1.2rem;
+            padding: 10px 30px;
+            transition: all 0.3s ease;
+        }
+        .btn-custom-dark-blue:hover {
+            background-color: #000066;
+            border-color: #000066;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+    </header>
+     <br>
+     <div class="container text-center"> <!-- Add 'text-center' class to center align content -->
+        <h4 class="instruction-text">
+            For better results and assessment 8 references will be ideal however participants are free to give 5 atleast of which 1 should be Reporting manager, 2 peers and 3 subordinates
+        </h4>
+    </div>
+    <br>
+    <div class="main-content">
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-container">
+                        <form action="{% url 'teaminvitesend' %}" method="POST" id="participantForm">
+                            {% csrf_token %}
+                            <input type="hidden" name="TeamInviteList" value="{{ TeamInviteList }}">
+                            <table class="table table-bordered">
+                                <thead class="table-secondary">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Contact</th>
+                                        <th>Location</th>
+                                        <th>Team Type</th>
+                                        <th>Country</th>
+                                        <th>State</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    {% for team_data in TeamInviteList %}
+                                    <tr>
+                                        <td>{{ team_data.name }}</td>
+                                        <td>{{ team_data.email }}</td>
+                                        <td>{{ team_data.contact }}</td>
+                                        <td>{{ team_data.location }}</td>
+                                        <td>{{ team_data.teamtype_name }}</td>
+                                        <td>{{ team_data.country }}</td>
+                                        <td>{{ team_data.state }}</td>
+                                        
+                                    </tr>
+                                    <input type="hidden" name="names[]" value="{{ team_data.name }}">
+                                    <input type="hidden" name="emails[]" value="{{ team_data.email }}">
+                                    <input type="hidden" name="contacts[]" value="{{ team_data.contact }}">
+                                    <input type="hidden" name="locations[]" value="{{ team_data.location }}">
+                                    <input type="hidden" name="teamtypes[]" value="{{ team_data.teamtype }}">
+                                    <input type="hidden" name="countries[]" value="{{ team_data.country }}">
+                                    <input type="hidden" name="states[]" value="{{ team_data.state }}">
+                                    <input type="hidden" name="country_ids[]" value="{{ team_data.country_id }}">
+                                    <input type="hidden" name="state_ids[]" value="{{ team_data.state_id }}">
+                                    <input type="hidden" name="teamtype_name[]" value="{{ team_data.teamtype_name }}">
+                                    <input type="hidden" name="teamtype_id[]" value="{{ team_data.teamtype_id }}">
+                                    
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="button-container">
+                <button class="btn btn-custom-dark-blue" onclick="window.history.back()">Edit</button>
+                <button class="btn btn-custom-dark-blue" type="submit" form="participantForm">Confirm and Next</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

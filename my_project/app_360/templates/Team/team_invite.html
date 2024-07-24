@@ -1,0 +1,93 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>page20</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .btn-custom {
+            background-color: #1a1e3a;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-weight: bold;
+        }
+        .content-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .instruction-text {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .error {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+    </header>
+    <div class="content-wrapper">
+        <div class="container">
+            <h4 class="instruction-text">For better results and assessment 8 references will be ideal however participants are free to give 5 atleast of which 1 should be Reporting manager, 2 peers and 3 subordinates</h4>
+        </div>
+        <div class="container mt-4 form-container">
+            <form id="TeamInvite" method="POST" action="{% url 'teamsavedata' %}">
+                {% csrf_token %}
+                <input type="hidden" name="teamtypeobj" value="{{ teamtypeobj }}">
+                <div class="row mb-3 bg-light py-2">
+                    <div class="col"><strong>Name</strong></div>
+                    <div class="col"><strong>Email</strong></div>
+                    <div class="col"><strong>Contact</strong></div>
+                    <div class="col"><strong>Location</strong></div>
+                    <div class="col"><strong>Team Type</strong></div>
+                    <div class="col"><strong>Country</strong></div>
+                    <div class="col"><strong>State</strong></div>
+                </div>
+                
+                <div class="container">
+                    
+                    {% for i in itereration %}
+                        
+                        {% include 'Team/_invite_form.html' with index=i %}
+
+                    {% endfor %}
+                
+                
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-custom">Save and Next</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
