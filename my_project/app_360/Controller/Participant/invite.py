@@ -128,4 +128,7 @@ def ParticipantInvite(request):
         print(response) 
         if response['StatusCode'] == 1:
             return render(request, 'Participant/thankyou.html')
-
+        elif response['StatusCode'] == 2: 
+            pass
+            
+         

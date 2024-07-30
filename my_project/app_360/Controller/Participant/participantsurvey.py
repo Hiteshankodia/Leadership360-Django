@@ -56,7 +56,7 @@ def setpassword(request):
     print(response)
     print('Check Participant Ran Successfully !')
 
-    if response['StatusCode'] == 5:
+    if response['StatusCode'] == 2:
         # Render the setpassword.html template
         return render(request, 'Participant/setpassword.html', context=context)
     else: 

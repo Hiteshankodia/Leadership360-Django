@@ -45,7 +45,7 @@
                         Each question offers five options; please select the one that resonates most with you without overthinking. Your immediate reflection is most valuable.
                     </p>
                     <div class="text-center">
-                        <form action="{% url 'displayquestions' %}" method="post">
+                        <form action="{% url 'teamdisplayquestions' %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" id="strparticipantid" name="strnameparticipantid" value="{{ encoded_pid }}">
                             <input type="hidden" id="intsurveyid" name="intnamesurveyid" value="{{ surveyid }}">
@@ -59,23 +59,6 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Push a new state onto the history stack
-        history.pushState(null, null, location.href);
-
-        // Add an event listener for the 'popstate' event
-        window.onpopstate = function(event) {
-            // Redirect the user or handle the event
-            // This will redirect the user back to the current page
-            history.go(1);
-        };
-
-        // Optionally, you can push another state to create a "loop"
-        window.addEventListener('load', function() {
-            history.replaceState(null, null, location.href);
-        });
-    </script>
-    
 </body>
 </body>
 </html>

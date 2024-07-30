@@ -3,7 +3,11 @@ from app_360.Schema.home import MyForm
 from app_360.Schema.UserLoginSchema import UserLoginRequestSchema
 from django.shortcuts import render, redirect, reverse
 from app_360.utility.utility import UtilityClass
+from app_360.Controller.survey.teamsurvey import FetchQuestions
+from app_360.Schema.Team.survey import TeamMemberSurveyIds
+from app_360.ServiceHelper.Teamsurvey import Survey
 
+surveyobj = Survey()
 utilityobj = UtilityClass()
 AuthServiceHelperobj = AuthServiceHelper()
 
@@ -37,7 +41,7 @@ def auth(request):
                 role_id = token_details.get('role_id')
                 # Render different templates based on role_id
                 if role_id == 2:
-                    return redirect(reverse('participantinvite'))
+                    return redirect('thanksfrom360')
                 elif role_id == 3:
                     return render(request, 'Participant/before_survey_message.html', context=context)
                 else:
@@ -52,3 +56,24 @@ def auth(request):
         
     # Render the login form with error message
     return render(request, 'Homepage/homepage.html', {'form': form, 'error_message': error_message})
+
+#teammemberid : participantid : surveyid
+
+def TeamMemberAssignSurvey(request):
+    encoded_id = str(request.GET.get('id', None)) 
+    id = utilityobj.decrypt(encoded_id)
+    id_list = id.split(':')
+    print(id_list[0], id_list[1], id_list[2])
+
+    teamMemberSurveyIds = TeamMemberSurveyIds(
+        participantid  = id_list[0], 
+        teammemberid = id_list[1], 
+        surveyid = id_list[2]
+    )
+    
+    #assign_survey = surveyobj.TeamMemberAssignSurvey(teamMemberSurveyIds=teamMemberSurveyIds)
+    #print(assign_survey)
+    #if assign_survey['StatusCode'] == '1': 
+    return FetchQuestions(request = request, teamMemberSurveyIds = teamMemberSurveyIds, page_number = 1)
+    
+    

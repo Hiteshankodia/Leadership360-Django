@@ -1,12 +1,10 @@
 {% load static %}
-{% load url from future %}  <!-- Load the URL template tag library -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>page31</title>
+    <title>page18</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .header-image {
@@ -15,20 +13,28 @@
             object-fit: cover;
         }
         body {
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-        }
-        .content-wrapper {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
         }
         .content {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: white;
+        }
+        .message-box {
+            max-width: 800px;
             text-align: center;
-            max-width: 80%;
+        }
+        .btn-custom {
+            background-color: #1a1a2e;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 30px;
+            font-size: 1.2rem;
         }
     </style>
 </head>
@@ -36,16 +42,15 @@
     <header>
         <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
     </header>
-    <div class="content-wrapper">
-        <div class="content">
-            <h2 style="font-size: 1.5rem; margin-bottom: 20px;">Congratulations on completing the 360 Leadership Assessment. Your feedback is essential for fostering leadership growth and development.</h2>
-            <h2 style="font-size: 1.5rem; margin-bottom: 20px;">Thank you for your time and thoughtful response.</h2>
+    <div class="content">
+        <div class="message-box">
+            <p class="fs-5 mb-4">
+                To ensure a comprehensive 360 Leadership Assessment, please provide the names of at least one direct reporting manager, two peers, and two subordinates. Their feedback, combined with your self-assessment, will offer valuable insights into your leadership style and help identify areas for improvement, enhancing your leadership journey.
+            </p>
+            <a href="{% url 'teaminvite' %}" class="btn btn-custom">Next</a>
         </div>
     </div>
 
-    <div class="container text-center">
-        <a href="{% url 'index' %}" class="btn btn-custom btn-lg">Back to HomePage</a>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

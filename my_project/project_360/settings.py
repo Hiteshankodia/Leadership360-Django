@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "app_360"
+    "app_360", 
+    "corsheaders"
     
 ]
 
@@ -71,7 +72,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-]
+    'corsheaders.middleware.CorsMiddleware',
+]    
 
 ROOT_URLCONF = "project_360.urls"
 

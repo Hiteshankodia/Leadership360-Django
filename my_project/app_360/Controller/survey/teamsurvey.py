@@ -1,81 +1,67 @@
 from app_360.Schema.Participant.survey import FetchQuestionRequestSchema, SubmitParticipantSurveyRequestSchema
-from app_360.ServiceHelper.survey import Survey
+from app_360.ServiceHelper.Teamsurvey import Survey
 from django.shortcuts import render, redirect
 from app_360.Schema.Participant.save_survey import SaveQuestionRequestSchema, QuestionRequestSchema
 from app_360.Schema.Participant.preview_survey import PreviewParticipantSurvey, SaveParticipantSurvey
 from app_360.utility.utility import UtilityClass
+from app_360.Schema.Team.survey import TeamFetchQuestionSchema
+from app_360.Schema.Team.survey import TeamMemberSurveyIds
 
-surveyobj = Survey()
+teamsurevyobj = Survey()
 utilityobj = UtilityClass()
 
-#Participant 
-def FetchQuestions(request, page_number = 1, encoded_pid = 'IkAXfN6qGtab6aeQF2IqNdqPNCtPbagwGlx95sWFCX4=' , survey_id = 1):
+def FetchQuestions(request, teamMemberSurveyIds : TeamMemberSurveyIds, page_number = 1):
+    print(teamMemberSurveyIds)
+    
     milestone_message_index = int(request.POST.get('milestone_message_index', '0'))
-    encoded_pid = request.POST.get('hiddenstrpid', encoded_pid)  # Provide a default value if not found in POST data
-    survey_id = request.POST.get('hiddenintsurveyid', survey_id)
+    
+    survey_id = request.POST.get('hiddenintsurveyid', teamMemberSurveyIds.surveyid)
     if page_number == 1: 
         page_number = int(request.POST.get('hiddenpage_number', page_number)) 
-    
-    print(f"Encoded PID: {encoded_pid}")
-    print(f"Survey ID: {survey_id}") # Get survey_id as string
-    print(encoded_pid) 
-    print("Page Number", page_number) 
-    record_count = 5
- 
-    if encoded_pid:
-        participant_id = utilityobj.decrypt(encoded_pid) 
-     # Or raise an exception or handle gracefully
-         
-    print(f"Participant ID: {participant_id}")
-    print(f"Survey ID: {survey_id}")
-    print(f"Page Number: {page_number}")
 
-    miltestone_message_list = surveyobj.FetchMilestoneMessage(survey_id)
+    record_count = 5
+
+    miltestone_message_list = teamsurevyobj.FetchMilestoneMessage(teamMemberSurveyIds.surveyid)
     print(f"Milestone Messages: {miltestone_message_list}")
 
-    fetchQuestionRequestSchema = FetchQuestionRequestSchema(
-        participantid=participant_id,
-        surveyid=survey_id,
-        record_count=record_count,
-        no_of_question=5,
-        page_number=page_number
+    teamFetchQuestionSchema = TeamFetchQuestionSchema(
+        participantid = teamMemberSurveyIds.participantid, 
+        surveyid = teamMemberSurveyIds.surveyid, 
+        record_count = record_count, 
+        no_of_question = 5, 
+        page_number = page_number, 
+        teammemberid = teamMemberSurveyIds.teammemberid
+
     )
 
-    question = surveyobj.displayquestions(fetchQuestionRequestSchema)
+    question = teamsurevyobj.displayquestions(teamFetchQuestionSchema)
     print(f"Questions: {question}")
     
     show_submit_button = len(question) < record_count
     
     context = {
-        'question': question,
-        'encodedpid': encoded_pid,  
+        'question': question, 
         'surveyid': survey_id,
         'page_number': page_number,
         'show_submit_button': show_submit_button, 
         'message' : miltestone_message_list[milestone_message_index]['message'],
         'miestone_index' : miltestone_message_list[milestone_message_index]['question_count'], 
-        'milestone_message_index' : milestone_message_index
+        'milestone_message_index' : milestone_message_index, 
+        
         
     }
     
     if len(question) == 0: 
         print("*" * 100)
-        return PreviewSurvey(request=request, participantid=participant_id, surveyid=survey_id)
+        #return PreviewSurvey(request=request, participantid=participantid, surveyid=survey_id)
     
     elif  ((int(page_number)-1) * record_count) == context['miestone_index'] :
         print(milestone_message_index) 
         context['milestone_message_index'] += 1 
-        return render(request, 'Survey/milestone_message.html', context)
-    
-        
-    
-    elif len(question) == 0: 
-        print("*" * 100)
-        return PreviewSurvey(request=request, participantid=participant_id, surveyid=survey_id)
+        return render(request, 'Survey/milestone_message.html', context) 
     
     else:
-        return render(request, 'Survey/survey2.html', context)
-    
+        return render(request, 'Team/survey.html', context)
 
 
 def SaveAndFetchNextQuestions(request):

@@ -41,12 +41,11 @@ if __name__ == "__main__":
     key = b'Sixteen byte key'
     aes = UtilityClass()
 
-    # Encrypting '17'
-    encrypted = aes.encrypt('17')
-    print("Encrypted:", encrypted)
-
+    encrypted = aes.encrypt('109')
+    print(encrypted)
     # Decrypting the encrypted message
-    decrypted = aes.decrypt('U7Swsedx8RjGJwmmikQQ6BIt+t6q5KEXQ6LVGxfYbTE=')
+    decrypted = aes.decrypt('t9muUKolsa7H2qROZE2ujQORhNRGkU5gTapOuAsyn8Y=')
+    
     print("Decrypted:", decrypted) 
 
    

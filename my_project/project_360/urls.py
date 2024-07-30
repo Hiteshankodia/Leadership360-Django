@@ -22,7 +22,7 @@ from app_360.Controller import authcontroller
 from app_360.Controller.Participant import invite
 #from app_360.Controller.Participant import inviteController
 from app_360.Controller.Participant import inviteController
-from app_360.Controller.survey import survey_
+from app_360.Controller.survey import survey_, teamsurvey
 from app_360.Controller.Participant import Sample
 from app_360.Controller.Participant import participantsurvey
 from app_360.Controller.survey.survey import displayquestions
@@ -34,6 +34,7 @@ urlpatterns = [
     path('apihelper', views.apihelper, name = 'apihelper'), 
     path('auth', authcontroller.auth, name = 'auth'),  
     path('', home.index, name = 'index'), 
+    path('thanksfrom360/', home.ThanksFrom360, name = 'thanksfrom360'), 
     path('participantinvite/', invite.ParticipantDeatils, name = 'participantinvite'),
     path('inviteparticipant/', inviteController.invite, name='inviteparticipant'),
     path('load_states', invite.load_states, name='load_states'), 
@@ -46,15 +47,16 @@ urlpatterns = [
     path('saveandfetchnextquestions/', survey_.SaveAndFetchNextQuestions, name = 'saveandfetchnextquestions'), 
     path('previewsurvey/', survey_.PreviewSurvey, name = 'previewsurvey'), 
     path('submitsurvey/', survey_.SubmitSurvey, name = 'submitsurvey'), 
-    path('teamsurvey/', inviteTeam.TeamFormDetails, name = 'teamsurvey'), 
-    path('teamsavedata/', inviteTeam.SaveData, name = 'teamsavedata'), 
+    path('teaminvite/', inviteTeam.TeamFormDetails, name = 'teaminvite'), 
+    path('teamsavedata/', inviteTeam.SaveData, name = 'teamsavedata'),   
     path('load_state_team', inviteTeam.load_states, name='load_state_team'), 
-    path('teaminvitesend/', inviteTeam.TeamInvite, name = 'teaminvitesend')
-    
-    
-
+    path('teaminvitesend/', inviteTeam.TeamInvite, name = 'teaminvitesend'), 
+    path('teamdisplayquestions/', teamsurvey.FetchQuestions, name = 'teamdisplayquestions'),
+    path('teamsaveandfetchnextquestions/', teamsurvey.SaveAndFetchNextQuestions , name = 'teamsaveandfetchnextquestions'),
+    path('teampreviewsurvey/', teamsurvey.PreviewSurvey, name = 'teampreviewsurvey'),
+    path('teamsubmitsurvey/', teamsurvey.SubmitSurvey, name = 'teamsubmitsurvey'), 
+    path('auth/teamtoken/', authcontroller.TeamMemberAssignSurvey, name = 'teammemberverify')
   
-
      
 ] 
 

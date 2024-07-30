@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect
 from app_360.ServiceHelper.FetchDetailsMaster import FetchMasterData
 from django.conf import settings
-from fastapi import FastAPI, HTTPException
+
 from app_360.Schema.Team.invite import TeamMemberInvitedDetailSchema, TeamMemberInviteSchema
 import requests
 from app_360.ServiceHelper.TeamInvite import TeamInviteClass
+
+
 fetchmasterobj = FetchMasterData()
 teamInviteobj = TeamInviteClass()
+
+
 def TeamFormDetails(request):
     countries = fetchmasterobj.FetchCountry()
     context = {
@@ -95,10 +99,11 @@ def TeamInvite(request):
             teammembers=teammembers_list
         )
          
-
+        print("Team Inivte Method!")
         response = teamInviteobj.TeamInvite(teamMemberInviteSchema)
         if response.status_code == 200:
-            return render('Team/survey_now_or_later.html')
+            return render(request, 'Team/before_survey.html')
 
         
  
+    

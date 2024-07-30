@@ -56,7 +56,7 @@ $(document).ready(function() {
         $('#country_name_' + index).val(country_name);
 
         $.ajax({
-            url: '{% url "load_states" %}',
+            url: "{% url 'load_states' %}",
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
@@ -145,7 +145,7 @@ $(document).ready(function() {
             } else {
                 $(this).removeClass('is-invalid');
             }
-        });
+        }); 
 
         $('input[type=email]').each(function() {
             var email = $(this).val();
