@@ -8,6 +8,8 @@ class AuthServiceHelper:
     
     def Login(self, userLoginRequestSchema : UserLoginRequestSchema):
         data = self.ApiBaseObj.ToJSON(userLoginRequestSchema)
+        print("Login Method!")
+        print(data)
         return self.ApiBaseObj.PostRequest(data = data, url = '/auth/token', token='')
         
 

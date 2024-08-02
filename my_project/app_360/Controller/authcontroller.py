@@ -19,11 +19,20 @@ def auth(request):
         password = form.cleaned_data['password']
         encoded_pid = request.POST.get('strnameparticipantid', '')
         surveyid = request.POST.get('intnamesurveyid', '')
+        encoded_pid = 'nVzPKVf78TVan3t0LvyPz0rRQ1R4wW2SOHHPwGDJAnI='
+        surveyid = 1
+        print(username)
+        print(password)
+        print(encoded_pid)
+        print(surveyid)
         userLoginRequestSchema = UserLoginRequestSchema(
             username=username,
             password=password,
             company_id=1
         )
+        print("Auth Method!")
+        print(encoded_pid)
+        print(surveyid)
         context = {
             'encoded_pid': encoded_pid,
             'surveyid': surveyid  # hardcoded
@@ -42,7 +51,23 @@ def auth(request):
                 # Render different templates based on role_id
                 if role_id == 2:
                     return redirect('thanksfrom360')
+                
+                
+                #Participant Part 
                 elif role_id == 3:
+                    participantid = utilityobj.decrypt(encoded_pid)
+                    status = AuthServiceHelperobj.FetchSurveyStatus(participantid)
+                    if status["status"] == "Assigned":
+                        return render(request, 'Participant/before_survey_message.html', context=context)
+                    elif status["status"] == "In Progress":
+                        FetchQuestions(request=request, encoded_pid = encoded_pid, surveyid = surveyid)
+                    elif status["status"] == "Completed":
+                        return render(request, 'Survey/Thankyou.html', context = context)
+
+
+                    
+
+
                     return render(request, 'Participant/before_survey_message.html', context=context)
                 else:
                     # Default redirect for other roles or if role_id is not recognized
@@ -57,13 +82,15 @@ def auth(request):
     # Render the login form with error message
     return render(request, 'Homepage/homepage.html', {'form': form, 'error_message': error_message})
 
+
+
 #teammemberid : participantid : surveyid
 
 def TeamMemberAssignSurvey(request):
     encoded_id = str(request.GET.get('id', None)) 
     id = utilityobj.decrypt(encoded_id)
     id_list = id.split(':')
-    print(id_list[0], id_list[1], id_list[2])
+    
 
     teamMemberSurveyIds = TeamMemberSurveyIds(
         participantid  = id_list[0], 
@@ -74,6 +101,6 @@ def TeamMemberAssignSurvey(request):
     #assign_survey = surveyobj.TeamMemberAssignSurvey(teamMemberSurveyIds=teamMemberSurveyIds)
     #print(assign_survey)
     #if assign_survey['StatusCode'] == '1': 
-    return FetchQuestions(request = request, teamMemberSurveyIds = teamMemberSurveyIds, page_number = 1)
+    return FetchQuestions(request = request, participantid = id_list[0], teamemberid = id_list[1], surveyid = id_list[2], page_number = 1)
     
     

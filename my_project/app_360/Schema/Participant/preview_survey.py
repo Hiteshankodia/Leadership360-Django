@@ -9,3 +9,9 @@ class PreviewParticipantSurvey(BaseModel):
 class SaveParticipantSurvey(BaseModel):
     participantid : int 
     surveyid : int 
+
+
+class TeamPreviewParticipantSurvey(BaseModel):
+    participantid : int 
+    teammemberid : int 
+    surveyid : int    

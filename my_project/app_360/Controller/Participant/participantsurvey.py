@@ -10,18 +10,30 @@ utilityobj = UtilityClass()
 
 def fetchparticipantid(request):
     print("HERE")
-    pid_encoded = request.GET.get('pid', None)
+    pid_encoded = request.GET.get('pid', 'null')
+    if pid_encoded == 'null' or pid_encoded == None or pid_encoded == 'None' or type(pid_encoded) == 'NoneType':
+        pid_encoded = request.GET.get('strnameparticipantid')
+    
+    survey_id = request.POST.get('intnamesurveyid')
+    company_id = 1
     print(pid_encoded)
     response = participantobj.fetchparticipantid(pid_encoded=pid_encoded)
-    print(response)
+    print(response)   
     if response['StatusCode'] == 5:
+        context = {
+
+            'encoded_pid': pid_encoded,
+            'companyid' : 1, 
+            'survey_id' : 1
+        }
         return render(request, 'Homepage/homepage.html') 
     
     else:
         context = {
 
-            'pid_encoded': pid_encoded,
-            'companyid' : 1 #hardcoded
+            'encoded_pid': pid_encoded,
+            'companyid' : 1, 
+            'survey_id' : 1
         }
         return render(request, 'Participant/createuser.html', context=context)
          
@@ -56,12 +68,13 @@ def setpassword(request):
     print(response)
     print('Check Participant Ran Successfully !')
 
-    if response['StatusCode'] == 2:
+    if response['StatusCode'] == 5:
         # Render the setpassword.html template
         return render(request, 'Participant/setpassword.html', context=context)
-    else: 
+    else:
+        print("here")
+        context['error_message'] = 'The email or date of birth does not match'
         return render(request, 'Participant/createuser.html', context=context)
-
 
 
 def save_password(request):
@@ -83,7 +96,7 @@ def save_password(request):
     context = {
 
             'encoded_pid': encoded_pid,  
-            'survey_id' : 1,  #hardcoded,  
+            'survey_id' : 1,    
         }   
     createUserRequestSchema = CreateUserRequestSchema(
         participantid = participantid, 
@@ -95,5 +108,5 @@ def save_password(request):
     response = participantobj.CreateUser(createUserRequestSchema)
      
     if response['StatusCode'] == 1:
-        return render(request, 'Homepage/homepage.html', context = context) 
-  
+        return render(request, 'Participant/after_user_created.html', context = context) 
+    

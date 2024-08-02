@@ -44,7 +44,6 @@
 
         /* Custom Alert Style */
         .alert {
-            display: none; /* Initially hide alert */
             margin-top: 10px;
         }
     </style>
@@ -57,7 +56,7 @@
         <div class="form-container">
             <form id="createuser" method="POST" action="{% url 'setpassword' %}" onsubmit="return validateForm(event)">
                 {% csrf_token %}
-                <input type="hidden" id="strparticipantid" name="hiddenintparticipantid" value="{{ pid_encoded }}">
+                <input type="hidden" id="strparticipantid" name="hiddenintparticipantid" value="{{ encoded_pid }}">
                 <input type="hidden" id="intcompanyid" name="hiddenintcompanyid" value="{{ companyid }}">
                   
                 <div class="mb-3">
@@ -68,9 +67,11 @@
                     <label for="email" class="form-label">Email ID:</label>
                     <input type="email" class="form-control" id="emailemail" name="idemailemail" required>
                 </div>
+                {% if error_message %}
                 <div id="alert" class="alert alert-danger" role="alert">
-                    <span id="alert-message"></span>
+                    <span id="alert-message">{{ error_message }}</span>
                 </div>
+                {% endif %}
                 <button type="submit" class="btn-custom w-100">Press Enter to Continue</button>
             </form>
         </div>

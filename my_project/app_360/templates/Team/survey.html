@@ -42,10 +42,12 @@
         <form id="surveyForm" method="post" action="{% url 'teamsaveandfetchnextquestions' %}">
             {% csrf_token %}
             <input type="hidden" name="hiddenpage_number" value="{{ page_number }}"> 
-            <input type="hidden" name="hiddenstrpid" value="{{ encodedpid }}">
+            <input type="hidden" name="hiddenstrpid" value="{{ participantid }}">
             <input type="hidden" name="hiddenintsurveyid" value="{{ surveyid }}">
             <input type="hidden" name="milestone_message_index", value="{{ milestone_message_index }}">
-                    
+            <input type="hidden" name="hiddentintteammemberid", value="{{ teammemberid }}">
+           
+            
             <table class="table table-borderless table-hover">
                 <thead> 
                     <tr>

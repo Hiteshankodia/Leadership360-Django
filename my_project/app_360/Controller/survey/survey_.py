@@ -4,12 +4,15 @@ from django.shortcuts import render, redirect
 from app_360.Schema.Participant.save_survey import SaveQuestionRequestSchema, QuestionRequestSchema
 from app_360.Schema.Participant.preview_survey import PreviewParticipantSurvey, SaveParticipantSurvey
 from app_360.utility.utility import UtilityClass
+from app_360.Schema.Participant.survey import ParticipantSurvveyStatusUpdateSchema 
 
 surveyobj = Survey()
 utilityobj = UtilityClass()
 
-#Participant 
+
+
 def FetchQuestions(request, page_number = 1, encoded_pid = 'IkAXfN6qGtab6aeQF2IqNdqPNCtPbagwGlx95sWFCX4=' , survey_id = 1):
+    
     milestone_message_index = int(request.POST.get('milestone_message_index', '0'))
     encoded_pid = request.POST.get('hiddenstrpid', encoded_pid)  # Provide a default value if not found in POST data
     survey_id = request.POST.get('hiddenintsurveyid', survey_id)
@@ -29,6 +32,15 @@ def FetchQuestions(request, page_number = 1, encoded_pid = 'IkAXfN6qGtab6aeQF2Iq
     print(f"Participant ID: {participant_id}")
     print(f"Survey ID: {survey_id}")
     print(f"Page Number: {page_number}")
+
+    #Update Participant Survey Status to Inprogress. 
+    participantSurvveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(
+        participant_id = participant_id, 
+        survey_id = survey_id, 
+        status = 2
+    )
+    surveyobj.ParticipantUpdateSurveyStatus(participantSurvveyStatusUpdateSchema)
+
 
     miltestone_message_list = surveyobj.FetchMilestoneMessage(survey_id)
     print(f"Milestone Messages: {miltestone_message_list}")
@@ -157,6 +169,17 @@ def SubmitSurvey(request):
         )
     save_survey_status = surveyobj.SubmitSurvey(saveParticipantSurvey)
     print(save_survey_status)
+    participantid = utilityobj.decrypt(enocded_pid)
+
+
+    #Update Participant Survey Status to Inprogress. 
+    participantSurvveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(
+        participant_id = participantid, 
+        survey_id = surveyid, 
+        status = 3
+    )
+    surveyobj.ParticipantUpdateSurveyStatus(participantSurvveyStatusUpdateSchema)
+
     if save_survey_status['StatusCode'] == 1:
         return render(request, 'Survey/Thankyou.html') 
     return render(request, 'Survey/Thankyou.html')

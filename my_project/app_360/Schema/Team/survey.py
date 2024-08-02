@@ -12,3 +12,13 @@ class TeamMemberSurveyIds(BaseModel):
     participantid : int 
     teammemberid : int 
     surveyid : int 
+
+class TeamPreviewSurvey(BaseModel):
+    participantid : int 
+    surveyid : int 
+    teammemberid : int     
+
+class TeamSubmitSurvey(BaseModel):
+    participantid : int 
+    surveyid : int 
+    teammmeberid : int     

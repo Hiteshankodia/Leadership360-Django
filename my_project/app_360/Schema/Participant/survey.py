@@ -11,3 +11,8 @@ class SubmitParticipantSurveyRequestSchema(BaseModel):
     participantid : int 
     surveyid : int    
 
+class ParticipantSurvveyStatusUpdateSchema(BaseModel):
+    participantid : int 
+    surveyid : int 
+    status : int
+

@@ -3,7 +3,7 @@ import requests
 from django.http import JsonResponse
 from app_360.utility.utility import UtilityClass
 from app_360.Schema.Participant.participant_invite import ValidateParticipantDetailsSchema, CreateUserRequestSchema
-
+from app_360.Schema.Participant.survey import ParticipantSurvveyStatusUpdateSchema
 class ParticipantSurvey: 
     def __init__(self):
         self.ApiBaseObj = ApiBase()
@@ -30,6 +30,12 @@ class ParticipantSurvey:
         print('Create User Date' , data)
         return self.ApiBaseObj.PostRequest(data = data, url = '/participant/createuser', token='')
     
-    
+    def FetchSurveyStatus(self, pid : int):
+        participantidrequest = {'participantid': int(pid)}
+        response = self.ApiBaseObj.PostRequest(data = participantidrequest, url='/participant/participantFetchAllSurvey', token='')
+        return response
+        
 
-    
+    def ParticipantUpdateSurveyStatus(self, participantSurvveyStatusUpdateSchema : ParticipantSurvveyStatusUpdateSchema):
+        data = self.ApiBaseObj.ToJSON(participantSurvveyStatusUpdateSchema)
+        return self.ApiBaseObj.PostRequest(data = data, url = '/participant/updateSurveyStatus', token='')

@@ -21,11 +21,11 @@ from app_360.Controller import home
 from app_360.Controller import authcontroller
 from app_360.Controller.Participant import invite
 #from app_360.Controller.Participant import inviteController
-from app_360.Controller.Participant import inviteController
+#from app_360.Controller.Participant import inviteController
 from app_360.Controller.survey import survey_, teamsurvey
 from app_360.Controller.Participant import Sample
 from app_360.Controller.Participant import participantsurvey
-from app_360.Controller.survey.survey import displayquestions
+#from app_360.Controller.survey.survey import displayquestions
 from app_360.Controller.Team import inviteTeam
 urlpatterns = [
          
@@ -36,7 +36,7 @@ urlpatterns = [
     path('', home.index, name = 'index'), 
     path('thanksfrom360/', home.ThanksFrom360, name = 'thanksfrom360'), 
     path('participantinvite/', invite.ParticipantDeatils, name = 'participantinvite'),
-    path('inviteparticipant/', inviteController.invite, name='inviteparticipant'),
+    #path('inviteparticipant/', inviteController.invite, name='inviteparticipant'),
     path('load_states', invite.load_states, name='load_states'), 
     path('save_data/', invite.save_data, name = 'save_data'), 
     path('participantinvitesent/', invite.ParticipantInvite, name = 'participantinvitesent'), 
@@ -57,6 +57,6 @@ urlpatterns = [
     path('teamsubmitsurvey/', teamsurvey.SubmitSurvey, name = 'teamsubmitsurvey'), 
     path('auth/teamtoken/', authcontroller.TeamMemberAssignSurvey, name = 'teammemberverify')
   
-     
+
 ] 
 
