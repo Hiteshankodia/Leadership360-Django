@@ -5,6 +5,9 @@ from Crypto import Random
 import hashlib
 import os
 from django.conf import settings
+from app_360.ServiceHelper.ApiBase import ApiBase
+
+apibaseobj = ApiBase()
 
 class UtilityClass: 
     def __init__(self):
@@ -15,6 +18,29 @@ class UtilityClass:
     def SaveAccessToken(self, access_token):
         response = HttpResponse('Login successful')
         response.set_cookie('access_token', access_token, max_age=3600, httponly=True, samesite='Strict')
+    
+    def FetchCompanyid(self,request, companyurl):
+        company_id_json = request.COOKIES.get('company_id')
+    
+        if not company_id_json:
+            # Cookie not present, fetch company ID
+            url = request.build_absolute_uri()
+            data = {'companyurl': str(companyurl)}
+            response_data = self.apibaseobj.PostRequest(data = data, url='/masterdata/fetchcompanyid', token='')  # Assuming this returns a dict or similar structure
+            company_id = response_data.get('companyid')
+            
+            # Create an HttpResponse object
+            response = HttpResponse("Saved Successfully!")
+                
+            # Set the cookie in the response
+            response.set_cookie('company_id', str(company_id))
+            
+            # Debugging information
+            print('Cookie set:', response.cookies)
+            print('Company ID:', company_id)
+            
+            return company_id  
+
 
     def _pad(self, s):
         return s + (AES.block_size - len(s) % AES.block_size) * chr(AES.block_size - len(s) % AES.block_size)

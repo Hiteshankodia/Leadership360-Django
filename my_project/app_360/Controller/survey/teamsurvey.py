@@ -152,6 +152,7 @@ def SubmitSurvey(request):
             teammmeberid = int(teammemberid)
         )
     save_survey_status = teamsurevyobj.TeamSubmitSurvey(teamSubmitSurvey)
+    
     print(save_survey_status)
     if save_survey_status['StatusCode'] == 1:
         return render(request, 'Team/AfterSurveyThankyou.html') 

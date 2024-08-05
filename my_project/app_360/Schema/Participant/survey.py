@@ -15,4 +15,3 @@ class ParticipantSurvveyStatusUpdateSchema(BaseModel):
     participantid : int 
     surveyid : int 
     status : int
-

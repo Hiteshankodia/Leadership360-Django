@@ -12,5 +12,9 @@ class AuthServiceHelper:
         print(data)
         return self.ApiBaseObj.PostRequest(data = data, url = '/auth/token', token='')
         
-
+    
+    def FetchCompanyid(self, companyurl : str):
+        data = {'companyurl': str(companyurl)}
+        response = self.ApiBaseObj.PostRequest(data = data, url='/masterdata/fetchcompanyid', token='')
+        return response
  

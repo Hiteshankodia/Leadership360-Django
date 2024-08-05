@@ -3,15 +3,18 @@ from app_360.Schema.home import MyForm
 from app_360.Schema.UserLoginSchema import UserLoginRequestSchema
 from django.shortcuts import render, redirect, reverse
 from app_360.utility.utility import UtilityClass
-from app_360.Controller.survey.teamsurvey import FetchQuestions
+from app_360.Controller.survey.survey_ import FetchQuestions
 from app_360.Schema.Team.survey import TeamMemberSurveyIds
 from app_360.ServiceHelper.Teamsurvey import Survey
+from app_360.ServiceHelper.ParticipantSurvey import ParticipantSurvey
 
+participantsurveyobj = ParticipantSurvey()
 surveyobj = Survey()
 utilityobj = UtilityClass()
 AuthServiceHelperobj = AuthServiceHelper()
 
 def auth(request):
+    print("Auth Method!")
     form = MyForm(request.POST)
     error_message = None
     if form.is_valid():
@@ -19,7 +22,8 @@ def auth(request):
         password = form.cleaned_data['password']
         encoded_pid = request.POST.get('strnameparticipantid', '')
         surveyid = request.POST.get('intnamesurveyid', '')
-        encoded_pid = 'nVzPKVf78TVan3t0LvyPz0rRQ1R4wW2SOHHPwGDJAnI='
+        companyid = request.POST.get('intnamecompanyid', '') 
+        
         surveyid = 1
         print(username)
         print(password)
@@ -35,9 +39,10 @@ def auth(request):
         print(surveyid)
         context = {
             'encoded_pid': encoded_pid,
-            'surveyid': surveyid  # hardcoded
+            'surveyid': surveyid, 
+            'companyid': 1  # hardcoded
         }
-        try:
+        try:  
             token_details = AuthServiceHelperobj.Login(userLoginRequestSchema)
             print('token_details', token_details)
             print("-" * 30)
@@ -56,19 +61,18 @@ def auth(request):
                 #Participant Part 
                 elif role_id == 3:
                     participantid = utilityobj.decrypt(encoded_pid)
-                    status = AuthServiceHelperobj.FetchSurveyStatus(participantid)
+                    print("participantid For now", participantid)
+                    status = participantsurveyobj.FetchSurveyStatus(participantid)
+                    print("FetchSurveyStatus", status)
                     if status["status"] == "Assigned":
                         return render(request, 'Participant/before_survey_message.html', context=context)
-                    elif status["status"] == "In Progress":
-                        FetchQuestions(request=request, encoded_pid = encoded_pid, surveyid = surveyid)
+                    elif status["status"]  == "In Progress":
+                        return FetchQuestions(request=request, encoded_pid = encoded_pid, survey_id = surveyid)
                     elif status["status"] == "Completed":
                         return render(request, 'Survey/Thankyou.html', context = context)
 
-
                     
 
-
-                    return render(request, 'Participant/before_survey_message.html', context=context)
                 else:
                     # Default redirect for other roles or if role_id is not recognized
                     return redirect(reverse('index'))

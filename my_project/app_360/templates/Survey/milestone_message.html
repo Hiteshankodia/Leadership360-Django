@@ -56,8 +56,9 @@
 
                 <form action="{% url 'displayquestions' %}" method="post">     
                     {% csrf_token %}  
-                    <input type="hidden" name="hiddenstrpid" value="{{ encodedpid }}">
-                    <input type="hidden" name="hiddenintsurveyid" value="{{ surveyid }}">
+                    <input type="hidden" id="strparticipantid" name="strnameparticipantid" value="{{ encodedpid }}">
+                    <input type="hidden" id="intsurveyid" name="intnamesurveyid" value="{{ surveyid }}">
+                    <input type="hidden" id="intcompanyid" name="intnamecompanyid" value="{{ companyid }}">
                     <input type="hidden" name="hiddenpage_number" value="{{ page_number }}">
                     <input type="hidden" name="index" value = "{{index}}">
                     <input type="hidden" name="message", value="{{ message }}">

@@ -59,8 +59,10 @@
             <div class="col-md-6 d-flex flex-column justify-content-center p-5">
                 <form id="login-form" method="post" action="{% url 'auth' %}" onsubmit="return validateForm()">
                     {% csrf_token %}
-                    <input type="hidden" id="strparticipantid" name="strnameparticipantid" value="{{ encoded_pid }}">
-                    <input type="hidden" id="intcompanyid" name="intnamesurveyid" value="{{ survey_id }}">
+                    <input type="hidden" id="strparticipantid" name="strnameparticipantid" value="{{ pid_encoded }}">
+                    <input type="hidden" id="intsurveyid" name="intnamesurveyid" value="{{ survey_id }}">
+                    <input type="hidden" id="intcompanyid" name="intnamecompanyid" value="{{ companyid }}">
+
                     <div class="login-container">
                         <h2 class="mb-4">LOGIN:</h2>
                         <input type="text" id="username" name="username" class="form-control mb-3" placeholder="Username" value="{{ form.username.value|default_if_none:'' }}" required>

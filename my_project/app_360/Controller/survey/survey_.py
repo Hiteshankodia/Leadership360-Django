@@ -11,35 +11,35 @@ utilityobj = UtilityClass()
 
 
 
-def FetchQuestions(request, page_number = 1, encoded_pid = 'IkAXfN6qGtab6aeQF2IqNdqPNCtPbagwGlx95sWFCX4=' , survey_id = 1):
-    
+def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
+    print("Fetch Questions!")
     milestone_message_index = int(request.POST.get('milestone_message_index', '0'))
-    encoded_pid = request.POST.get('hiddenstrpid', encoded_pid)  # Provide a default value if not found in POST data
-    survey_id = request.POST.get('hiddenintsurveyid', survey_id)
+
+    if encoded_pid is None:
+        encoded_pid = request.POST.get('strnameparticipantid', encoded_pid)
+    print(encoded_pid)
+    if survey_id == 0:
+        survey_id = request.POST.get('intnamesurveyid', survey_id)
+    print(survey_id)
+    
     if page_number == 1: 
         page_number = int(request.POST.get('hiddenpage_number', page_number)) 
     
     print(f"Encoded PID: {encoded_pid}")
-    print(f"Survey ID: {survey_id}") # Get survey_id as string
+    print(f"Survey ID: {survey_id}") 
     print(encoded_pid) 
     print("Page Number", page_number) 
     record_count = 5
  
     if encoded_pid:
         participant_id = utilityobj.decrypt(encoded_pid) 
-     # Or raise an exception or handle gracefully
+    
          
     print(f"Participant ID: {participant_id}")
     print(f"Survey ID: {survey_id}")
     print(f"Page Number: {page_number}")
 
-    #Update Participant Survey Status to Inprogress. 
-    participantSurvveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(
-        participant_id = participant_id, 
-        survey_id = survey_id, 
-        status = 2
-    )
-    surveyobj.ParticipantUpdateSurveyStatus(participantSurvveyStatusUpdateSchema)
+    
 
 
     miltestone_message_list = surveyobj.FetchMilestoneMessage(survey_id)
@@ -67,7 +67,6 @@ def FetchQuestions(request, page_number = 1, encoded_pid = 'IkAXfN6qGtab6aeQF2Iq
         'message' : miltestone_message_list[milestone_message_index]['message'],
         'miestone_index' : miltestone_message_list[milestone_message_index]['question_count'], 
         'milestone_message_index' : milestone_message_index
-        
     }
     
     if len(question) == 0: 
@@ -78,8 +77,6 @@ def FetchQuestions(request, page_number = 1, encoded_pid = 'IkAXfN6qGtab6aeQF2Iq
         print(milestone_message_index) 
         context['milestone_message_index'] += 1 
         return render(request, 'Survey/milestone_message.html', context)
-    
-        
     
     elif len(question) == 0: 
         print("*" * 100)
@@ -102,34 +99,41 @@ def SaveAndFetchNextQuestions(request):
         print(participant_id)
         print(surveyid)
         
+        #Update Participant Survey Status to Inprogress. 
+        participantSurvveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(
+            participantid = participant_id, 
+            surveyid = surveyid, 
+            status = 2
+        )
+        response = surveyobj.ParticipantUpdateSurveyStatus(participantSurvveyStatusUpdateSchema)
+        if response['StatusCode'] == 1:
 
-        question_responses = []
+            question_responses = []
+            # Loop through POST data to capture question responses
+            for key, value in request.POST.items():
+                if key.startswith('rdioAnswer_'):
+                    question_id = int(key.split('_')[1])
+                    answer_id = int(value)
+                    presequence_id = int(request.POST.get(f'hiddenpresequenceid_{question_id}', '0') or '0')
 
-        # Loop through POST data to capture question responses
-        for key, value in request.POST.items():
-            if key.startswith('rdioAnswer_'):
-                question_id = int(key.split('_')[1])
-                answer_id = int(value)
-                presequence_id = int(request.POST.get(f'hiddenpresequenceid_{question_id}', '0') or '0')
+                    question_responses.append({
+                        "questionid": question_id,
+                        "answerid": answer_id,
+                        "presequencesurveyrequestid": presequence_id
+                    })
 
-                question_responses.append({
-                    "questionid": question_id,
-                    "answerid": answer_id,
-                    "presequencesurveyrequestid": presequence_id
-                })
+            # Construct survey data object
+            survey_data = {
+                "surveyid": surveyid,
+                "participantid": participant_id,
+                "questionresponse": question_responses,
+                "teammemberid": 0  # Adjust as per your data structure
+            }
 
-        # Construct survey data object
-        survey_data = {
-            "surveyid": surveyid,
-            "participantid": participant_id,
-            "questionresponse": question_responses,
-            "teammemberid": 0  # Adjust as per your data structure
-        }
-
-        print("Survey Data:", survey_data)
-        saved_status = surveyobj.SaveSurveyAnswers(survey_data)
-        if saved_status['StatusCode'] == 1: 
-            return FetchQuestions(request, page_number=page_number, encoded_pid=enocded_pid)
+            print("Survey Data:", survey_data)
+            saved_status = surveyobj.SaveSurveyAnswers(survey_data)
+            if saved_status['StatusCode'] == 1: 
+                return FetchQuestions(request, page_number=page_number, encoded_pid=enocded_pid, survey_id=surveyid)
 
 
 def PreviewSurvey(request, participantid = 23 , surveyid = 1):
@@ -162,20 +166,21 @@ def SubmitSurvey(request):
     surveyid = request.POST.get('hiddenintsurveyid')
     enocded_pid = request.POST.get('hiddenstrpid')
     participantid = utilityobj.decrypt(enocded_pid)
-
+    print(participantid)
+    print(surveyid)
     saveParticipantSurvey = SaveParticipantSurvey(
             participantid = participantid, 
             surveyid = surveyid
         )
     save_survey_status = surveyobj.SubmitSurvey(saveParticipantSurvey)
     print(save_survey_status)
-    participantid = utilityobj.decrypt(enocded_pid)
+    
 
-
+     
     #Update Participant Survey Status to Inprogress. 
     participantSurvveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(
-        participant_id = participantid, 
-        survey_id = surveyid, 
+        participantid = participantid, 
+        surveyid = surveyid, 
         status = 3
     )
     surveyobj.ParticipantUpdateSurveyStatus(participantSurvveyStatusUpdateSchema)
