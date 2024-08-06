@@ -1,7 +1,7 @@
 from app_360.ServiceHelper.ApiBase import ApiBase
 from app_360.utility.utility import UtilityClass
 from app_360.Schema.Team.survey import TeamFetchQuestionSchema, TeamMemberSurveyIds
-from app_360.Schema.Team.survey import TeamPreviewSurvey, TeamSubmitSurvey
+from app_360.Schema.Team.survey import TeamPreviewSurvey, TeamSubmitSurvey, TeamFetchAllSurveySchema,TeamSurveyUpdateStatusSchema
 
 class Survey: 
     def __init__(self): 
@@ -35,5 +35,17 @@ class Survey:
     def TeamSubmitSurvey(self, teamSubmitSurvey: TeamSubmitSurvey):
         data = self.ApiBaseObj.ToJSON(teamSubmitSurvey)
         response = self.ApiBaseObj.PostRequest(data=data, url='/surveyteammember/submitTeamSurvey', token='')
+        print(response)  # Add this line to see the response structure
+        return response 
+    
+    def FetchTeamSurveyStatus(self, teamFetchAllSurveySchema : TeamFetchAllSurveySchema): 
+        data = self.ApiBaseObj.ToJSON(teamFetchAllSurveySchema)
+        response = self.ApiBaseObj.PostRequest(data = data, url = '/surveyteammember/teamfetchallsurvey', token = '')
+        print(response)  # Add this line to see the response structure
+        return response 
+    
+    def TeamSurveyUpdateStatus(self, teamSurveyUpdateStatusSchema : TeamSurveyUpdateStatusSchema): 
+        data = self.ApiBaseObj.ToJSON(teamSurveyUpdateStatusSchema)
+        response = self.ApiBaseObj.PostRequest(data = data, url = '/surveyteammember/updateteamsurveystatus', token = '')
         print(response)  # Add this line to see the response structure
         return response 

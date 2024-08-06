@@ -22,3 +22,16 @@ class TeamSubmitSurvey(BaseModel):
     participantid : int 
     surveyid : int 
     teammmeberid : int     
+
+
+class TeamFetchAllSurveySchema(BaseModel):
+    participantid : int
+    teammemberid : int     
+
+
+class TeamSurveyUpdateStatusSchema(BaseModel):
+    participantid : int 
+    teammemberid : int 
+    surveyid : int 
+    status : int 
+    

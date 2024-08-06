@@ -3,12 +3,12 @@ from app_360.ServiceHelper.Teamsurvey import Survey
 from django.shortcuts import render, redirect
 from app_360.utility.utility import UtilityClass
 from app_360.Schema.Team.survey import TeamFetchQuestionSchema
-from app_360.Schema.Team.survey import TeamPreviewSurvey, TeamSubmitSurvey
+from app_360.Schema.Team.survey import TeamPreviewSurvey, TeamSubmitSurvey, TeamFetchAllSurveySchema, TeamSurveyUpdateStatusSchema
 
 teamsurevyobj = Survey()
 utilityobj = UtilityClass()
 
-def FetchQuestions(request, participantid = 0 , teamemberid = 0 , surveyid = 0 , page_number = 1):
+def TeamFetchQuestions(request, participantid = 0 , teamemberid = 0 , surveyid = 0 , page_number = 1):
     print(page_number, "Page Number")
     print('FetchQuestionS')
     if participantid is None or participantid == 0:
@@ -87,36 +87,42 @@ def SaveAndFetchNextQuestions(request):
         surveyid = request.POST.get('hiddenintsurveyid', '1')
         teammemberid = request.POST.get('hiddentintteammemberid')
         
-        
-        
-        question_responses = []
+        teamSurveyUpdateStatusSchema = TeamSurveyUpdateStatusSchema(
+            participantid = participantid, 
+            teammemberid = teammemberid,
+            surveyid = surveyid, 
+            status = 2
+        )
+        response = teamsurevyobj.TeamSurveyUpdateStatus(teamSurveyUpdateStatusSchema)
+        if response['StatusCode'] == 1:
+            question_responses = []
 
-        # Loop through POST data to capture question responses
-        for key, value in request.POST.items():
-            if key.startswith('rdioAnswer_'):
-                question_id = int(key.split('_')[1])
-                answer_id = int(value)
-                presequence_id = int(request.POST.get(f'hiddenpresequenceid_{question_id}', ) or '0') + 1
-                question_responses.append({
-                    "questionid": question_id,
-                    "answerid": answer_id,
-                    "presequencesurveyrequestid":  presequence_id
-                })
+            # Loop through POST data to capture question responses
+            for key, value in request.POST.items():
+                if key.startswith('rdioAnswer_'):
+                    question_id = int(key.split('_')[1])
+                    answer_id = int(value)
+                    presequence_id = int(request.POST.get(f'hiddenpresequenceid_{question_id}', ) or '0') + 1
+                    question_responses.append({
+                        "questionid": question_id,
+                        "answerid": answer_id,
+                        "presequencesurveyrequestid":  presequence_id
+                    })
 
-        # Construct survey data object
-        survey_data = {
-            "surveyid": surveyid,
-            "participantid": participantid,
-            "questionresponse": question_responses,
-            "teammemberid": teammemberid
-        }
+            # Construct survey data object
+            survey_data = {
+                "surveyid": surveyid,
+                "participantid": participantid,
+                "questionresponse": question_responses,
+                "teammemberid": teammemberid
+            }
 
-        print("Survey Data:", survey_data)
-    
-        saved_status = teamsurevyobj.TeamSaveSurveyAnswers(survey_data)
+            print("Survey Data:", survey_data)
         
-        if saved_status['StatusCode'] == 1: 
-            return FetchQuestions(request,  participantid = participantid , teamemberid = teammemberid , surveyid = surveyid, page_number = page_number) 
+            saved_status = teamsurevyobj.TeamSaveSurveyAnswers(survey_data)
+            
+            if saved_status['StatusCode'] == 1: 
+                return TeamFetchQuestions(request,  participantid = participantid , teamemberid = teammemberid , surveyid = surveyid, page_number = page_number) 
 
 
 def PreviewSurvey(request, teamPreviewSurvey : TeamPreviewSurvey):
@@ -155,5 +161,13 @@ def SubmitSurvey(request):
     
     print(save_survey_status)
     if save_survey_status['StatusCode'] == 1:
-        return render(request, 'Team/AfterSurveyThankyou.html') 
+        teamSurveyUpdateStatusSchema = TeamSurveyUpdateStatusSchema(
+            participantid = participantid, 
+            teammemberid = teammemberid,
+            surveyid = surveyid, 
+            status = 3
+        )
+        response = teamsurevyobj.TeamSurveyUpdateStatus(teamSurveyUpdateStatusSchema)
+        if response['StatusCode'] == 1:
+            return render(request, 'Team/AfterSurveyThankyou.html') 
     return render(request, 'Team/AfterSurveyThankyou.html')
