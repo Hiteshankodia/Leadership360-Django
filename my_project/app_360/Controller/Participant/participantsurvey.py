@@ -19,8 +19,8 @@ def fetchparticipantid(request, pid_encoded = 1, surveyid = 1):
             pid_encoded = request.POST.get('strnameparticipantid', 'null')
     
     survey_id = request.POST.get('intnamesurveyid', surveyid)
-    company_id = 1
-    print(pid_encoded)
+    company_id = int(request.COOKIES.get('company_id'))
+    print('pid_encoded', pid_encoded)
     print(survey_id)
     response = participantobj.fetchparticipantid(pid_encoded=pid_encoded)
     print(response)   
@@ -28,7 +28,7 @@ def fetchparticipantid(request, pid_encoded = 1, surveyid = 1):
         context = {
 
             'pid_encoded': pid_encoded,
-            'companyid' : 1, 
+            'companyid' : int(request.COOKIES.get('company_id')), 
             'survey_id' : survey_id
         }
         return render(request, 'Homepage/homepage.html', context) 
@@ -36,14 +36,15 @@ def fetchparticipantid(request, pid_encoded = 1, surveyid = 1):
     else:
         context = {
 
-            'encoded_pid': pid_encoded,
-            'companyid' : 1, 
+            'pid_encoded': pid_encoded,
+            'companyid' : int(request.COOKIES.get('company_id')), 
             'survey_id' : survey_id
         }
         return render(request, 'Participant/createuser.html', context=context)
          
 
 def setpassword(request):
+    print('setpassword')
     pid_encoded = request.POST.get('hiddenintparticipantid', '')
     company_id = request.POST.get('hiddenintcompanyid')
     date_of_birth = request.POST.get('datenamedob', '')
@@ -68,7 +69,8 @@ def setpassword(request):
             'pid_encoded': pid_encoded,
             'companyid' : company_id,  #hardcoded, 
             'email' : email, 
-            'survey_id': survey_id
+            'survey_id': survey_id, 
+            'error_message' : ''
         }
     
     response = participantobj.CheckParticipantDetails(validateParticipantDetailsSchema)

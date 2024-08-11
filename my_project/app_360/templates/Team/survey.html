@@ -16,7 +16,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            font-size: 1.2rem;
+            font-size: 1.2rem;  
         }
         .table th, .table td {
             padding: 1rem;
@@ -36,7 +36,9 @@
 </head>
 <body>
     <header>
-        <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        </a>
     </header>
     <div class="container mt-5">
         <form id="surveyForm" method="post" action="{% url 'teamsaveandfetchnextquestions' %}">
@@ -90,5 +92,41 @@
             </div>
         </form>
     </div>
+     
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('surveyForm');
+            form.addEventListener('submit', function(event) {
+                const questions = form.querySelectorAll('input[name^="rdioAnswer_"]');
+                const questionIds = new Set();
+                let isValid = true;
+        
+                questions.forEach(radio => {
+                    if (!questionIds.has(radio.name)) {
+                        questionIds.add(radio.name);
+                    }
+                });
+        
+                const allQuestionIds = new Set();
+                questions.forEach(radio => {
+                    const questionId = radio.name.split('_')[1];
+                    allQuestionIds.add(questionId);
+                });
+        
+                allQuestionIds.forEach(id => {
+                    if (form.querySelector(`input[name="rdioAnswer_${id}"]:checked`) === null) {
+                        isValid = false;
+                    }
+                });
+        
+                if (!isValid) {
+                    alert('Please answer all questions before submitting.');
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+        });
+        </script>
+
+
 </body>
 </html>

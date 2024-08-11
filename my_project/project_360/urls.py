@@ -20,18 +20,15 @@ from app_360 import views
 from app_360.Controller import home
 from app_360.Controller import authcontroller
 from app_360.Controller.Participant import invite
-#from app_360.Controller.Participant import inviteController
-#from app_360.Controller.Participant import inviteController
 from app_360.Controller.survey import survey_, teamsurvey
 from app_360.Controller.Participant import Sample
 from app_360.Controller.Participant import participantsurvey
-#from app_360.Controller.survey.survey import displayquestions
 from app_360.Controller.Team import inviteTeam
+from app_360.utility.utility import UtilityClass
+from app_360.views import set_participant_id, get_participant_id
 urlpatterns = [
          
     path("admin/", admin.site.urls),
-    path('about', views.about, name = 'about'),
-    path('apihelper', views.apihelper, name = 'apihelper'), 
     path('auth', authcontroller.auth, name = 'auth'),  
     path('', home.index, name = 'index'), 
     path('thanksfrom360/', home.ThanksFrom360, name = 'thanksfrom360'), 
@@ -47,6 +44,7 @@ urlpatterns = [
     path('saveandfetchnextquestions/', survey_.SaveAndFetchNextQuestions, name = 'saveandfetchnextquestions'), 
     path('previewsurvey/', survey_.PreviewSurvey, name = 'previewsurvey'), 
     path('submitsurvey/', survey_.SubmitSurvey, name = 'submitsurvey'), 
+    path('beforesubmitinvite/', inviteTeam.Beforeinvite, name = 'beforesubmitinvite'),
     path('teaminvite/', inviteTeam.TeamFormDetails, name = 'teaminvite'), 
     path('teamsavedata/', inviteTeam.SaveData, name = 'teamsavedata'),   
     path('load_state_team', inviteTeam.load_states, name='load_state_team'), 
@@ -55,8 +53,11 @@ urlpatterns = [
     path('teamsaveandfetchnextquestions/', teamsurvey.SaveAndFetchNextQuestions , name = 'teamsaveandfetchnextquestions'),
     path('teampreviewsurvey/', teamsurvey.PreviewSurvey, name = 'teampreviewsurvey'),
     path('teamsubmitsurvey/', teamsurvey.SubmitSurvey, name = 'teamsubmitsurvey'), 
-    path('auth/teamtoken/', authcontroller.TeamMemberAssignSurvey, name = 'teammemberverify')
-  
+    path('auth/teamtoken/', authcontroller.TeamMemberAssignSurvey, name = 'teammemberverify'),
+    path('set-participant-id/<int:participantid>/', set_participant_id),
+    path('get-participant-id/', get_participant_id),
 
+  
+  
 ] 
 

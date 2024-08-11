@@ -59,7 +59,9 @@
 <body>
     
     <header>
-        <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        </a>
     </header>
      <br>
      <div class="container text-center"> <!-- Add 'text-center' class to center align content -->
@@ -77,6 +79,8 @@
                         <form action="{% url 'teaminvitesend' %}" method="POST" id="participantForm">
                             {% csrf_token %}
                             <input type="hidden" name="TeamInviteList" value="{{ TeamInviteList }}">
+                            <input type="hidden" id="strparticipantid" name="strnameparticipantid" value="{{ encoded_pid }}">
+                  
                             <table class="table table-bordered">
                                 <thead class="table-secondary">
                                     <tr>

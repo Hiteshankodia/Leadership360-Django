@@ -7,15 +7,21 @@ utilityobj = UtilityClass()
 authobj = AuthServiceHelper()
 
 def index(request):
+    print("indeX method!")
     if request.method == 'POST':
-        '''encoded_pid = request.POST.get('strnameparticipantid', '')
+        print("indeX method!")
+        encoded_pid = request.POST.get('strnameparticipantid', '')
         survey_id = request.POST.get('intnamesurveyid', '')
-
+        print("survey_id ", survey_id)   
+        
+        
         context = {
 
             'encoded_pid': encoded_pid,  
             'survey_id' : survey_id,    
         }  
+
+        
         print("Index Page!")
         print(encoded_pid)
         print(survey_id)
@@ -24,17 +30,16 @@ def index(request):
         print(url)
         print('If part!')
 
-'''
 
         return render(request, 'Homepage/homepage.html', context = context)
     
     else:
-        # Initialize company_id to avoid UnboundLocalError
+        
         company_id = None
 
-        # Check for the cookie
-        company_id_json = request.COOKIES.get('company_id')
         
+        company_id_json = request.COOKIES.get('company_id')
+        print('print("indeX method!")', company_id_json)
         if not company_id_json:
             # Cookie not present, fetch company ID
             url = request.build_absolute_uri()
@@ -46,7 +51,7 @@ def index(request):
             
             # Set the cookie in the response
             response.set_cookie('company_id', str(company_id))
-            
+             
             # Debugging information
             print('Cookie set:', response.cookies)
             print('Company ID:', company_id)
@@ -55,12 +60,17 @@ def index(request):
 
         # Ensure company_id has a value before using it
         try:
+            encoded_pid = request.POST.get('strnameparticipantid', '')
+            survey_id = request.POST.get('intnamesurveyid', '') 
+            
             context = {
                 'encoded_pid': encoded_pid,  
                 'survey_id': survey_id,    
                 'companyid': company_id
             }
+
         except:
+
             context = {
                 'companyid': company_id
             }

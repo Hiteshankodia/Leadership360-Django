@@ -42,7 +42,9 @@
 </head>
 <body>
     <header>
-        <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        </a>
     </header>
     <div class="container mt-5 content-wrapper">
         <div class="row justify-content-center">

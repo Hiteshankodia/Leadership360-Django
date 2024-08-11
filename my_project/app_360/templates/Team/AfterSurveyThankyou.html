@@ -45,7 +45,9 @@
 </head>
 <body>
     <header>
-        <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        </a> 
     </header>
     <div class="content-wrapper">
         <div class="content">

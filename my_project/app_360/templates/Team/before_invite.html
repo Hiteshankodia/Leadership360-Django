@@ -40,14 +40,16 @@
 </head>
 <body>
     <header>
-        <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        </a> 
     </header>
     <div class="content">
         <div class="message-box">
             <p class="fs-5 mb-4">
                 To ensure a comprehensive 360 Leadership Assessment, please provide the names of at least one direct reporting manager, two peers, and two subordinates. Their feedback, combined with your self-assessment, will offer valuable insights into your leadership style and help identify areas for improvement, enhancing your leadership journey.
             </p>
-            <a href="{% url 'teaminvite' %}" class="btn btn-custom">Next</a>
+            <a href="{% url 'teaminvite' %}?encoded_pid={{ encoded_pid }}" class="btn btn-custom">Next</a>
         </div>
     </div>
 

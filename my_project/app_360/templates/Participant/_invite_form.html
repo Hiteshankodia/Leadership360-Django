@@ -1,27 +1,27 @@
 <tr>
-    <td><input type="text" class="form-control" id="txtname_{{ index }}" name="txtnamename" placeholder="Name" required></td>
-    <td><input type="text" class="form-control" id="txtdesignation_{{ index }}" name="txtnamedesignation" placeholder="Designation" required></td>
+    <td><input type="text" class="form-control" id="txtname_{{ index }}" name="txtnamename" placeholder="Name" ></td>
+    <td><input type="text" class="form-control" id="txtdesignation_{{ index }}" name="txtnamedesignation" placeholder="Designation" ></td>
     <td>
-        <select id="intdepartment_{{ index }}" name="intnamedepartment" class="form-control" required>
+        <select id="intdepartment_{{ index }}" name="intnamedepartment" class="form-control" >
             <option value="" disabled selected>Select a Department</option>
             {% for department in departments %}
                 <option value="{{ department }}">{{ department }}</option>
             {% endfor %}
         </select>
     </td>
-    <td><input type="text" class="form-control" id="txtlocation_{{ index }}" name="txtnamelocation" placeholder="Location" required></td>
+    <td><input type="text" class="form-control" id="txtlocation_{{ index }}" name="txtnamelocation" placeholder="Location" ></td>
     <td>
-        <input type="email" class="form-control" id="txtEmail_{{ index }}" name="txtnameEmail" placeholder="Email" required>
+        <input type="email" class="form-control" id="txtEmail_{{ index }}" name="txtnameEmail" placeholder="Email" >
         <div class="invalid-feedback" id="emailError_{{ index }}">Invalid email format</div>
         <div class="invalid-feedback" id="emailDuplicateError_{{ index }}">Email already entered above</div>
     </td>
     <td>
-        <input type="date" class="form-control" id="dateDob_{{ index }}" name="datenamedob" placeholder="Date of Birth" required>
+        <input type="date" class="form-control" id="dateDob_{{ index }}" name="datenamedob" placeholder="Date of Birth" >
         <div class="invalid-feedback" id="dobError_{{ index }}">Age cannot be below 18 years</div>
     </td>
     <td>
         <input type="hidden" id="country_name_{{ index }}" name="country_name[]" value="">
-        <select id="intcountry_{{ index }}" name="intnamecountry" class="form-control" required>
+        <select id="intcountry_{{ index }}" name="intnamecountry" class="form-control" >
             <option value="" disabled selected>Select a Country</option>
             {% for country in countries %}
                 <option value="{{ country.id }}" data-name="{{ country.countryname }}">{{ country.countryname }}</option>
@@ -30,7 +30,7 @@
     </td>
     <td>
         <input type="hidden" id="state_name_{{ index }}" name="state_name[]" value="">
-        <select id="intstate_{{ index }}" name="intnamestate" class="form-control" required>
+        <select id="intstate_{{ index }}" name="intnamestate" class="form-control" >
             <option value="" disabled selected>Select a State</option>
             {% for state in states %}
                 <option value="{{ state.id }}" data-name="{{ state.statename }}">{{ state.statename }}</option>
@@ -40,133 +40,52 @@
 </tr>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 <script>
-$(document).ready(function() {
-    function validateEmail(email) {
-        var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return emailPattern.test(email);
-    }
+    $(document).ready(function() {
+        // Function to validate email format
+        function validateEmail(email) {
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailPattern.test(email);
+        }
     
-    $('select[name=intnamecountry]').change(function() {
-        var country_id = $(this).val();
-        var country_name = $(this).find('option:selected').data('name');
-        var index = $(this).attr('id').split('_')[1];
-
-        $('#country_name_' + index).val(country_name);
-
-        $.ajax({
-            url: "{% url 'load_states' %}",
-            type: 'POST',
-            data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'country_id': country_id
-            },
-            success: function(data) {
-                var options = '<option value="" disabled selected>Select a State</option>';
-                for (var i = 0; i < data.length; i++) {
-                    options += '<option value="' + data[i].id + '" data-name="' + data[i].statename + '">' + data[i].statename + '</option>';
-                }
-                $('#intstate_' + index).html(options);
-                $('#intstate_' + index).change();
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
-    });
-
-    $('select[name=intnamestate]').change(function() {
-        var state_name = $(this).find('option:selected').data('name');
-        var index = $(this).attr('id').split('_')[1];
-        $('#state_name_' + index).val(state_name);
-    });
-
-    $('input[name=datenamedob]').change(function() {
-        var dob = new Date($(this).val());
-        var today = new Date();
-        var age = today.getFullYear() - dob.getFullYear();
-        var m = today.getMonth() - dob.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-            age--;
-        }
-
-        var index = $(this).attr('id').split('_')[1];
-        if (age < 18) {
-            $(this).addClass('is-invalid');
-            $('#dobError_' + index).show();
-        } else {
-            $(this).removeClass('is-invalid');
-            $('#dobError_' + index).hide();
-        }
-    });
-
-    $('input[name=txtnameEmail]').change(function() {
-        var currentEmail = $(this).val();
-        var currentIndex = $(this).attr('id').split('_')[1];
-        var emailExists = false;
-        var isValidEmail = validateEmail(currentEmail);
-
-        if (!isValidEmail) {
-            $(this).addClass('is-invalid');
-            $('#emailError_' + currentIndex).show();
-            $('#emailDuplicateError_' + currentIndex).hide();
-        } else {
-            $(this).removeClass('is-invalid');
-            $('#emailError_' + currentIndex).hide();
-
-            $('input[name=txtnameEmail]').each(function() {
-                var email = $(this).val();
-                var index = $(this).attr('id').split('_')[1];
-                if (index !== currentIndex && email === currentEmail) {
-                    emailExists = true;
-                    return false;
+        // Update country name and load states based on selected country
+        $('select[name=intnamecountry]').change(function() {
+            var country_id = $(this).val();
+            var country_name = $(this).find('option:selected').data('name');
+            var index = $(this).attr('id').split('_')[1];
+    
+            $('#country_name_' + index).val(country_name);
+    
+            $.ajax({
+                url: "{% url 'load_states' %}",
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'country_id': country_id
+                },
+                success: function(data) {
+                    var options = '<option value="" disabled selected>Select a State</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].id + '" data-name="' + data[i].statename + '">' + data[i].statename + '</option>';
+                    }
+                    $('#intstate_' + index).html(options);
+                    $('#intstate_' + index).change();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
                 }
             });
-
-            if (emailExists) {
-                $(this).addClass('is-invalid');
-                $('#emailDuplicateError_' + currentIndex).show();
-            } else {
-                $(this).removeClass('is-invalid');
-                $('#emailDuplicateError_' + currentIndex).hide();
-            }
-        }
-    });
-
-    $('form').submit(function(event) {
-        var isValid = true;
-        var emails = [];
-
-        $('input[required], select[required]').each(function() {
-            if ($(this).val() === '') {
-                isValid = false;
-                $(this).addClass('is-invalid');
-            } else {
-                $(this).removeClass('is-invalid');
-            }
-        }); 
-
-        $('input[type=email]').each(function() {
-            var email = $(this).val();
-            var index = $(this).attr('id').split('_')[1];
-            if (!validateEmail(email) || emails.includes(email)) {
-                isValid = false;
-                $(this).addClass('is-invalid');
-                if (emails.includes(email)) {
-                    $('#emailDuplicateError_' + index).show();
-                } else {
-                    $('#emailError_' + index).show();
-                }
-            } else {
-                $(this).removeClass('is-invalid');
-                $('#emailError_' + index).hide();
-                $('#emailDuplicateError_' + index).hide();
-                emails.push(email);
-            }
         });
-
-        $('input[name=datenamedob]').each(function() {
+    
+        // Update state name based on selected state
+        $('select[name=intnamestate]').change(function() {
+            var state_name = $(this).find('option:selected').data('name');
+            var index = $(this).attr('id').split('_')[1];
+            $('#state_name_' + index).val(state_name);
+        });
+    
+        // Validate date of birth to ensure age is 18 or older
+        $('input[name=datenamedob]').change(function() {
             var dob = new Date($(this).val());
             var today = new Date();
             var age = today.getFullYear() - dob.getFullYear();
@@ -174,32 +93,92 @@ $(document).ready(function() {
             if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
                 age--;
             }
+    
+            var index = $(this).attr('id').split('_')[1];
             if (age < 18) {
-                isValid = false;
                 $(this).addClass('is-invalid');
-                var index = $(this).attr('id').split('_')[1];
                 $('#dobError_' + index).show();
             } else {
                 $(this).removeClass('is-invalid');
-                var index = $(this).attr('id').split('_')[1];
                 $('#dobError_' + index).hide();
             }
         });
-
-        if (!isValid) {
-            event.preventDefault();
-            alert('Please fill out all required fields correctly.');
-        }
+    
+        // Validate email fields to ensure proper format and uniqueness
+        $('input[name=txtnameEmail]').change(function() {
+            var currentEmail = $(this).val();
+            var currentIndex = $(this).attr('id').split('_')[1];
+            var emailExists = false;
+            var isValidEmail = validateEmail(currentEmail);
+    
+            if (!isValidEmail) {
+                $(this).addClass('is-invalid');
+                $('#emailError_' + currentIndex).show();
+                $('#emailDuplicateError_' + currentIndex).hide();
+            } else {
+                $(this).removeClass('is-invalid');
+                $('#emailError_' + currentIndex).hide();
+    
+                $('input[name=txtnameEmail]').each(function() {
+                    var email = $(this).val();
+                    var index = $(this).attr('id').split('_')[1];
+                    if (index !== currentIndex && email === currentEmail) {
+                        emailExists = true;
+                        return false;
+                    }
+                });
+    
+                if (emailExists) {
+                    $(this).addClass('is-invalid');
+                    $('#emailDuplicateError_' + currentIndex).show();
+                } else {
+                    $(this).removeClass('is-invalid');
+                    $('#emailDuplicateError_' + currentIndex).hide();
+                }
+            }
+        });
+    
+        // Form submission validation
+        $('form').submit(function(event) {
+            var isValid = true;
+            var emails = [];
+            var rows = $('.table tbody tr');
+    
+            rows.each(function() {
+                var inputs = $(this).find('input, select');
+                var isRowFilled = inputs.toArray().every(function(input) {
+                    return $(input).val().trim() !== '' || $(input).attr('type') === 'hidden';
+                });
+                var isRowEmpty = inputs.toArray().every(function(input) {
+                    return $(input).val().trim() === '';
+                });
+    
+                if (!isRowEmpty && !isRowFilled) {
+                    isValid = false;
+                    $(this).addClass('invalid-row');
+                } else {
+                    $(this).removeClass('invalid-row');
+                }
+            });
+    
+            if (!isValid) {
+                event.preventDefault();
+                alert('Please ensure that all rows are either completely filled or left empty. Partially filled rows are not allowed.');
+            }
+        });
     });
-});
-</script>
-
-<style>
-.is-invalid {
-    border-color: #dc3545;
-}
-.invalid-feedback {
-    display: none;
-    color: #dc3545;
-}
-</style>
+    </script>
+    
+    <style>
+    .is-invalid {
+        border-color: #dc3545;
+    }
+    .invalid-feedback {
+        display: none;
+        color: #dc3545;
+    }
+    .invalid-row {
+        border: 2px solid #dc3545;
+    }
+    </style>
+    

@@ -5,18 +5,35 @@ from django.conf import settings
 from app_360.Schema.Team.invite import TeamMemberInvitedDetailSchema, TeamMemberInviteSchema
 import requests
 from app_360.ServiceHelper.TeamInvite import TeamInviteClass
-
+from app_360.utility.utility import UtilityClass
 
 fetchmasterobj = FetchMasterData()
 teamInviteobj = TeamInviteClass()
+utilityobj = UtilityClass()
+
+
+def Beforeinvite(request):
+    encoded_pid = request.GET.get('encoded_pid', None)
+    print()  
+    context = {
+            'encoded_pid' : encoded_pid     
+    }
+        
+    return render(request, "Team/before_invite.html", context=context)
 
 
 def TeamFormDetails(request):
+    
+    encoded_pid = request.GET.get('encoded_pid', None)
+
+    print('participantid in teamform details', encoded_pid)
+
     countries = fetchmasterobj.FetchCountry()
     context = {
         'countries': countries,
-        'itereration' : range(1,7), 
-        'teamtype':  (eval(settings.TEAM_TYPE))
+        'itereration' : range(1,9), 
+        'teamtype':  (eval(settings.TEAM_TYPE)), 
+        'encoded_pid' : encoded_pid
     }
     return render(request, 'Team/team_invite.html', context)
 
@@ -29,6 +46,11 @@ def load_states(request):
 
 def SaveData(request):
     if request.method == 'POST':
+        encoded_pid = request.POST.get('strnameparticipantid', None)
+        
+        # Print encoded_pid for debugging purposes
+        print(encoded_pid, "saveData")
+
         names = request.POST.getlist('txtnamename')
         emails = request.POST.getlist('txtnameEmail')
         contacts = request.POST.getlist('txtnamecontact')
@@ -42,7 +64,8 @@ def SaveData(request):
         for i in teamtypes:
             teamtype_name_list.append(eval(settings.TEAM_TYPE)[int(i)])
         
- 
+        names = [name for name in names if name.strip()]
+  
         TeamInviteList = []
         for i in range(len(names)): 
             teamdata = { 
@@ -61,7 +84,8 @@ def SaveData(request):
         print('participants', teamdata) 
         context = {
             'TeamInviteList': TeamInviteList,
-            
+            'encoded_pid' : encoded_pid
+             
         }
         
         return render(request, 'Team/invite_preview.html', context)
@@ -69,6 +93,7 @@ def SaveData(request):
 
 def TeamInvite(request):
     if request.method == 'POST':
+        encoded_pid = request.POST.get('strnameparticipantid', None)
         names = request.POST.getlist('names[]')
         emails = request.POST.getlist('emails[]')
         contacts = request.POST.getlist('contacts[]')
@@ -80,6 +105,7 @@ def TeamInvite(request):
         state_ids = request.POST.getlist('state_ids[]')
         teamtype_ids = request.POST.getlist('teamtype_id[]')
         
+        names = [name for name in names if name.strip()]
 
         teammembers_list = []
         for i in range(len(names)):
@@ -92,17 +118,21 @@ def TeamInvite(request):
                 state=int(state_ids[i]),
                 country=int(country_ids[i])
             )
-            teammembers_list.append(teammember_schema)
+            teammembers_list.append(teammember_schema) 
 
+        
+        print("participantid in TeamInvite ", encoded_pid)
+        participantid = utilityobj.decrypt(encoded_pid)
         teamMemberInviteSchema = TeamMemberInviteSchema(
-            participantid=23,  # Set participant ID as needed
+            participantid=participantid,  # Set participant ID as needed
             teammembers=teammembers_list
         )
          
-        print("Team Inivte Method!")
+        print("Team Inivte Method!") 
         response = teamInviteobj.TeamInvite(teamMemberInviteSchema)
-        if response.status_code == 200:
-            return render(request, 'Team/before_survey.html')
+        print(response)
+        if response.get('StatusCode') == 1: 
+            return render(request, 'Team/before_survey_message.html') 
 
         
  

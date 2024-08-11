@@ -103,31 +103,31 @@ def TeamMemberAssignSurvey(request):
         surveyid = id_list[2]
     )
     
-    #assign_survey = surveyobj.TeamMemberAssignSurvey(teamMemberSurveyIds=teamMemberSurveyIds)
-    #print(assign_survey)
-    #if assign_survey['StatusCode'] == 1:
+    assign_survey = surveyobj.TeamMemberAssignSurvey(teamMemberSurveyIds=teamMemberSurveyIds)
+    print(assign_survey)
+    if assign_survey['StatusCode'] == 1:
 
-    teamFetchAllSurveySchema = TeamFetchAllSurveySchema( 
-        participantid = id_list[0], 
-        teammemberid = id_list[1]
-    )
+        teamFetchAllSurveySchema = TeamFetchAllSurveySchema( 
+            participantid = id_list[0], 
+            teammemberid = id_list[1]
+        )
+        print()
+        status = surveyobj.FetchTeamSurveyStatus(teamFetchAllSurveySchema)
+        print("FetchTeamSurveyStatus", status)
+        
+        context = {
+            'participantid' : id_list[0],
+            'teammemberid' : id_list[1],
+            'surveyid': id_list[2], 
+            'companyid': 1  
+        }
 
-    status = surveyobj.FetchTeamSurveyStatus(teamFetchAllSurveySchema)
-    print("FetchTeamSurveyStatus", status)
-    
-    context = {
-        'participantid' : id_list[0],
-        'teammemberid' : id_list[1],
-        'surveyid': id_list[2], 
-        'companyid': 1  
-    }
-
-    if status["status"] == "Assigned":
-        return render(request, 'Team/before_survey_message.html', context=context) 
-    
-    elif status["status"]  == "In Progress":
-        return TeamFetchQuestions(request = request, participantid = id_list[0], teamemberid = id_list[1], surveyid = id_list[2], page_number = 1)
-    
-    elif status["status"] == "Completed":
-        return render(request, 'Survey/Thankyou.html', context = context)
+        if status["status"] == "Assigned":
+            return render(request, 'Team/before_survey_message.html', context=context) 
+        
+        elif status["status"]  == "In Progress":
+            return TeamFetchQuestions(request = request, participantid = id_list[0], teamemberid = id_list[1], surveyid = id_list[2], page_number = 1)
+        
+        elif status["status"] == "Completed":
+            return render(request, 'Survey/Thankyou.html', context = context)
 

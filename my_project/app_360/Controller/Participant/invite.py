@@ -34,7 +34,7 @@ def save_data(request):
     if request.method == 'POST':
         names = request.POST.getlist('txtnamename')
         emails = request.POST.getlist('txtnameEmail')
-        contact = request.POST.getlist('txtnamecontact')
+        
 
         designations = request.POST.getlist('txtnamedesignation')
         departments = request.POST.getlist('intnamedepartment')
@@ -46,7 +46,14 @@ def save_data(request):
         country_names = request.POST.getlist('country_name[]')  # Get country names
         state_names = request.POST.getlist('state_name[]')  # Get state names
 
+
+        names = [name for name in names if name.strip()]
         
+
+
+
+
+        print(names)
         participants = []
         for i in range(len(names)):
             participant = {
@@ -106,7 +113,7 @@ def ParticipantInvite(request):
         data = []
         for participant in participants:
             data.append({
-                "company_id": 1,
+                "company_id": int(request.COOKIES.get('company_id')),
                 "name": participant["name"],
                 "email": participant["email"],
                 "phone": '',

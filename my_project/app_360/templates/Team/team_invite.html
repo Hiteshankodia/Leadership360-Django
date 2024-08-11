@@ -1,12 +1,11 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>page20</title>
+    <title>Team Invite</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -42,24 +41,36 @@
             text-align: center;
             margin: 20px 0;
         }
-        .error {
-            color: red;
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .invalid-feedback {
             display: none;
+            color: #dc3545;
+        }
+        .is-invalid ~ .invalid-feedback {
+            display: block;
         }
     </style>
 </head>
 <body>
     <header>
-        <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
+        </a>
     </header>
     <div class="content-wrapper">
         <div class="container">
-            <h4 class="instruction-text">For better results and assessment 8 references will be ideal however participants are free to give 5 atleast of which 1 should be Reporting manager, 2 peers and 3 subordinates</h4>
+            <h4 class="instruction-text">
+                For better results and assessment, 8 references will be ideal. However, participants are free to provide at least 5, including 1 Reporting Manager, 2 Peers, and 3 Subordinates.
+            </h4>
         </div>
         <div class="container mt-4 form-container">
             <form id="TeamInvite" method="POST" action="{% url 'teamsavedata' %}">
                 {% csrf_token %}
                 <input type="hidden" name="teamtypeobj" value="{{ teamtypeobj }}">
+                <input type="hidden" id="strparticipantid" name="strnameparticipantid" value="{{ encoded_pid }}">
+                            
                 <div class="row mb-3 bg-light py-2">
                     <div class="col"><strong>Name</strong></div>
                     <div class="col"><strong>Email</strong></div>
@@ -69,16 +80,12 @@
                     <div class="col"><strong>Country</strong></div>
                     <div class="col"><strong>State</strong></div>
                 </div>
-                
                 <div class="container">
-                    
                     {% for i in itereration %}
-                        
-                        {% include 'Team/_invite_form.html' with index=i %}
-
+                        <div id="invite_form_{{ i }}" class="row mb-3" data-index="{{ i }}">
+                            {% include 'Team/_invite_form.html' with index=i %}
+                        </div>
                     {% endfor %}
-                
-                
                 </div>
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-custom">Save and Next</button>
@@ -86,8 +93,103 @@
             </form>
         </div>
     </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function isRowComplete(index) {
+                var name = $('#txtname_' + index).val().trim();
+                var email = $('#txtEmail_' + index).val().trim();
+                var contact = $('#contact_' + index).val().trim();
+                var location = $('#location_' + index).val().trim();
+                var teamType = $('#intnameteamtype' + index).val();
+                var country = $('#intcountry_' + index).val();
+                var state = $('#intstate_' + index).val();
+                
+                return name && email && contact && location && teamType && country && state;
+            }
+        
+            function isRowEmpty(index) {
+                var name = $('#txtname_' + index).val().trim();
+                var email = $('#txtEmail_' + index).val().trim();
+                var contact = $('#contact_' + index).val().trim();
+                var location = $('#location_' + index).val().trim();
+                var teamType = $('#intnameteamtype' + index).val();
+                var country = $('#intcountry_' + index).val();
+                var state = $('#intstate_' + index).val();
+                
+                return !name && !email && !contact && !location && !teamType && !country && !state;
+            }
+        
+            function validateForm() {
+                var isValid = true;
+        
+                // Clear previous validation errors
+                $('.is-invalid').removeClass('is-invalid');
+        
+                // Validate each row
+                $('div[data-index]').each(function() {
+                    var index = $(this).data('index');
+                    var row = $(this);
+        
+                    if (!isRowEmpty(index) && !isRowComplete(index)) {
+                        isValid = false;
+                        row.find('input, select').addClass('is-invalid');
+                        alert('Row ' + (index + 1) + ' is partially filled. Please complete or clear it.');
+                        return false; // Stop processing further rows
+                    }
+                });
+        
+                return isValid;
+            }
+        
+            $('form').on('submit', function(event) {
+                if (!validateForm()) {
+                    event.preventDefault(); // Prevent form submission if validation fails
+                }
+            });
+        
+            $('input, select').on('input change', function() {
+                $(this).removeClass('is-invalid');
+            });
+        
+            // Existing AJAX functionality
+            $('select[name=intnamecountry]').change(function() {
+                var country_id = $(this).val();
+                var country_name = $(this).find('option:selected').data('name');
+                var index = $(this).attr('id').split('_')[1];
+        
+                $('#country_name_' + index).val(country_name);
+        
+                $.ajax({
+                    url: '{% url "load_states" %}',
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'country_id': country_id
+                    },
+                    success: function(data) {
+                        var options = '<option value="" disabled selected>Select a State</option>';
+                        data.forEach(function(state) {
+                            options += '<option value="' + state.id + '" data-name="' + state.statename + '">' + state.statename + '</option>';
+                        });
+                        $('#intstate_' + index).html(options);
+                        $('#intstate_' + index).change();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        
+            $('select[name=intnamestate]').change(function() {
+                var state_name = $(this).find('option:selected').data('name');
+                var index = $(this).attr('id').split('_')[1];
+                $('#state_name_' + index).val(state_name);
+            });
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    </body>
 </html>
-

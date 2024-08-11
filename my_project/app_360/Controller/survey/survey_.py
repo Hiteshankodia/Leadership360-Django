@@ -34,7 +34,6 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
     if encoded_pid:
         participant_id = utilityobj.decrypt(encoded_pid) 
     
-         
     print(f"Participant ID: {participant_id}")
     print(f"Survey ID: {survey_id}")
     print(f"Page Number: {page_number}")
