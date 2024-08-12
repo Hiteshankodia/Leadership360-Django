@@ -1,63 +1,53 @@
-{% load static %}
-<!-- Load the URL template tag library -->
+{% extends 'Base/messagebase.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>page31</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .header-image {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .content-wrapper {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .content {
-            text-align: center;
-            max-width: 80%;
-            margin-bottom: 20px;
-        }
-        .btn-custom {
-            background-color: #000033; /* Button background color */
-            color: #ffffff; /* Button text color */
-            border: none; /* Remove border */
-        }
-        .btn-custom:hover {
-            background-color: #333366; /* Button hover color */
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <a href="{% url 'index' %}">
-            <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
-        </a> 
-    </header>
-    <div class="content-wrapper">
-        <div class="content">
-            <h2 style="font-size: 1.5rem; margin-bottom: 20px;">Congratulations on completing the 360 Leadership Assessment. Your feedback is essential for fostering leadership growth and development.</h2>
-            <h2 style="font-size: 1.5rem; margin-bottom: 20px;">Thank you for your time and thoughtful response.</h2>
-            <!-- Button directly below the text content -->
-            <a href="{% url 'index' %}" class="btn btn-custom btn-lg">Back to HomePage</a>
+{% block title %}Project360{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="col-md-30 content"> <!-- Content Container -->
+    <div class="content-inner text-center"> <!-- Inner Content Wrapper for vertical alignment -->
+        <h2 style="font-size: 1.5rem; margin-bottom: 20px;">Congratulations on completing the 360 Leadership Assessment. Your feedback is essential for fostering leadership growth and development.</h2>
+        <h2 style="font-size: 1.5rem; margin-bottom: 20px;">Thank you for your time and thoughtful response.</h2>
+        
+
+        <div class="btn-center mt-4">
+            <button type="button" class="btn btn-custom btn-lg continue-btn" onclick="redirectToHomePage()">Back To HomePage</button>
         </div>
     </div>
+</div>
+</div>
+<script>
+    function redirectToHomePage() {
+        window.location.href = "{% url 'index' %}";
+    }
+</script>
+{% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% block extra_styles %}
+<style>
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Align items towards the top */
+        height: 100vh; /* Full height of the viewport */
+        padding-top: 50px; /* Adjust this value to shift the content further up or down */
+    }
+
+    .content-inner {
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items horizontally */
+        gap: 20px; /* Space between items */
+    }
+
+    .continue-btn {
+        background-color: #2a2a3e; /* Button background color */
+        border: none; /* Removes the default border */
+        color: #fff; /* Text color for better contrast */
+    }
+
+    .continue-btn:hover {
+        background-color: #1a1a2e; /* Slightly darker shade on hover */
+    }
+</style>
+{% endblock %}

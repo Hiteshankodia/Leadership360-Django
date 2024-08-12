@@ -129,5 +129,5 @@ def TeamMemberAssignSurvey(request):
             return TeamFetchQuestions(request = request, participantid = id_list[0], teamemberid = id_list[1], surveyid = id_list[2], page_number = 1)
         
         elif status["status"] == "Completed":
-            return render(request, 'Survey/Thankyou.html', context = context)
+            return render(request, 'Team/AfterSurveyThankyou.html', context = context)
 

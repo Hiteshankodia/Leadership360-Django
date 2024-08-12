@@ -1,87 +1,44 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .header-image {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            font-size: 1.2rem;  
-        }
-        .table th, .table td {
-            padding: 1rem;
-            vertical-align: middle;
-        }
-        .form-check-input {
-            width: 1.5em;
-            height: 1.5em;
-            margin-top: 0.25em;
-            border: 2px solid #000;
-        }
-        .btn-lg {
-            font-size: 1.25rem;
-            padding: 0.75rem 1.5rem;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <a href="{% url 'index' %}">
-            <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
-        </a>
-    </header>
+{% extends 'Base/surveybase.html' %}
+
+{% block title %}Project360{% endblock %}
+
+{% block content %}
     <div class="container mt-5">
         <form id="surveyForm" method="post" action="{% url 'teamsaveandfetchnextquestions' %}">
             {% csrf_token %}
             <input type="hidden" name="hiddenpage_number" value="{{ page_number }}"> 
             <input type="hidden" name="hiddenstrpid" value="{{ participantid }}">
             <input type="hidden" name="hiddenintsurveyid" value="{{ surveyid }}">
-            <input type="hidden" name="milestone_message_index", value="{{ milestone_message_index }}">
-            <input type="hidden" name="hiddentintteammemberid", value="{{ teammemberid }}">
-           
+            <input type="hidden" name="milestone_message_index" value="{{ milestone_message_index }}">
+            <input type="hidden" name="hiddentintteammemberid" value="{{ teammemberid }}">
             
-            <table class="table table-borderless table-hover">
+            <table class="table table-borderless table-hover align-middle">
                 <thead> 
                     <tr>
-                        <th scope="col" class="w-25">Question</th>
-                        <th scope="col" class="text-center">Strongly<br>Agree</th>
-                        <th scope="col" class="text-center">Agree</th>
-                        <th scope="col" class="text-center">Neutral</th>
-                        <th scope="col" class="text-center">Disagree</th>
-                        <th scope="col" class="text-center">Strongly<br>Disagree</th>
+                        <th scope="col" class="w-50">Question</th>
+                        <th scope="col" class="text-center th-spacing">Strongly<br>Agree</th>
+                        <th scope="col" class="text-center th-spacing">Agree</th>
+                        <th scope="col" class="text-center th-spacing">Neutral</th>
+                        <th scope="col" class="text-center th-spacing">Disagree</th>
+                        <th scope="col" class="text-center th-spacing">Strongly<br>Disagree</th>
                     </tr>
                 </thead>
                 
-            <tbody>
-                {% for obj in question %}
-                <tr>
-                    <td>{{ obj.question }}</td>
-                    <input type="hidden" name="hiddenquestionid_{{ obj.questionid }}" value="{{ obj.questionid }}">
-                    <input type="hidden" name="hiddenpresequenceid_{{ obj.questionid }}" value="{{ obj.presequence_survey_id }}">
-                    
-                    {% for ansobj in obj.answer %}
-                    <td>
-                        <!-- Hidden field questionid -->
-                        {% if obj.answerid == ansobj.answerid %}
-                        <input type="radio" value="{{ ansobj.answerid }}" name="rdioAnswer_{{ obj.questionid }}" checked>
-                        {% else %}
-                        <input type="radio" value="{{ ansobj.answerid }}" name="rdioAnswer_{{ obj.questionid }}">
-                        {% endif %}
-                    </td>
+                <tbody>
+                    {% for obj in question %}
+                    <tr>
+                        <td>{{ obj.question }}</td>
+                        <input type="hidden" name="hiddenquestionid_{{ obj.questionid }}" value="{{ obj.questionid }}">
+                        <input type="hidden" name="hiddenpresequenceid_{{ obj.questionid }}" value="{{ obj.presequence_survey_id }}">
+                        
+                        {% for ansobj in obj.answer %}
+                        <td class="text-center">
+                            <input type="radio" value="{{ ansobj.answerid }}" name="rdioAnswer_{{ obj.questionid }}" {% if obj.answerid == ansobj.answerid %}checked{% endif %}>
+                        </td>
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
+                </tbody>
             </table>
             <div class="text-end mt-5">
                 {% if show_submit_button %}
@@ -92,41 +49,31 @@
             </div>
         </form>
     </div>
-     
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('surveyForm');
             form.addEventListener('submit', function(event) {
                 const questions = form.querySelectorAll('input[name^="rdioAnswer_"]');
-                const questionIds = new Set();
-                let isValid = true;
-        
-                questions.forEach(radio => {
-                    if (!questionIds.has(radio.name)) {
-                        questionIds.add(radio.name);
-                    }
-                });
-        
                 const allQuestionIds = new Set();
+
                 questions.forEach(radio => {
                     const questionId = radio.name.split('_')[1];
                     allQuestionIds.add(questionId);
                 });
-        
+
+                let isValid = true;
                 allQuestionIds.forEach(id => {
                     if (form.querySelector(`input[name="rdioAnswer_${id}"]:checked`) === null) {
                         isValid = false;
                     }
                 });
-        
+
                 if (!isValid) {
                     alert('Please answer all questions before submitting.');
                     event.preventDefault(); // Prevent form submission
                 }
             });
         });
-        </script>
-
-
-</body>
-</html>
+    </script>
+{% endblock %}

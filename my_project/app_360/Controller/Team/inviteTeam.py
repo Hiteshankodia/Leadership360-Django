@@ -132,7 +132,7 @@ def TeamInvite(request):
         response = teamInviteobj.TeamInvite(teamMemberInviteSchema)
         print(response)
         if response.get('StatusCode') == 1: 
-            return render(request, 'Team/before_survey_message.html') 
+            return render(request, 'Team/afterinvite.html') 
 
         
  

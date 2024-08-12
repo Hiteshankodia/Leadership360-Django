@@ -1,6 +1,6 @@
 {% extends 'Base/nav_team_invite.html' %}
-{% block title %}Project360{% endblock %}
 
+{% block title %}Project360{% endblock %}
 {% block content %}
 <div class="content-wrapper">
     <div class="content">
@@ -16,51 +16,58 @@
 
 <script>
     function redirectToHomePage() {
-        // Replace this URL with the URL you want to redirect to
         window.location.href = "{% url 'index' %}";
     }
 </script>
+{% endblock %}
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
+{% block extra_styles %}
 <style>
     .content-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh; /* Adjust the height as needed */
+        height: 100vh;
+        margin-top: -50px; /* Adjust this value to move content up or down */
     }
-
+    
     .content {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
-
+    
     .content-inner {
         display: flex;
         flex-direction: column;
         gap: 20px;
     }
-
+    
     .congrats-text,
     .thank-you-text {
         font-size: 1.5rem;
+        margin-top: 0; /* Remove top margin from text if added */
     }
-
-    .btn-center {
-        margin-top: 20px;
+    
+    .congrats-text {
+        margin-top: -20px; /* Adjust this value to decrease the space from the top */
     }
+    
+    .thank-you-text {
+        margin-top: 0; /* Add margin if needed */
+    }
+    
     .continue-btn {
         background-color: #2a2a3e; /* Button background color */
         border: none; /* Removes the default border */
         color: #fff; /* Text color for better contrast */
     }
-
+    
     .continue-btn:hover {
-        background-color: #2a2a3e; /* Slightly darker shade on hover */
+        background-color: #1a1a2e;
+        color: #fff; /* Slightly darker shade on hover */
     }
+    
 </style>
-
 {% endblock %}
