@@ -12,6 +12,7 @@ utilityobj = UtilityClass()
 
 
 def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
+    print("FetchQuestions")
     print("Fetch Questions!")
     milestone_message_index = int(request.POST.get('milestone_message_index', '0'))
 

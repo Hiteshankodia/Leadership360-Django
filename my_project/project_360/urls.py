@@ -56,6 +56,7 @@ urlpatterns = [
     path('auth/teamtoken/', authcontroller.TeamMemberAssignSurvey, name = 'teammemberverify'),
     path('set-participant-id/<int:participantid>/', set_participant_id),
     path('get-participant-id/', get_participant_id),
+    path('participant_survey_after_invite/', authcontroller.ParticipantSurveyAfterInvite, name = 'participant_survey_after_invite')
 
   
   

@@ -1,20 +1,23 @@
 from django.shortcuts import render, redirect
 from app_360.ServiceHelper.FetchDetailsMaster import FetchMasterData
 from django.conf import settings
-
+from app_360.Schema.Participant.survey import ParticipantSurvveyStatusUpdateSchema 
+from app_360.ServiceHelper.survey import Survey
 from app_360.Schema.Team.invite import TeamMemberInvitedDetailSchema, TeamMemberInviteSchema
 import requests
 from app_360.ServiceHelper.TeamInvite import TeamInviteClass
 from app_360.utility.utility import UtilityClass
 
+
+surveyobj = Survey()
 fetchmasterobj = FetchMasterData()
 teamInviteobj = TeamInviteClass()
 utilityobj = UtilityClass()
 
 
-def Beforeinvite(request):
-    encoded_pid = request.GET.get('encoded_pid', None)
-    print()  
+def Beforeinvite(request, encoded_pid):
+    encoded_pid = request.GET.get('encoded_pid', encoded_pid)
+    print(encoded_pid)  
     context = {
             'encoded_pid' : encoded_pid     
     }
@@ -132,7 +135,20 @@ def TeamInvite(request):
         response = teamInviteobj.TeamInvite(teamMemberInviteSchema)
         print(response)
         if response.get('StatusCode') == 1: 
-            return render(request, 'Team/afterinvite.html') 
+            
+            participantSurvveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(
+            participantid = participantid, 
+            surveyid = 1, 
+            status = 1
+            )
+
+            context = {
+            
+            'encoded_pid' : encoded_pid
+             
+            }
+            surveyobj.ParticipantUpdateSurveyStatus(participantSurvveyStatusUpdateSchema)
+            return render(request, 'Participant/survey_now_or_later.html', context=context) 
 
         
  

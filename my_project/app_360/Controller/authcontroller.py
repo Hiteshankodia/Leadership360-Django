@@ -8,7 +8,7 @@ from app_360.Controller.survey.teamsurvey import TeamFetchQuestions
 from app_360.Schema.Team.survey import TeamMemberSurveyIds, TeamFetchAllSurveySchema
 from app_360.ServiceHelper.Teamsurvey import Survey
 from app_360.ServiceHelper.ParticipantSurvey import ParticipantSurvey
-
+from app_360.Controller.Team.inviteTeam import Beforeinvite
 participantsurveyobj = ParticipantSurvey()
 surveyobj = Survey()
 utilityobj = UtilityClass()
@@ -30,11 +30,14 @@ def auth(request):
         print(password)
         print(encoded_pid)
         print(surveyid)
+
         userLoginRequestSchema = UserLoginRequestSchema(
             username=username,
             password=password,
             company_id=1
         )
+
+
         print("Auth Method!")
         print(encoded_pid)
         print(surveyid)
@@ -64,7 +67,11 @@ def auth(request):
                     participantid = utilityobj.decrypt(encoded_pid)
                     print("participantid For now", participantid)
                     status = participantsurveyobj.FetchSurveyStatus(participantid)
+
                     print("FetchSurveyStatus", status)
+                    
+                    if status["status"] == "TeamInvite":
+                        return Beforeinvite(request=request,encoded_pid=encoded_pid)
                     if status["status"] == "Assigned":
                         return render(request, 'Participant/before_survey_message.html', context=context)
                     elif status["status"]  == "In Progress":
@@ -131,3 +138,16 @@ def TeamMemberAssignSurvey(request):
         elif status["status"] == "Completed":
             return render(request, 'Team/AfterSurveyThankyou.html', context = context)
 
+
+
+def ParticipantSurveyAfterInvite(request):
+    encoded_pid = request.GET.get('encoded_pid', None) 
+    print('participantSurveyAfterInvite!')
+    print(encoded_pid)
+    context = {
+            'encoded_pid': encoded_pid,
+            'surveyid': 1, 
+            'companyid': 1  
+        }
+    
+    return render(request, 'Participant/before_survey_message.html', context=context) 

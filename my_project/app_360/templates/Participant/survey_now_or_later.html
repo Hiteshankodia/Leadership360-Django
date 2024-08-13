@@ -1,0 +1,53 @@
+{% extends 'Base/messagebase.html' %}
+
+{% block title %}Project360{% endblock %}
+
+{% block content %}
+
+    
+    <div class="container">
+        <div class="text-center">
+            <h4>Thank you for providing your co-workers' details. We will be sending the survey link to your team shortly to gather their valuable feedback.</h4>
+            <br><p>Completing the self-survey will take 15 minutes of your focused time. Would you like to continue with the survey or do it later?</p>
+        </div>
+        <br>
+        <div class="main-content">
+            <div class="row mt-4">
+                <div class="col-12 d-flex justify-content-between">
+                    <button type="button" class="btn btn-custom btn-lg continue-btn" onclick="redirectToHomePage()">Later</button>
+                    <button class="btn btn-custom-dark-blue" onclick="redirectToSurvey()">Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function redirectToHomePage() {
+            window.location.href = "{% url 'index' %}";
+        }
+        function redirectToSurvey() {
+            // Get the encoded_pid from a variable or some other source
+            var encodedPid = "{{ encoded_pid }}"; // Assuming you have passed encoded_pid into the template context
+
+            // Redirect to the survey page with the encoded_pid as a query parameter
+            window.location.href = "{% url 'participant_survey_after_invite' %}" + "?encoded_pid=" + encodeURIComponent(encodedPid);
+        }
+    </script>
+    <style>
+        
+        .btn-custom-dark-blue {
+            background-color: #2a2a3e;
+            border-color: #2a2a3e;
+            color: white;
+            font-size: 1.2rem;
+            padding: 12px 80px; /* Adjusted padding for top/bottom and left/right */
+            transition: all 0.3s ease;
+        }
+        .btn-custom-dark-blue:hover {
+            background-color: #2a2a3e;
+            border-color: #2a2a3e;
+            color: white;
+            transform: translateY(-px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+{% endblock %}
