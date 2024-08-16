@@ -9,6 +9,7 @@ from app_360.Schema.Team.survey import TeamMemberSurveyIds, TeamFetchAllSurveySc
 from app_360.ServiceHelper.Teamsurvey import Survey
 from app_360.ServiceHelper.ParticipantSurvey import ParticipantSurvey
 from app_360.Controller.Team.inviteTeam import Beforeinvite
+
 participantsurveyobj = ParticipantSurvey()
 surveyobj = Survey()
 utilityobj = UtilityClass()
@@ -69,7 +70,7 @@ def auth(request):
                     status = participantsurveyobj.FetchSurveyStatus(participantid)
 
                     print("FetchSurveyStatus", status)
-                    
+
                     if status["status"] == "TeamInvite":
                         return Beforeinvite(request=request,encoded_pid=encoded_pid)
                     if status["status"] == "Assigned":

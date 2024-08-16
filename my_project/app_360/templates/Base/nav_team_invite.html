@@ -78,7 +78,7 @@
                 Menu
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="{% url 'beforesubmitinvite' %}?encoded_pid={{ encoded_pid }}">Team Invite</a></li>
+                
                 <li>
                     <form action="{% url 'index' %}" method="post" class="d-inline">
                         {% csrf_token %}

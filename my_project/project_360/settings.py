@@ -32,7 +32,7 @@ from pathlib import Path
 from decouple import config
 
 # Read environment variables from .env file
-AUTH_TOKEN_ENDPOINT = config('AUTH_TOKEN_ENDPOINT')
+AUTH_TOKEN_ENDPOINT = config('AUTH_TOKEN_ENDPOINT') 
 TEAM_TYPE = config('TEAM_TYPE')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,9 +47,17 @@ SECRET_KEY = "django-insecure-0mca=*unr4fhbe2y&%rkku9%3#f66tt!ghxr3qas5^8tyh=dq_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [
+    'leadership360.azurewebsites.net',
+    'www.leadership360.azurewebsites.net',
+    '127.0.0.1'    # Include www if applicable
+]
 
 
+CORS_ALLOWED_ORIGINS = [
+    'https://leadership360.azurewebsites.net',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -73,6 +81,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+   
+
+
 ]    
 
 ROOT_URLCONF = "project_360.urls"

@@ -41,9 +41,12 @@ def index(request):
         company_id_json = request.COOKIES.get('company_id')
         print('print("indeX method!")', company_id_json)
         if not company_id_json:
+            print("above FetchCompnayid()")
             # Cookie not present, fetch company ID
             url = request.build_absolute_uri()
-            response_data = authobj.FetchCompanyid(url)  # Assuming this returns a dict or similar structure
+            print('myurl', url) 
+            response_data = authobj.FetchCompanyid(url) 
+             # Assuming this returns a dict or similar structure
             company_id = response_data.get('companyid')
             
             # Create an HttpResponse object
