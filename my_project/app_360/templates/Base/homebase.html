@@ -45,6 +45,33 @@
             color: red;
             margin-top: 10px;
         }
+        /* Loader styles */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* High z-index to ensure it's on top */
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -63,19 +90,31 @@
             </div>
         </div>
     </div>
+
+    <!-- Loader HTML -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function validateForm() {
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-
-            if (username.trim() === '' || password.trim() === '') {
-                alert('Please enter both username and password.');
-                return false; // Prevent form submission
-            }
-            // If all checks pass, allow the form to submit
-            return true;
+        function showLoader() {
+            document.getElementById('loading-overlay').style.display = 'flex';
         }
+
+        function hideLoader() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        // Show the loader when the form is submitted
+        document.addEventListener('DOMContentLoaded', function() {
+            var forms = document.querySelectorAll('form');
+            forms.forEach(function(form) {
+                form.addEventListener('submit', function() {
+                    showLoader();
+                });
+            });
+        });
     </script>
 </body>
 </html>

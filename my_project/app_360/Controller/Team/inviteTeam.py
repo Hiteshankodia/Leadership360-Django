@@ -27,16 +27,16 @@ def Beforeinvite(request, encoded_pid):
 
 def TeamFormDetails(request):
     
-    encoded_pid = request.GET.get('encoded_pid', None)
-
-    print('participantid in teamform details', encoded_pid)
+    pid_encoded = request.GET.get('encoded_pid', None)
+    pid_encoded = str(pid_encoded.replace(' ', '+'))
+    print('participantid in teamform details', pid_encoded)
 
     countries = fetchmasterobj.FetchCountry()
     context = {
         'countries': countries,
         'itereration' : range(1,9), 
         'teamtype':  (eval(settings.TEAM_TYPE)), 
-        'encoded_pid' : encoded_pid
+        'encoded_pid' : pid_encoded
     }
     return render(request, 'Team/team_invite.html', context)
 
@@ -49,10 +49,10 @@ def load_states(request):
 
 def SaveData(request):
     if request.method == 'POST':
-        encoded_pid = request.POST.get('strnameparticipantid', None)
-        
+        pid_encoded = request.POST.get('strnameparticipantid', None)
+        pid_encoded = str(pid_encoded.replace(' ', '+'))
         # Print encoded_pid for debugging purposes
-        print(encoded_pid, "saveData")
+        print(pid_encoded, "saveData")
 
         names = request.POST.getlist('txtnamename')
         emails = request.POST.getlist('txtnameEmail')
@@ -87,7 +87,7 @@ def SaveData(request):
         print('participants', teamdata) 
         context = {
             'TeamInviteList': TeamInviteList,
-            'encoded_pid' : encoded_pid
+            'encoded_pid' : pid_encoded
              
         }
         
@@ -97,6 +97,7 @@ def SaveData(request):
 def TeamInvite(request):
     if request.method == 'POST':
         encoded_pid = request.POST.get('strnameparticipantid', None)
+        encoded_pid = str(encoded_pid.replace(' ', '+'))
         names = request.POST.getlist('names[]')
         emails = request.POST.getlist('emails[]')
         contacts = request.POST.getlist('contacts[]')
@@ -125,7 +126,9 @@ def TeamInvite(request):
 
         
         print("participantid in TeamInvite ", encoded_pid)
+        encoded_pid = str(encoded_pid.replace(' ', '+'))
         participantid = utilityobj.decrypt(encoded_pid)
+
         teamMemberInviteSchema = TeamMemberInviteSchema(
             participantid=participantid,  # Set participant ID as needed
             teammembers=teammembers_list

@@ -19,13 +19,14 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
     if encoded_pid is None:
         encoded_pid = request.POST.get('strnameparticipantid', encoded_pid)
     print(encoded_pid)
+    
     if survey_id == 0:
         survey_id = request.POST.get('intnamesurveyid', survey_id)
     print(survey_id)
     
     if page_number == 1: 
         page_number = int(request.POST.get('hiddenpage_number', page_number)) 
-    
+    encoded_pid = str(encoded_pid.replace(' ', '+'))
     print(f"Encoded PID: {encoded_pid}")
     print(f"Survey ID: {survey_id}") 
     print(encoded_pid) 

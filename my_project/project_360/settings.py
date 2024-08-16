@@ -51,13 +51,21 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'leadership360.azurewebsites.net',
     'www.leadership360.azurewebsites.net',
-    '127.0.0.1'    # Include www if applicable
+    '127.0.0.1', 
+     'localhost'    # Include www if applicable
 ]
 
 
 CORS_ALLOWED_ORIGINS = [
     'https://leadership360.azurewebsites.net',
 ]
+
+# settings.py
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://leadership360.azurewebsites.net',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -81,8 +89,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-   
+    'django.middleware.csrf.CsrfViewMiddleware',   
 
 
 ]    
@@ -117,6 +124,7 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+CSRF_COOKIE_SECURE = True  # Set to True if using HTTPS
 
 
 # Password validation
@@ -166,3 +174,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',  # Add this line
     ],
 }
+
+
+CSRF_COOKIE_HTTPONLY = True
+
+CSRF_COOKIE_NAME = 'csrftoken'

@@ -11,6 +11,7 @@ def index(request):
     if request.method == 'POST':
         print("indeX method!")
         encoded_pid = request.POST.get('strnameparticipantid', '')
+    
         survey_id = request.POST.get('intnamesurveyid', '')
         print("survey_id ", survey_id)   
         

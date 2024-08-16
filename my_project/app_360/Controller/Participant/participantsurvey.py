@@ -20,7 +20,9 @@ def fetchparticipantid(request, pid_encoded = 1, surveyid = 1):
     
     survey_id = request.POST.get('intnamesurveyid', surveyid)
     company_id = int(request.COOKIES.get('company_id'))
+    pid_encoded = str(pid_encoded.replace(' ', '+'))
     print('pid_encoded', pid_encoded)
+
     print(survey_id)
     response = participantobj.fetchparticipantid(pid_encoded=pid_encoded)
     print(response)   

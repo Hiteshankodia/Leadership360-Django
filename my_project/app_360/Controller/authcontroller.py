@@ -25,7 +25,7 @@ def auth(request):
         encoded_pid = request.POST.get('strnameparticipantid', '')
         surveyid = request.POST.get('intnamesurveyid', '')
         companyid = request.POST.get('intnamecompanyid', '') 
-        
+        encoded_pid = str(encoded_pid.replace(' ', '+'))
         surveyid = 1
         print(username)
         print(password)
@@ -101,6 +101,8 @@ def auth(request):
 
 def TeamMemberAssignSurvey(request):
     encoded_id = str(request.GET.get('id', None)) 
+    encoded_id = str(encoded_id.replace(' ', '+'))
+    print(encoded_id)
     id = utilityobj.decrypt(encoded_id)
     id_list = id.split(':')
     print(id_list)
@@ -143,6 +145,7 @@ def TeamMemberAssignSurvey(request):
 
 def ParticipantSurveyAfterInvite(request):
     encoded_pid = request.GET.get('encoded_pid', None) 
+    #encoded_pid = str(encoded_pid.replace(' ', '+'))
     print('participantSurveyAfterInvite!')
     print(encoded_pid)
     context = {
