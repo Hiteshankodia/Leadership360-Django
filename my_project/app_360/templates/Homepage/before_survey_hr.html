@@ -10,4 +10,14 @@
         <a href="{% url 'participantinvite' %}" class="btn btn-custom btn-lg">Press Enter to Continue</a>
     </div>
 {% endblock %}
-  
+
+<!-- Add script to show loader on a specific action if needed -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Example: Show loader on page load for testing
+        showLoader();
+
+        // Hide the loader after 3 seconds for testing
+        setTimeout(hideLoader, 3000);
+    });
+</script>

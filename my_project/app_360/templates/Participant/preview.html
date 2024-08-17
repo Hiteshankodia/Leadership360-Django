@@ -50,8 +50,13 @@
             <button class="btn btn-custom" onclick="window.history.back()">Edit</button> <!-- Added me-3 for right margin -->
         </div>
         <div class="col-6 d-flex justify-content-end">
-            <button class="btn btn-custom" type="submit" form="participantForm">Confirm and Next</button> <!-- Added ms-3 for left margin -->
+            <button class="btn btn-custom" type="submit" form="participantForm" onclick="showLoader()">Confirm and Next</button> <!-- Added ms-3 for left margin -->
         </div>
+    </div>
+
+    <!-- Loader HTML -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader"></div>
     </div>
 </div>
 {% endblock %}
@@ -77,9 +82,9 @@
         font-size: 1.1rem;
     }
 
-    .btn-custom-{
-        background-color: #2a2a3e;;
-        border-color: #2a2a3e;;
+    .btn-custom {
+        background-color: #2a2a3e;
+        border-color: #2a2a3e;
         color: white;
         font-size: 1.2rem;
         padding: 10px 30px;
@@ -99,5 +104,41 @@
         justify-content: space-between;
         margin-top: 20px;
     }
+
+    /* Loader styles */
+    .loader-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        display: none; /* Hidden by default */
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* Ensure loader is above other content */
+    }
+
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 </style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function showLoader() {
+        document.getElementById('loader').style.display = 'flex';
+    }
+</script>
 {% endblock %}
