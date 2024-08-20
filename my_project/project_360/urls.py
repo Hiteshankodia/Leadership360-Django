@@ -33,7 +33,6 @@ urlpatterns = [
     path('', home.index, name = 'index'), 
     path('thanksfrom360/', home.ThanksFrom360, name = 'thanksfrom360'), 
     path('participantinvite/', invite.ParticipantDeatils, name = 'participantinvite'),
-    #path('inviteparticipant/', inviteController.invite, name='inviteparticipant'),
     path('load_states', invite.load_states, name='load_states'), 
     path('save_data/', invite.save_data, name = 'save_data'), 
     path('participantinvitesent/', invite.ParticipantInvite, name = 'participantinvitesent'), 

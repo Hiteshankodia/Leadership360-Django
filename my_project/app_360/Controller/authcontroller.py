@@ -16,6 +16,7 @@ utilityobj = UtilityClass()
 AuthServiceHelperobj = AuthServiceHelper()
 
 def auth(request):
+    
     print("Auth Method!")
     form = MyForm(request.POST)
     error_message = None
@@ -24,7 +25,6 @@ def auth(request):
         password = form.cleaned_data['password']
         encoded_pid = request.POST.get('strnameparticipantid', '')
         surveyid = request.POST.get('intnamesurveyid', '')
-        companyid = request.POST.get('intnamecompanyid', '') 
         encoded_pid = str(encoded_pid.replace(' ', '+'))
         surveyid = 1
         print(username)
@@ -35,23 +35,19 @@ def auth(request):
         userLoginRequestSchema = UserLoginRequestSchema(
             username=username,
             password=password,
-            company_id=1
-        )
+            company_id = int(request.COOKIES.get('company_id'))
+                            )
 
 
         print("Auth Method!")
         print(encoded_pid)
         print(surveyid)
-        context = {
-            'encoded_pid': encoded_pid,
-            'surveyid': surveyid, 
-            'companyid': 1  # hardcoded
-        }
+        
         try:  
             token_details = AuthServiceHelperobj.Login(userLoginRequestSchema)
             print('token_details', token_details)
             print("-" * 30)
-            print('encoded_pid', encoded_pid)
+            print('encoded_pid', token_details['login_user_entity_id'])
             print('surveyid', surveyid)
             access_token = token_details.get('access_token', None)
             if access_token:
@@ -65,12 +61,18 @@ def auth(request):
                 
                 #Participant Part 
                 elif role_id == 3:
-                    participantid = utilityobj.decrypt(encoded_pid)
+                    participantid = token_details['login_user_entity_id']
+                    encoded_pid = utilityobj.encrypt(str(participantid)) 
                     print("participantid For now", participantid)
                     status = participantsurveyobj.FetchSurveyStatus(participantid)
 
                     print("FetchSurveyStatus", status)
-
+                    
+                    context = {
+                    'encoded_pid': encoded_pid,
+                    'surveyid': surveyid, 
+                    'companyid': int(request.COOKIES.get('company_id'))
+                }
                     if status["status"] == "TeamInvite":
                         return Beforeinvite(request=request,encoded_pid=encoded_pid)
                     if status["status"] == "Assigned":
@@ -100,6 +102,7 @@ def auth(request):
 #teammemberid : participantid : surveyid
 
 def TeamMemberAssignSurvey(request):
+
     encoded_id = str(request.GET.get('id', None)) 
     encoded_id = str(encoded_id.replace(' ', '+'))
     print(encoded_id)
@@ -129,7 +132,7 @@ def TeamMemberAssignSurvey(request):
             'participantid' : id_list[0],
             'teammemberid' : id_list[1],
             'surveyid': id_list[2], 
-            'companyid': 1  
+            'companyid': int(request.COOKIES.get('company_id')) 
         }
 
         if status["status"] == "Assigned":
@@ -144,14 +147,15 @@ def TeamMemberAssignSurvey(request):
 
 
 def ParticipantSurveyAfterInvite(request):
+
     encoded_pid = request.GET.get('encoded_pid', None) 
-    #encoded_pid = str(encoded_pid.replace(' ', '+'))
+    
     print('participantSurveyAfterInvite!')
     print(encoded_pid)
     context = {
             'encoded_pid': encoded_pid,
             'surveyid': 1, 
-            'companyid': 1  
+            'companyid': int(request.COOKIES.get('company_id'))
         }
     
     return render(request, 'Participant/before_survey_message.html', context=context) 

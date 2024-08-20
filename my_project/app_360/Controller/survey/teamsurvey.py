@@ -63,7 +63,7 @@ def TeamFetchQuestions(request, participantid = 0 , teamemberid = 0 , surveyid =
     }
     print(page_number, "Page Number")
     if len(question) == 0: 
-        print("*" * 100)
+        
         teamPreviewSurvey = TeamPreviewSurvey(
                 participantid = participantid, 
                 surveyid = surveyid, 

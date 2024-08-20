@@ -137,7 +137,7 @@ def SaveAndFetchNextQuestions(request):
                 return FetchQuestions(request, page_number=page_number, encoded_pid=enocded_pid, survey_id=surveyid)
 
 
-def PreviewSurvey(request, participantid = 23 , surveyid = 1):
+def PreviewSurvey(request, participantid , surveyid = 1):
     print('PreviewSurvey ')
     enocded_pid = request.POST.get('hiddenstrpid', '')
     surveyid = request.POST.get('hiddenintsurveyid', '1')
