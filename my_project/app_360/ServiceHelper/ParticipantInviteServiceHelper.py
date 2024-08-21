@@ -8,24 +8,20 @@ class ParticipantInviteServiceHelperClass:
         self.ApiBaseObj = ApiBase()
     
 
-    def ParticipantInvite(self, data):
+    def ParticipantInvite(self, data, token):
         json_data = json.dumps(data)
        
-        # JWT token to append
-        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjUyMzA4MjcsInN1YiI6IjEiLCJjb21wYW55X2lkIjoiMSIsImxvZ2luX3BlcnNvbl9uYW1lIjoiSGl0ZXNoIEFua29kaWEiLCJyb2xlX2lkIjoyLCJjb21wYW55X3VybCI6Imh0dHA6Ly8xMjcuMC4wLjEifQ.bx_4ccCt4BvkuTgLFkgQwdSU0JY3UCHjK5MVhJlWc5E"
-        #result =  self.ApiBaseObj.PostRequest(data = json_data, url = '/participant/invite', token=token) 
         
         
         url = ApiBase.GetBaseUrl(self) + '/participant/invite'
         headers = {
             'Content-Type': 'application/json',
-            'Authorization': f'Bearer {token}'  # Append token as Authorization header
+            'Authorization': f'Bearer {token}'  
         }
 
         response =  requests.post(url, headers=headers, data=json_data)
         print(response)
         return response
-        #return self.ApiBaseObj.PostRequest(data = json_data, url = '/participant/invite', token=token)
-
+        
 
     

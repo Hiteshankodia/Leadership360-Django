@@ -14,11 +14,8 @@ fetchmasterobj = FetchMasterData()
 participantInviteServiceHelperObj = ParticipantInviteServiceHelperClass()
 
 def ParticipantDeatils(request):
-    company_id = request.COOKIES.get('company_id', None)
-    access_token = request.COOKIES.get('access_token', None)
-    print('companyid')
-    print(company_id)
-    print(access_token)
+  
+   
     countries = fetchmasterobj.FetchCountry()
     context = {
         'countries': countries,
@@ -134,8 +131,8 @@ def ParticipantInvite(request):
                 "designation" : participant['designation'], 
                 "location" : participant["location"]
             })
-        
-        response = participantInviteServiceHelperObj.ParticipantInvite(data)
+        access_token = request.COOKIES.get('access_token')
+        response = participantInviteServiceHelperObj.ParticipantInvite(data = data, token = access_token)
         response = response.json()
         # Print the response from the server
         print(response) 

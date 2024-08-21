@@ -10,24 +10,24 @@ class Survey:
         self.utilityobj = UtilityClass()
         
 
-    def displayquestions(self, fetchQuestionRequestSchema : FetchQuestionRequestSchema): 
+    def displayquestions(self, fetchQuestionRequestSchema : FetchQuestionRequestSchema, token ): 
         data = self.ApiBaseObj.ToJSON(fetchQuestionRequestSchema)
-        return self.ApiBaseObj.PostRequest(data = data, url = '/participantsurvey/fetchQuestion', token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ1NTA0NzAsInN1YiI6IjEiLCJjb21wYW55X2lkIjoiMSIsImxvZ2luX3BlcnNvbl9uYW1lIjoiSGl0ZXNoIEFua29kaWEiLCJyb2xlX2lkIjoyLCJjb21wYW55X3VybCI6Imh0dHA6Ly8xMjcuMC4wLjEifQ.ZKoYbkMX7GMfnfHih-EmBpz-JylzAlqngHzGHNNwY6c')
+        return self.ApiBaseObj.PostRequest(data = data, url = '/participantsurvey/fetchQuestion', token=token)
         
-    def SubmitSurvey(self, submitParticipantSurveyRequestSchema : SubmitParticipantSurveyRequestSchema):
+    def SubmitSurvey(self, submitParticipantSurveyRequestSchema : SubmitParticipantSurveyRequestSchema, token):
         data = self.ApiBaseObj.ToJSON(submitParticipantSurveyRequestSchema)
-        return self.ApiBaseObj.PostRequest(data = data, url = '/participantsurvey/submitParticipantSurvey', token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc4MzQzNDIsInN1YiI6IjE0MyIsImNvbXBhbnlfaWQiOiIxIiwibG9naW5fcGVyc29uX25hbWUiOiJIaXRlc2ggQW5rb2RpYSIsInJvbGVfaWQiOjMsImNvbXBhbnlfdXJsIjoiaHR0cDovLzEyNy4wLjAuMSJ9.mre1eBH1xGvyXXnlJRX8jWfbcWmcexA-ZlU-6wtNymc')
+        return self.ApiBaseObj.PostRequest(data = data, url = '/participantsurvey/submitParticipantSurvey', token = token)
     
-    def SaveSurveyAnswers(self, survey_data):
-        return self.ApiBaseObj.PostRequest(data = survey_data, url = '/participantsurvey/savequestions', token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ3OTY1OTgsInN1YiI6IjEiLCJjb21wYW55X2lkIjoiMSIsImxvZ2luX3BlcnNvbl9uYW1lIjoiSGl0ZXNoIEFua29kaWEiLCJyb2xlX2lkIjoyLCJjb21wYW55X3VybCI6Imh0dHA6Ly8xMjcuMC4wLjEifQ.NUjCe1z4iX47nLrrOwdvw3mn8neVxV9lEQfWkVzGrjU')
+    def SaveSurveyAnswers(self, survey_data, token):
+        return self.ApiBaseObj.PostRequest(data = survey_data, url = '/participantsurvey/savequestions', token = token)
     
-    def FetchMilestoneMessage(self, survey_id):
+    def FetchMilestoneMessage(self, survey_id, token):
         data = {'surveyid': int(survey_id)}
-        return self.ApiBaseObj.PostRequest(data = data, url = '/participantsurvey/fetchmilestonemessage', token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ3OTY1OTgsInN1YiI6IjEiLCJjb21wYW55X2lkIjoiMSIsImxvZ2luX3BlcnNvbl9uYW1lIjoiSGl0ZXNoIEFua29kaWEiLCJyb2xlX2lkIjoyLCJjb21wYW55X3VybCI6Imh0dHA6Ly8xMjcuMC4wLjEifQ.NUjCe1z4iX47nLrrOwdvw3mn8neVxV9lEQfWkVzGrjU')       
+        return self.ApiBaseObj.PostRequest(data = data, url = '/participantsurvey/fetchmilestonemessage', token = token)       
   
-    def PreviewSurvey(self, previewParticipantSurvey):
+    def PreviewSurvey(self, previewParticipantSurvey, token ):
         data = self.ApiBaseObj.ToJSON(previewParticipantSurvey)
-        return self.ApiBaseObj.PostRequest(data = data, url = '/participantsurvey/previewParticipantSurvey', token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ3OTY1OTgsInN1YiI6IjEiLCJjb21wYW55X2lkIjoiMSIsImxvZ2luX3BlcnNvbl9uYW1lIjoiSGl0ZXNoIEFua29kaWEiLCJyb2xlX2lkIjoyLCJjb21wYW55X3VybCI6Imh0dHA6Ly8xMjcuMC4wLjEifQ.NUjCe1z4iX47nLrrOwdvw3mn8neVxV9lEQfWkVzGrjU')
+        return self.ApiBaseObj.PostRequest(data = data, url = '/participantsurvey/previewParticipantSurvey', token = token)
     
 
     def ParticipantUpdateSurveyStatus(self, participantSurvveyStatusUpdateSchema : ParticipantSurvveyStatusUpdateSchema):

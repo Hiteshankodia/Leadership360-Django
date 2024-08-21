@@ -13,13 +13,6 @@ utilityobj = UtilityClass()
 
 def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
 
-    access_token = request.COOKIES.get('access_token', None)
-    
-    # Print the access_token to the server console
-    print('Access Token from cookie:', access_token)
-
-    print("FetchQuestions")
-    print("Fetch Questions!")
     milestone_message_index = int(request.POST.get('milestone_message_index', '0'))
 
     if encoded_pid is None:
@@ -48,8 +41,8 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
 
     
 
-
-    miltestone_message_list = surveyobj.FetchMilestoneMessage(survey_id)
+    access_token = request.COOKIES.get('access_token')
+    miltestone_message_list = surveyobj.FetchMilestoneMessage(survey_id = survey_id, token = access_token)
     print(f"Milestone Messages: {miltestone_message_list}")
 
     fetchQuestionRequestSchema = FetchQuestionRequestSchema(
@@ -60,7 +53,7 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
         page_number=page_number
     )
 
-    question = surveyobj.displayquestions(fetchQuestionRequestSchema)
+    question = surveyobj.displayquestions(fetchQuestionRequestSchema = fetchQuestionRequestSchema, token = access_token)
     print(f"Questions: {question}")
     
     show_submit_button = len(question) < record_count
@@ -138,7 +131,9 @@ def SaveAndFetchNextQuestions(request):
             }
 
             print("Survey Data:", survey_data)
-            saved_status = surveyobj.SaveSurveyAnswers(survey_data)
+            access_token = request.COOKIES.get('access_token')
+
+            saved_status = surveyobj.SaveSurveyAnswers(survey_data = survey_data, token=access_token)
             if saved_status['StatusCode'] == 1: 
                 return FetchQuestions(request, page_number=page_number, encoded_pid=enocded_pid, survey_id=surveyid)
 
@@ -155,7 +150,8 @@ def PreviewSurvey(request, participantid = 0 , surveyid = 1):
         participantid = participantid, 
         surveyid = surveyid
     )
-    preview_survey = surveyobj.PreviewSurvey(previewParticipantSurvey)
+    access_token = request.COOKIES.get('access_token')
+    preview_survey = surveyobj.PreviewSurvey(previewParticipantSurvey = previewParticipantSurvey, token = access_token)
     print(preview_survey) 
     
     print("Length of preview survey List", len(preview_survey))
@@ -179,7 +175,9 @@ def SubmitSurvey(request):
             participantid = participantid, 
             surveyid = surveyid
         )
-    save_survey_status = surveyobj.SubmitSurvey(saveParticipantSurvey)
+
+    access_token = request.COOKIES.get('access_token')
+    save_survey_status = surveyobj.SubmitSurvey(submitParticipantSurveyRequestSchema = saveParticipantSurvey, token=access_token)
     print(save_survey_status)
     
 
@@ -190,6 +188,7 @@ def SubmitSurvey(request):
         surveyid = surveyid, 
         status = 3
     )
+    
     surveyobj.ParticipantUpdateSurveyStatus(participantSurvveyStatusUpdateSchema)
 
     if save_survey_status['StatusCode'] == 1:
