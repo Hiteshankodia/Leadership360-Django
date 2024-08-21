@@ -14,6 +14,11 @@ fetchmasterobj = FetchMasterData()
 participantInviteServiceHelperObj = ParticipantInviteServiceHelperClass()
 
 def ParticipantDeatils(request):
+    company_id = request.COOKIES.get('company_id', None)
+    access_token = request.COOKIES.get('access_token', None)
+    print('companyid')
+    print(company_id)
+    print(access_token)
     countries = fetchmasterobj.FetchCountry()
     context = {
         'countries': countries,
@@ -50,7 +55,8 @@ def save_data(request):
         names = [name for name in names if name.strip()]
         
 
-
+        access_token = request.COOKIES.get('access_token', None)
+        print('access_token from browser', access_token)
 
 
         print(names)
@@ -133,9 +139,12 @@ def ParticipantInvite(request):
         response = response.json()
         # Print the response from the server
         print(response) 
+        context = {}
         if response['StatusCode'] == 1:
             return render(request, 'Participant/thankyou.html')
         elif response['StatusCode'] == 2: 
-            pass
+            print("elif part!")
+            error_message = f"Participant is already assigned to the survey. {response['StatusMessage']}"
+            return render(request, 'Participant/preview.html', {'error_message': error_message})
             
          

@@ -129,4 +129,6 @@ def save_password(request):
 
     if response['StatusCode'] == 1:
         return render(request, 'Participant/after_user_created.html', context = context) 
+    else: 
+        pass
     

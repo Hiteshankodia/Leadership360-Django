@@ -136,14 +136,22 @@
             document.getElementById('loading-overlay').style.display = 'none';
         }
 
-        // Show the loader when the form is submitted
-        document.addEventListener('DOMContentLoaded', function() {
-            var forms = document.querySelectorAll('form');
-            forms.forEach(function(form) {
-                form.addEventListener('submit', function() {
-                    showLoader();
-                });
-            });
+        // Handle form submission
+        document.getElementById('setpassword').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var newPassword = document.getElementById('strnewPassword').value;
+            var confirmPassword = document.getElementById('strconfirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                document.getElementById('passwordMismatchAlert').classList.remove('d-none'); // Show the alert
+                hideLoader(); // Ensure loader is hidden if passwords don't match
+                return;
+            }
+
+            // If passwords match, show the loader and submit the form
+            showLoader();
+            this.submit();
         });
     </script>
 </body>

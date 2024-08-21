@@ -45,6 +45,14 @@
             </table>
         </form>
     </div>
+    
+    {% if error_message %}
+    <div id="alert" class="alert alert-danger" role="alert">
+        <span id="alert-message">{{ error_message }}</span>
+    </div>
+    {% endif %}
+
+    
     <div class="row mt-4"> <!-- Added mt-4 for top margin -->
         <div class="col-6 d-flex justify-content-start">
             <button class="btn btn-custom" onclick="window.history.back()">Edit</button> <!-- Added me-3 for right margin -->

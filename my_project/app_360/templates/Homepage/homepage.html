@@ -15,8 +15,11 @@
             <h2 class="mb-4">PASSWORD:</h2>
             <input type="password" id="password" name="password" class="form-control mb-3" placeholder="Password" value="{{ form.password.value|default_if_none:'' }}" required>
             {% if error_message %}
-                <div class="error-message">{{ error_message }}</div>
+            <div id="alert" class="alert alert-danger" role="alert">
+                <span id="alert-message">{{ error_message }}</span>
+            </div>
             {% endif %}
+
             <button type="submit" class="btn btn-dark mb-3">LOGIN</button>
         </div>
     </form>

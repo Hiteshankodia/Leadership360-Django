@@ -6,7 +6,7 @@ import hashlib
 import os
 from django.conf import settings
 from app_360.ServiceHelper.ApiBase import ApiBase
-
+from django.shortcuts import render
 apibaseobj = ApiBase()
 
 class UtilityClass: 
@@ -14,11 +14,16 @@ class UtilityClass:
         self.bs = AES.block_size
         self.key = b'Sixteen byte key'
 
-
-    def SaveAccessToken(self, access_token):
-        response = HttpResponse('Login successful')
-        response.set_cookie('access_token', access_token, max_age=3600, httponly=True, samesite='Strict')
+    def GetAccessToken(self, request):
+        cookie_value = request.COOKIES.get('access_token', 'Cookie not found')
+        return HttpResponse(f'The cookie value is: {cookie_value}')
     
+    def SaveAccessToken(self,request,   access_token):
+        response = HttpResponse("Cookie has been set")
+        response.set_cookie('access_token', access_token)
+        return response
+        
+
     def FetchCompanyid(self,request, companyurl):
         company_id_json = request.COOKIES.get('company_id')
     

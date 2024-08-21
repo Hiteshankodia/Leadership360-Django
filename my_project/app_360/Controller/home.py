@@ -8,8 +8,8 @@ authobj = AuthServiceHelper()
 
 def index(request):
     response = HttpResponse(render(request, 'Homepage/homepage.html'))
-    for cookie in request.COOKIES:
-            response.delete_cookie(cookie)
+    '''for cookie in request.COOKIES:
+            response.delete_cookie(cookie)'''
     print("indeX method!")
     if request.method == 'POST':
         response = HttpResponse(render(request, 'Homepage/homepage.html'))
@@ -41,9 +41,10 @@ def index(request):
         return render(request, 'Homepage/homepage.html', context = context)
     
     else:
+        print("Else Part")
         response = HttpResponse(render(request, 'Homepage/homepage.html'))
-        for cookie in request.COOKIES:
-            response.delete_cookie(cookie)
+        '''for cookie in request.COOKIES:
+            response.delete_cookie(cookie)'''
         print('company_id', request.COOKIES.get('company_id'))    
         company_id = None
 

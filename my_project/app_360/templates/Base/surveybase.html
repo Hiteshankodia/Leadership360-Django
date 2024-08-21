@@ -117,13 +117,16 @@
         function showLoader() {
             document.getElementById('loading-overlay').style.display = 'flex';
         }
-
+    
         function hideLoader() {
             document.getElementById('loading-overlay').style.display = 'none';
         }
-
-        // Show the loader when the form is submitted
+    
         document.addEventListener('DOMContentLoaded', function() {
+            // Ensure loader is hidden on initial page load
+            hideLoader();
+    
+            // Show the loader when the form is submitted
             var forms = document.querySelectorAll('form');
             forms.forEach(function(form) {
                 form.addEventListener('submit', function() {
@@ -131,6 +134,7 @@
                 });
             });
         });
+        
     </script>
 </body>
 </html>

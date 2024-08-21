@@ -12,6 +12,12 @@ utilityobj = UtilityClass()
 
 
 def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
+
+    access_token = request.COOKIES.get('access_token', None)
+    
+    # Print the access_token to the server console
+    print('Access Token from cookie:', access_token)
+
     print("FetchQuestions")
     print("Fetch Questions!")
     milestone_message_index = int(request.POST.get('milestone_message_index', '0'))
@@ -50,7 +56,7 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
         participantid=participant_id,
         surveyid=survey_id,
         record_count=record_count,
-        no_of_question=5,
+        no_of_question=10,
         page_number=page_number
     )
 
@@ -137,7 +143,7 @@ def SaveAndFetchNextQuestions(request):
                 return FetchQuestions(request, page_number=page_number, encoded_pid=enocded_pid, survey_id=surveyid)
 
 
-def PreviewSurvey(request, participantid , surveyid = 1):
+def PreviewSurvey(request, participantid = 0 , surveyid = 1):
     print('PreviewSurvey ')
     enocded_pid = request.POST.get('hiddenstrpid', '')
     surveyid = request.POST.get('hiddenintsurveyid', '1')
