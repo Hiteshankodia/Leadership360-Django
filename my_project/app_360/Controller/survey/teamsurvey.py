@@ -38,7 +38,7 @@ def TeamFetchQuestions(request, participantid = 0 , teamemberid = 0 , surveyid =
         participantid = participantid, 
         surveyid = surveyid, 
         record_count = record_count, 
-        no_of_question = 5, 
+        no_of_question = 10, 
         page_number = page_number, 
         teammemberid = teamemberid
 

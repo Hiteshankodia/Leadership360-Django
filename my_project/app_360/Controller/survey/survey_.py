@@ -73,7 +73,7 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
         print("*" * 100)
         return PreviewSurvey(request=request, participantid=participant_id, surveyid=survey_id)
     
-    elif  ((int(page_number)-1) * record_count) == context['miestone_index'] :
+    elif ((int(page_number)-1) * record_count) == context['miestone_index'] :
         print(milestone_message_index) 
         context['milestone_message_index'] += 1 
         return render(request, 'Survey/milestone_message.html', context)

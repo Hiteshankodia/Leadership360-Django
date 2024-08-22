@@ -92,6 +92,8 @@
         $('form').on('submit', function(event) {
             if (!validateForm()) {
                 event.preventDefault(); // Prevent form submission if validation fails
+            } else {
+                showLoader(); // Show the loader when the form is submitted
             }
         });
     

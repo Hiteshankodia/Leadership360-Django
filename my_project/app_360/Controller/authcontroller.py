@@ -10,6 +10,9 @@ from app_360.ServiceHelper.Teamsurvey import Survey
 from app_360.ServiceHelper.ParticipantSurvey import ParticipantSurvey
 from app_360.Controller.Team.inviteTeam import Beforeinvite
 from django.shortcuts import HttpResponse
+from urllib.parse import urlparse
+
+
 participantsurveyobj = ParticipantSurvey()
 surveyobj = Survey()
 utilityobj = UtilityClass()
@@ -136,11 +139,22 @@ def TeamMemberAssignSurvey(request):
         status = surveyobj.FetchTeamSurveyStatus(teamFetchAllSurveySchema)
         print("FetchTeamSurveyStatus", status)
         
+
+        full_url = request.build_absolute_uri()
+        parsed_url = urlparse(full_url)
+        base_url = f"{parsed_url.scheme}://{parsed_url.netloc}/"
+        print('Base URL:', base_url)
+        
+        # Fetch company ID using the base URL
+        response_data = AuthServiceHelperobj.FetchCompanyid(base_url)
+        company_id = response_data.get('companyid')
+        print('Company ID:', company_id)
+
         context = {
             'participantid' : id_list[0],
             'teammemberid' : id_list[1],
             'surveyid': id_list[2], 
-            'companyid': int(request.COOKIES.get('company_id')) 
+            'companyid': company_id 
         }
 
         if status["status"] == "Assigned":

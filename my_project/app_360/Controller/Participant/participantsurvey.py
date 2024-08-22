@@ -4,45 +4,58 @@ from app_360.ServiceHelper.ParticipantSurvey import ParticipantSurvey
 from app_360.utility.utility import UtilityClass
 from app_360.Schema.Participant.participant_invite import ValidateParticipantDetailsSchema, CreateUserRequestSchema
 from app_360.Schema.Participant.survey import ParticipantSurvveyStatusUpdateSchema
+from urllib.parse import urlparse
+from app_360.ServiceHelper.AuthServiceHelper import AuthServiceHelper 
 
 participantobj = ParticipantSurvey()
 utilityobj = UtilityClass()
+authobj = AuthServiceHelper()
 
-
-
-def fetchparticipantid(request, pid_encoded = 1, surveyid = 1):
+def fetchparticipantid(request, pid_encoded=1, surveyid=1):
     print('fetchparticipantid')
+    
+    # Retrieve the participant ID from the GET or POST data
     pid_encoded = request.GET.get('pid', 'null')
     if pid_encoded == 'null':
         print("nUll")
         if request.method == 'POST':
             pid_encoded = request.POST.get('strnameparticipantid', 'null')
     
-    survey_id = request.POST.get('intnamesurveyid', surveyid)
-    company_id = int(request.COOKIES.get('company_id'))
-    pid_encoded = str(pid_encoded.replace(' ', '+'))
-    print('pid_encoded', pid_encoded)
-
-    print(survey_id)
-    response = participantobj.fetchparticipantid(pid_encoded=pid_encoded)
-    print(response)   
-    if response['StatusCode'] == 5:
-        context = {
-
-            'pid_encoded': pid_encoded,
-            'companyid' : int(request.COOKIES.get('company_id')), 
-            'survey_id' : survey_id
-        }
-        return render(request, 'Homepage/homepage.html', context) 
+    # Get the full URL and extract the base URL
+    full_url = request.build_absolute_uri()
+    parsed_url = urlparse(full_url)
+    base_url = f"{parsed_url.scheme}://{parsed_url.netloc}/"
+    print('Base URL:', base_url)
     
+    # Fetch company ID using the base URL
+    response_data = authobj.FetchCompanyid(base_url)
+    company_id = response_data.get('companyid')
+    print('Company ID:', company_id)
+    
+    # Prepare the participant ID and survey ID
+    pid_encoded = str(pid_encoded.replace(' ', '+'))
+    survey_id = request.POST.get('intnamesurveyid', surveyid)
+    print('pid_encoded', pid_encoded)
+    print('survey_id', survey_id)
+    
+    # Fetch participant ID and determine the response
+    response_data = participantobj.fetchparticipantid(pid_encoded=pid_encoded)
+    print('Participant Response:', response_data)
+    
+    # Prepare the context for rendering the response
+    context = {
+        'pid_encoded': pid_encoded,
+        'companyid': company_id,  # Use the fetched company_id
+        'survey_id': survey_id
+    }
+    
+    # Render the appropriate template based on the response status
+    if response_data['StatusCode'] == 5:
+        return redirect('index')
     else:
-        context = {
-
-            'pid_encoded': pid_encoded,
-            'companyid' : int(request.COOKIES.get('company_id')), 
-            'survey_id' : survey_id
-        }
         return render(request, 'Participant/createuser.html', context=context)
+    
+    
          
 
 def setpassword(request):
@@ -83,7 +96,7 @@ def setpassword(request):
         # Render the setpassword.html template
         return render(request, 'Participant/setpassword.html', context=context)
     else:
-        print("here")
+        
         context['error_message'] = 'The email or date of birth does not match'
         return render(request, 'Participant/createuser.html', context=context)
 
