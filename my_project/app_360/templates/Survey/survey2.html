@@ -55,24 +55,34 @@
             form.addEventListener('submit', function(event) {
                 const questions = form.querySelectorAll('input[name^="rdioAnswer_"]');
                 const allQuestionIds = new Set();
-
+    
                 questions.forEach(radio => {
                     const questionId = radio.name.split('_')[1];
                     allQuestionIds.add(questionId);
                 });
-
+    
                 let isValid = true;
                 allQuestionIds.forEach(id => {
                     if (form.querySelector(`input[name="rdioAnswer_${id}"]:checked`) === null) {
                         isValid = false;
                     }
                 });
-
+    
                 if (!isValid) {
                     alert('Please answer all questions before submitting.');
                     event.preventDefault(); // Prevent form submission
+                } else {
+                    showLoader(); // Show loader if form is valid
                 }
             });
         });
+    
+        function showLoader() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+    
+        function hideLoader() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
     </script>
 {% endblock %}
