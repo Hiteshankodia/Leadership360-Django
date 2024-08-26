@@ -72,7 +72,7 @@ def SaveData(request):
         TeamInviteList = []
         for i in range(len(names)): 
             teamdata = { 
-                'name': names[i],
+                'name': names[i].upper(),
                 'email': emails[i],
                 'contact': contacts[i], 
                 'location': locations[i].upper(),

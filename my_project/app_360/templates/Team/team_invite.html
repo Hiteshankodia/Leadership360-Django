@@ -43,6 +43,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
+
+        function validateEmail(email) {
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailPattern.test(email);
+        }
+    
+        function validateContact(contact) {
+            var contactPattern = /^\d{10}$/; // Exactly 10 digits
+            return contactPattern.test(contact);
+        }
+    
         function isRowComplete(index) {
             var name = $('#txtname_' + index).val().trim();
             var email = $('#txtEmail_' + index).val().trim();
@@ -72,11 +83,19 @@
     
             // Clear previous validation errors
             $('.is-invalid').removeClass('is-invalid');
+            $('.invalid-feedback').hide();
     
             // Validate each row
             $('div[data-index]').each(function() {
                 var index = $(this).data('index');
                 var row = $(this);
+                
+                var contact = $('#contact_' + index).val().trim();
+                if (!validateContact(contact)) {
+                    isValid = false;
+                    $('#contact_' + index).addClass('is-invalid');
+                    $('#contactError_' + index).show();
+                }
     
                 if (!isRowEmpty(index) && !isRowComplete(index)) {
                     isValid = false;
@@ -88,6 +107,39 @@
     
             return isValid;
         }
+    
+        $('input[name=txtnameEmail]').change(function() {
+            var currentEmail = $(this).val();
+            var currentIndex = $(this).attr('id').split('_')[1];
+            var emailExists = false;
+            var isValidEmail = validateEmail(currentEmail);
+    
+            if (!isValidEmail) {
+                $(this).addClass('is-invalid');
+                $('#emailError_' + currentIndex).show();
+                $('#emailDuplicateError_' + currentIndex).hide();
+            } else {
+                $(this).removeClass('is-invalid');
+                $('#emailError_' + currentIndex).hide();
+    
+                $('input[name=txtnameEmail]').each(function() {
+                    var email = $(this).val();
+                    var index = $(this).attr('id').split('_')[1];
+                    if (index !== currentIndex && email === currentEmail) {
+                        emailExists = true;
+                        return false;
+                    }
+                });
+    
+                if (emailExists) {
+                    $(this).addClass('is-invalid');
+                    $('#emailDuplicateError_' + currentIndex).show();
+                } else {
+                    $(this).removeClass('is-invalid');
+                    $('#emailDuplicateError_' + currentIndex).hide();
+                }
+            }
+        });
     
         $('form').on('submit', function(event) {
             if (!validateForm()) {
@@ -136,6 +188,7 @@
             $('#state_name_' + index).val(state_name);
         });
     });
+    
 </script>
 
 {% endblock %}

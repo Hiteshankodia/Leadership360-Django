@@ -60,8 +60,8 @@ def save_data(request):
         participants = []
         for i in range(len(names)):
             participant = {
-                'name': names[i],
-                'designation': designations[i],
+                'name': names[i].upper(),
+                'designation': designations[i].upper(),
                 'department': departments[i],
                 'location': locations[i].upper(),
                 'email': emails[i],
