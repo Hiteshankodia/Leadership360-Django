@@ -11,6 +11,10 @@
             </h4>
         </div>
         <div class="container mt-4 form-container">
+
+            <div class="main-content">
+                <div class="error-container">
+               </div>
             <form id="TeamInvite" method="POST" action="{% url 'teamsavedata' %}">
                 {% csrf_token %}
                 <input type="hidden" name="teamtypeobj" value="{{ teamtypeobj }}">
@@ -42,116 +46,6 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    $(document).ready(function() {
-
-        function validateEmail(email) {
-            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            return emailPattern.test(email);
-        }
-    
-        function validateContact(contact) {
-            var contactPattern = /^\d{10}$/; // Exactly 10 digits
-            return contactPattern.test(contact);
-        }
-    
-        function isRowComplete(index) {
-            var name = $('#txtname_' + index).val().trim();
-            var email = $('#txtEmail_' + index).val().trim();
-            var contact = $('#contact_' + index).val().trim();
-            var location = $('#location_' + index).val().trim();
-            var teamType = $('#intnameteamtype' + index).val();
-            var country = $('#intcountry_' + index).val();
-            var state = $('#intstate_' + index).val();
-            
-            return name && email && contact && location && teamType && country && state;
-        }
-    
-        function isRowEmpty(index) {
-            var name = $('#txtname_' + index).val().trim();
-            var email = $('#txtEmail_' + index).val().trim();
-            var contact = $('#contact_' + index).val().trim();
-            var location = $('#location_' + index).val().trim();
-            var teamType = $('#intnameteamtype' + index).val();
-            var country = $('#intcountry_' + index).val();
-            var state = $('#intstate_' + index).val();
-            
-            return !name && !email && !contact && !location && !teamType && !country && !state;
-        }
-    
-        function validateForm() {
-            var isValid = true;
-    
-            // Clear previous validation errors
-            $('.is-invalid').removeClass('is-invalid');
-            $('.invalid-feedback').hide();
-    
-            // Validate each row
-            $('div[data-index]').each(function() {
-                var index = $(this).data('index');
-                var row = $(this);
-                
-                var contact = $('#contact_' + index).val().trim();
-                if (!validateContact(contact)) {
-                    isValid = false;
-                    $('#contact_' + index).addClass('is-invalid');
-                    $('#contactError_' + index).show();
-                }
-    
-                if (!isRowEmpty(index) && !isRowComplete(index)) {
-                    isValid = false;
-                    row.find('input, select').addClass('is-invalid');
-                    alert('Row ' + (index + 1) + ' is partially filled. Please complete or clear it.');
-                    return false; // Stop processing further rows
-                }
-            });
-    
-            return isValid;
-        }
-    
-        $('input[name=txtnameEmail]').change(function() {
-            var currentEmail = $(this).val();
-            var currentIndex = $(this).attr('id').split('_')[1];
-            var emailExists = false;
-            var isValidEmail = validateEmail(currentEmail);
-    
-            if (!isValidEmail) {
-                $(this).addClass('is-invalid');
-                $('#emailError_' + currentIndex).show();
-                $('#emailDuplicateError_' + currentIndex).hide();
-            } else {
-                $(this).removeClass('is-invalid');
-                $('#emailError_' + currentIndex).hide();
-    
-                $('input[name=txtnameEmail]').each(function() {
-                    var email = $(this).val();
-                    var index = $(this).attr('id').split('_')[1];
-                    if (index !== currentIndex && email === currentEmail) {
-                        emailExists = true;
-                        return false;
-                    }
-                });
-    
-                if (emailExists) {
-                    $(this).addClass('is-invalid');
-                    $('#emailDuplicateError_' + currentIndex).show();
-                } else {
-                    $(this).removeClass('is-invalid');
-                    $('#emailDuplicateError_' + currentIndex).hide();
-                }
-            }
-        });
-    
-        $('form').on('submit', function(event) {
-            if (!validateForm()) {
-                event.preventDefault(); // Prevent form submission if validation fails
-            } else {
-                showLoader(); // Show the loader when the form is submitted
-            }
-        });
-    
-        $('input, select').on('input change', function() {
-            $(this).removeClass('is-invalid');
-        });
     
         // Existing AJAX functionality
         $('select[name=intnamecountry]').change(function() {
@@ -182,12 +76,8 @@
             });
         });
     
-        $('select[name=intnamestate]').change(function() {
-            var state_name = $(this).find('option:selected').data('name');
-            var index = $(this).attr('id').split('_')[1];
-            $('#state_name_' + index).val(state_name);
-        });
-    });
+        
+   
     
 </script>
 

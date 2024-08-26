@@ -73,5 +73,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Flatpickr for date inputs
+    flatpickr('input[name=datenamedob]', {
+        dateFormat: "Y-m-d", // Format of the date
+        maxDate: "today", // Prevent selecting future dates
+        minDate: new Date().getFullYear() - 100 + "-01-01", // Prevent selecting dates too far in the past
+        onChange: function(selectedDates, dateStr, instance) {
+            const dob = new Date(dateStr);
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            const index = instance.element.getAttribute('id').split('_')[1];
+            if (age < 18) {
+                instance.element.classList.add('is-invalid');
+                document.getElementById('dobError_' + index).style.display = 'block';
+            } else {
+                instance.element.classList.remove('is-invalid');
+                document.getElementById('dobError_' + index).style.display = 'none';
+            }
+        }
+    });
+
+    // Other JavaScript code remains unchanged
+});
 </script>
 {% endblock %}
+
+

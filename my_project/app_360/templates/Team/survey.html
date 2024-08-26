@@ -40,12 +40,17 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div class="text-end mt-5">
-                {% if show_submit_button %}
-                <button type="submit" class="btn btn-success" name="action" value="submit">Submit</button>
-                {% else %}
-                <button type="submit" class="btn btn-primary" name="action" value="next">Next</button>
+            <div class="d-flex justify-content-between align-items-center mt-5">
+                {% if show_back_button %}
+                <button type="button" class="btn btn-secondary" id="backButton">Back</button>
                 {% endif %}
+                <div class="ml-auto">
+                    {% if show_submit_button %}
+                    <button type="submit" class="btn btn-success" name="action" value="submit">Submit</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-primary" name="action" value="next">Next</button>
+                    {% endif %}
+                </div>
             </div>
         </form>
     </div>

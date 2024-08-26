@@ -14,9 +14,7 @@
             color: red;
             margin-top: 10px;
         }
-        .dropdown{
-            padding-right: 50px;
-        }
+        
         .dropdown .btn {
             background-color: #F6911D; /* Dropdown button background color */
             border-color: #06054b; 
@@ -37,7 +35,9 @@
             object-fit: cover;
             padding-left: 150px;
         }
-
+        .dropdown{
+            padding-right: 50px;
+        }
         body {
             min-height: 100vh;
             display: flex;
@@ -100,10 +100,8 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">
-                <a href="{% url 'index' %}">
-                    <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
-                </a>
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
             </a>
         
             <div class="dropdown">

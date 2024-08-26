@@ -58,12 +58,15 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
     
     show_submit_button = len(question) < record_count
     
+    
+
     context = {
         'question': question,
         'encodedpid': encoded_pid,  
         'surveyid': survey_id,
         'page_number': page_number,
         'show_submit_button': show_submit_button, 
+        
         'message' : miltestone_message_list[milestone_message_index]['message'],
         'miestone_index' : miltestone_message_list[milestone_message_index]['question_count'], 
         'milestone_message_index' : milestone_message_index
@@ -76,6 +79,7 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
     elif ((int(page_number)-1) * record_count) == context['miestone_index'] :
         print(milestone_message_index) 
         context['milestone_message_index'] += 1 
+        context["show_back_button"] = True
         return render(request, 'Survey/milestone_message.html', context)
     
     elif len(question) == 0: 
@@ -83,6 +87,8 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
         return PreviewSurvey(request=request, participantid=participant_id, surveyid=survey_id)
     
     else:
+        if page_number > 1: 
+            context["show_back_button"] = True
         return render(request, 'Survey/survey2.html', context)
     
 

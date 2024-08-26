@@ -4,6 +4,7 @@
 
 {% block content %}
 <style>
+    
     .checkmark {
         color: #28a745;
         font-size: 3rem;
@@ -13,6 +14,12 @@
         font-weight: bold;
         margin-left: 15px;
         text-align: center;
+    }
+    .button-container {
+        display: flex;
+        justify-content: center; /* Centers the buttons horizontally */
+        gap: 35rem; /* Adds space between the buttons */
+        margin-top: 2rem; /* Adds space above the button container */
     }
 </style>
 
@@ -41,11 +48,28 @@
                         
                     </div>
                 </div>
-                <div class="mt-5">
+                <div class="button-container mt-5">
+                    {% if show_back_button %}
+                    <button type="button" class="btn btn-secondary btn-lg" id="backButton">Back</button>
+                    {% endif %}
                     <button type="submit" class="btn btn-primary btn-lg" style="background-color: #00008B; border-color: #00008B;">Continue</button>
                 </div>
+                    
+                    
             </form>   
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const backButton = document.getElementById('backButton');
+        if (backButton) {
+            backButton.addEventListener('click', function() {
+                window.history.back(); // Go back to the previous page in browser history
+            });
+        }
+    });
+</script>
 {% endblock %}

@@ -73,9 +73,12 @@ def TeamFetchQuestions(request, participantid = 0 , teamemberid = 0 , surveyid =
     elif  ((int(page_number)-1) * record_count) == context['miestone_index'] :
         print(milestone_message_index) 
         context['milestone_message_index'] += 1 
+        context["show_back_button"] = True
         return render(request, 'Team/milestone.html', context)
     
     else:
+        if page_number > 1: 
+            context["show_back_button"] = True
         return render(request, 'Team/survey.html', context)
 
 

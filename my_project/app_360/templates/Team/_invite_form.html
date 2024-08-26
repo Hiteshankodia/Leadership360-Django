@@ -2,10 +2,18 @@
 
 <div class="row mb-3">
     <div class="col">
-        <input type="text" class="form-control" id="txtname_{{ index }}" name="txtnamename" placeholder="Name" >
+        <input type="text" 
+        class="form-control" 
+        id="txtname_{{ index }}" 
+        name="txtnamename" 
+        placeholder="Name" >
     </div>
     <div class="col">
-        <input type="email" class="form-control" id="txtEmail_{{ index }}" name="txtnameEmail" placeholder="Email" >
+        <input type="email" 
+        class="form-control" 
+        id="txtEmail_{{ index }}" 
+        name="txtnameEmail" 
+        placeholder="Email" >
         <div class="invalid-feedback" id="emailError_{{ index }}">Invalid email format</div>
         <div class="invalid-feedback" id="emailDuplicateError_{{ index }}">Email already entered above</div>
     </div>
@@ -43,3 +51,301 @@
         </select>
     </div>
 </div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+      function validateEmail(email) {
+        var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email);
+      }
+      function validateFormSubmit() {
+        $("#display-error").text("");
+        let numberOfParticipants = 0;
+        let peers = 0;
+        let subordinates = 0;
+        let reportingManager = 0;
+        let rowPartial = false;
+        let rowFilled = [];
+  
+        $(".container").each(function (idx2) {
+         
+          let filled = false;
+          rowPartial = false;
+         
+          $(this)
+            .find("input, select")
+            .each(function (idx) {
+              if ($(this).attr("type") === "hidden") {
+                return;
+              }
+             
+              if ($(this).attr("name") === "intnameteamtype") {
+                if ($(this).val() == 1) peers++;
+                else if ($(this).val() == 2) subordinates++;
+                else if ($(this).val() == 3) reportingManager++;
+              }
+
+              if (idx == 0 && $(this).val() != "") {
+                filled = true;
+              
+                
+              } else if (
+                (filled && ($(this).val() == "" || $(this).val() == null)) ||
+                (!filled && !($(this).val() == "" || $(this).val() == null))
+                
+              ) {
+                rowPartial = true;
+                console.log(idx)
+                return false;
+                
+              }
+            });
+  
+           
+          if (rowPartial) {
+            
+            return false;
+          }
+          if (filled) {
+            numberOfParticipants++;
+            console.log(numberOfParticipants)
+            rowFilled.push(idx2);
+          }
+        });
+       window.scrollTo(0, 0);
+        if (rowPartial) {
+         showErr("Fields are partially filled")
+          
+          return { status: false, rowFilled };
+        } else if (numberOfParticipants < 2) {
+         showErr("Minimum 6 participants are required")
+          return { status: false, rowFilled };
+        } else if (peers < 1 || subordinates < 1 || reportingManager < 0) {
+         showErr("Minimum 2 peer, 3 subordinate and 1 reporting manager are required")
+          return { status: false, rowFilled };
+        }
+  
+        return { status: true, rowFilled };
+      }
+  
+      function showErr(message,id) {
+       $('#alert').remove();
+       const alertDiv = $('<div>', {
+        id: 'alert',
+        class: 'alert alert-danger',
+        role: 'alert'
+       });
+  
+      
+       const alertMessage = $('<span>', {
+        id: 'alert-message'
+       }).text(message);
+  
+       // Append the <span> to the alert <div>
+       alertDiv.append(alertMessage);
+       $('.error-container').append(alertDiv);
+    
+      if(id){
+       $("#" + id).css({
+        "color": "red",
+        "border": "1px solid"
+       })
+  
+      }
+      }
+      function clearErr(id){
+        $("#" + id).css({
+        "color": "",
+        "border": ""
+       })
+      }
+      $("select[name=intnamecountry]").change(function () {
+        var country_id = $(this).val();
+        var country_name = $(this).find("option:selected").data("name");
+        var index = $(this).attr("id").split("_")[1];
+      });
+  
+      $("select[name=intnamestate]").change(function () {
+        var state_name = $(this).find("option:selected").data("name");
+        var index = $(this).attr("id").split("_")[1];
+        $("#state_name_" + index).val(state_name);
+      });
+  
+      $("input[name=datenamedob]").change(function () {
+        var dob = new Date($(this).val());
+        var today = new Date();
+        var age = today.getFullYear() - dob.getFullYear();
+        var m = today.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+          age--;
+        }
+  
+        var index = $(this).attr("id").split("_")[1];
+        if (age < 18) {
+         showErr("Age should be greater than 18", $(this).attr("id"))
+          $(this).addClass("is-invalid");
+          $("#dobError_" + index).show();
+        } else {
+         clearErr($(this).attr("id"))
+          $(this).removeClass("is-invalid");
+          $("#dobError_" + index).hide();
+        }
+      });
+  
+      $("input[name=txtnameEmail]").change(function () {
+        var currentEmail = $(this).val();
+        var currentIndex = $(this).attr("id").split("_")[1];
+        var emailExists = false;
+        var isValidEmail = validateEmail(currentEmail);
+  
+        if (!isValidEmail) {
+         showErr("Please enter valid email", $(this).attr("id"))
+          $(this).addClass("is-invalid");
+          $("#emailError_" + currentIndex).show();
+          $("#emailDuplicateError_" + currentIndex).hide();
+        } else {
+         clearErr($(this).attr("id"))
+          $(this).removeClass("is-invalid");
+          $("#emailError_" + currentIndex).hide();
+  
+          $("input[name=txtnameEmail]").each(function () {
+            var email = $(this).val();
+            var index = $(this).attr("id").split("_")[1];
+            if (index !== currentIndex && email === currentEmail) {
+              emailExists = true;
+              return false;
+            }
+          });
+  
+          if (emailExists) {
+            $(this).addClass("is-invalid");
+            $("#emailDuplicateError_" + currentIndex).show();
+          } else {
+            $(this).removeClass("is-invalid");
+            $("#emailDuplicateError_" + currentIndex).hide();
+          }
+        }
+      });
+  
+       $("input[name=txtnamename]").change(function (idx) {
+       $("#alert").css("display", "none");
+      const nameRegex = /^[A-Za-z\s]+$/;
+      const value = $(this).val().trim()
+      if (value === "" || nameRegex.test(value)) {
+       clearErr($(this).attr("id"))
+      }else{
+       showErr( "fill name properly", $(this).attr("id"),)
+      }
+  
+  
+     });
+  
+      $("form").submit(function (event) {
+        event.preventDefault();
+        let validateForm = validateFormSubmit();
+        console.log(validateForm);
+        
+        if (!validateForm.status) {
+          console.log("form not valid");
+          return;
+        }
+  
+        var isValid = true;
+        var emails = [];
+  
+        
+  
+        $("input[type=email]").each(function (idx) {
+          console.log(idx);
+          console.log(!validateForm.rowFilled.includes(idx + 1));
+          if (!validateForm.rowFilled.includes(idx + 1)) {
+            return;
+          }
+  
+          var email = $(this).val();
+          var index = $(this).attr("id").split("_")[1];
+          if (!validateEmail(email) || emails.includes(email)) {
+            isValid = false;
+            $(this).addClass("is-invalid");
+            if (emails.includes(email)) {
+              $("#emailDuplicateError_" + index).show();
+            } else {
+              $("#emailError_" + index).show();
+            }
+          } else {
+            $(this).removeClass("is-invalid");
+            $("#emailError_" + index).hide();
+            $("#emailDuplicateError_" + index).hide();
+            emails.push(email);
+          }
+        });
+  
+        $("input[name=datenamedob]").each(function (idx) {
+          if (!validateForm.rowFilled.includes(idx + 1)) return;
+          var dob = new Date($(this).val());
+          var today = new Date();
+          var age = today.getFullYear() - dob.getFullYear();
+          var m = today.getMonth() - dob.getMonth();
+          if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+            age--;
+          }
+          if (age < 18) {
+            isValid = false;
+            $(this).addClass("is-invalid");
+            var index = $(this).attr("id").split("_")[1];
+            $("#dobError_" + index).show();
+          } else {
+            $(this).removeClass("is-invalid");
+            var index = $(this).attr("id").split("_")[1];
+            $("#dobError_" + index).hide();
+          }
+        });
+       
+        if (!isValid) {
+          showErr("Please fill out all required fields correctly.")
+        }
+      });
+    });
+  </script>
+  
+  <style>
+    .is-invalid {
+      border-color: #dc3545;
+    }
+  
+    .invalid-feedback {
+      display: none;
+      color: #dc3545;
+    }
+    #alert{
+        display: block;
+        position: absolute;
+   top: 15px;
+   left: -700px;
+   color: red;
+   font-weight: bold;
+   animation: textAnimation 5s ease-in-out;
+       }
+
+    @keyframes textAnimation {
+
+        10% {
+         
+          left: 15px;
+         
+        }
+        90% {
+      
+          left: 15px;
+        }
+        100% {
+          left: -700px;
+        }
+    }   
+  </style>
+  

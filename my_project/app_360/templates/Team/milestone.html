@@ -35,6 +35,7 @@
         justify-content: center;
         flex-grow: 1;
     }
+    
 </style>
 
 
@@ -64,7 +65,11 @@
                     </div>
                 </div>
                 <div class="mt-5">
-                    <button type="submit" class="btn btn-primary btn-lg continue-btn">Continue</button>
+                    {% if show_back_button %}
+                    <button type="button" class="btn btn-secondary btn-lg" id="backButton">Back</button>
+                    {% endif %}
+                    <br><br>
+                    <button type="submit" class="btn btn-primary btn-lg" style="background-color: #00008B; border-color: #00008B;">Continue</button>
                 </div>
             </form>   
         </div>
