@@ -64,9 +64,14 @@
 
 {% block extra_scripts %}
 <script>
+    
     function showLoader() {
         document.getElementById('loader').style.display = 'flex';
+
+        // Ensure loader remains visible long enough before submitting
+        setTimeout(() => {
+            document.getElementById('surveyForm').submit();
+        }, 500); // Adjust delay as needed to ensure loader is visible
     }
-    
 </script>
 {% endblock %}

@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from typing import List
+
 class FetchQuestionRequestSchema(BaseModel):
     participantid : int 
     surveyid : int 
@@ -15,3 +17,12 @@ class ParticipantSurvveyStatusUpdateSchema(BaseModel):
     participantid : int 
     surveyid : int 
     status : int
+
+class QuestionAnswerPair(BaseModel):
+    questionid: int
+    answerid: int
+
+class UpdateSurveyAnswers(BaseModel):
+    participantid: int
+    surveyid : int
+    answers: List[QuestionAnswerPair]

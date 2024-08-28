@@ -5,7 +5,8 @@ from app_360.Schema.Participant.save_survey import SaveQuestionRequestSchema, Qu
 from app_360.Schema.Participant.preview_survey import PreviewParticipantSurvey, SaveParticipantSurvey
 from app_360.utility.utility import UtilityClass
 from app_360.Schema.Participant.survey import ParticipantSurvveyStatusUpdateSchema 
-
+from app_360.Schema.Participant.survey import QuestionAnswerPair, UpdateSurveyAnswers
+import json
 surveyobj = Survey()
 utilityobj = UtilityClass()
 
@@ -163,31 +164,48 @@ def PreviewSurvey(request, participantid=0, surveyid=1):
     print("Length of preview survey List", len(preview_survey))
     
     # Define the possible answers
-    answer_options = ['Strongly Agree', 'Agree', 'Neutral', 'Disagree', 'Strongly Disagree']
+    answer_options = {1 : 'Strongly Agree', 2 : 'Agree', 3 : 'Neutral', 4 : 'Disagree', 5 : 'Strongly Disagree'}
     
     context = {
         'preview_survey_data': preview_survey,
         'enocded_pid': enocded_pid,
         'surveyid': surveyid,
-        'answer_options': answer_options,  # Add this line
+        'answer_options': answer_options,
     }
 
     return render(request, 'Participant/preview_survey.html', context=context)
 
 
 def SubmitSurvey(request):  
-    print("Submit Survey!")
+    answers_json = request.POST.get('answers')
+    print("Submit Survey Method!")
+    print(answers_json)
     surveyid = request.POST.get('hiddenintsurveyid')
     enocded_pid = request.POST.get('hiddenstrpid')
     participantid = utilityobj.decrypt(enocded_pid)
-    print(participantid)
-    print(surveyid)
+
+    # Update Survey Answers 
+    if answers_json is not None:
+        answers_list = json.loads(answers_json)
+        # Ensure it's a list of dictionaries
+        if isinstance(answers_list, list) and all(isinstance(item, dict) for item in answers_list):
+            answers_list = [
+                QuestionAnswerPair(questionid=int(item["questionId"]), answerid=int(item["answerId"]))
+                for item in answers_list
+            ] 
+        update_survey_answers = UpdateSurveyAnswers(participantid=participantid,surveyid = surveyid, answers=answers_list)
+        surveyobj.UpdateSurveyAnswer(update_survey_answers = update_survey_answers) 
+    
+    
     saveParticipantSurvey = SaveParticipantSurvey(
             participantid = participantid, 
             surveyid = surveyid
         )
-
+    
     access_token = request.COOKIES.get('access_token')
+
+    
+
     save_survey_status = surveyobj.SubmitSurvey(submitParticipantSurveyRequestSchema = saveParticipantSurvey, token=access_token)
     print(save_survey_status)
     
@@ -203,5 +221,5 @@ def SubmitSurvey(request):
     surveyobj.ParticipantUpdateSurveyStatus(participantSurvveyStatusUpdateSchema)
 
     if save_survey_status['StatusCode'] == 1:
-        return render(request, 'Survey/Thankyou.html') 
+        return render(request, 'Survey/Thankyou.html')
     return render(request, 'Survey/Thankyou.html')

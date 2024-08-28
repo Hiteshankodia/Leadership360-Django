@@ -1,9 +1,8 @@
 from app_360.ServiceHelper.ApiBase import ApiBase
 from app_360.Schema.Participant.survey import FetchQuestionRequestSchema, SubmitParticipantSurveyRequestSchema
 from app_360.utility.utility import UtilityClass
-from app_360.Schema.Participant.save_survey import SaveQuestionRequestSchema
 from app_360.Schema.Participant.survey import ParticipantSurvveyStatusUpdateSchema
-
+from app_360.Schema.Participant.survey import  UpdateSurveyAnswers
 class Survey: 
     def __init__(self): 
         self.ApiBaseObj = ApiBase()
@@ -34,5 +33,8 @@ class Survey:
         data = self.ApiBaseObj.ToJSON(participantSurvveyStatusUpdateSchema)
         return self.ApiBaseObj.PostRequest(data = data, url = '/participantsurvey/updateSurveyStatus', token = '')
     
-
+    def UpdateSurveyAnswer(self, update_survey_answers : UpdateSurveyAnswers): 
+        data = self.ApiBaseObj.ToJSON(update_survey_answers)
+        return self.ApiBaseObj.PostRequest(data = data, url = '/participantsurvey/updatesurveyanswers', token = '')
+    
         
