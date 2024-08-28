@@ -17,20 +17,30 @@
                 {% for obj in preview_survey_data %}
                 <tr>
                     <td>{{ obj.question }}</td>
-                    <td>{{ obj.answer }} </td>
+                    <td>
+                        <select name="answers_{{ forloop.counter }}" class="form-control" disabled>
+                            {% for answer in answer_options %}
+                            <option value="{{ answer }}" {% if obj.answer == answer %}selected{% endif %}>{{ answer }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-       
-        <div class="text-end mt-5">
-            <button type="submit" class="btn btn-success btn-lg" name="action" value="submit" onclick="showLoader()">Submit</button>
+        <div class="d-flex justify-content-between align-items-center mt-5">
+            <button type="button" class="btn btn-secondary btn-lg" id="editButton">Edit</button>
+            
+            <div class="ml-auto">
+                <button type="submit" class="btn btn-success btn-lg" name="action" value="submit">Submit</button>
+            </div>
         </div>
 
+        
         <!-- Loader HTML -->
-    <div id="loader" class="loader-overlay">
-        <div class="loader"></div>
-    </div>
+        <div id="loader" class="loader-overlay">
+            <div class="loader"></div>
+        </div>
     </form>
 </div>
 {% endblock %}
@@ -66,12 +76,39 @@
 
 {% endblock %}
 
-
 {% block extra_scripts %}
 <script>
-    function showLoader() {
-        document.getElementById('loader').style.display = 'flex';
-    }
-    
+    document.addEventListener('DOMContentLoaded', function() {
+        const editButton = document.getElementById('editButton');
+        const radioInputs = document.querySelectorAll('input[type="radio"][name^="answers_"]');
+        const submitButton = document.querySelector('button[name="action"][value="submit"]');
+
+        // Toggle the disabled state of radio inputs
+        editButton.addEventListener('click', function() {
+            const isEditing = editButton.textContent === 'Edit';
+            
+            radioInputs.forEach(input => {
+                input.disabled = !isEditing;
+            });
+
+            if (isEditing) {
+                editButton.textContent = 'Done';
+                editButton.classList.remove('btn-secondary');
+                editButton.classList.add('btn-primary');
+            } else {
+                editButton.textContent = 'Edit';
+                editButton.classList.remove('btn-primary');
+                editButton.classList.add('btn-secondary');
+            }
+        });
+
+        // Function to show loader
+        function showLoader() {
+            document.getElementById('loader').style.display = 'flex';
+        }
+
+        // Attach showLoader to the form's submit button
+        submitButton.addEventListener('click', showLoader);
+    });
 </script>
 {% endblock %}

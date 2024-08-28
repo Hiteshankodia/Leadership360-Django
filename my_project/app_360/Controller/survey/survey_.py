@@ -144,7 +144,7 @@ def SaveAndFetchNextQuestions(request):
                 return FetchQuestions(request, page_number=page_number, encoded_pid=enocded_pid, survey_id=surveyid)
 
 
-def PreviewSurvey(request, participantid = 0 , surveyid = 1):
+def PreviewSurvey(request, participantid=0, surveyid=1):
     print('PreviewSurvey ')
     enocded_pid = request.POST.get('hiddenstrpid', '')
     surveyid = request.POST.get('hiddenintsurveyid', '1')
@@ -153,22 +153,27 @@ def PreviewSurvey(request, participantid = 0 , surveyid = 1):
     print(participantid)
     print(surveyid)
     previewParticipantSurvey = PreviewParticipantSurvey(
-        participantid = participantid, 
-        surveyid = surveyid
+        participantid=participantid, 
+        surveyid=surveyid
     )
     access_token = request.COOKIES.get('access_token')
-    preview_survey = surveyobj.PreviewSurvey(previewParticipantSurvey = previewParticipantSurvey, token = access_token)
+    preview_survey = surveyobj.PreviewSurvey(previewParticipantSurvey=previewParticipantSurvey, token=access_token)
     print(preview_survey) 
     
     print("Length of preview survey List", len(preview_survey))
     
+    # Define the possible answers
+    answer_options = ['Strongly Agree', 'Agree', 'Neutral', 'Disagree', 'Strongly Disagree']
+    
     context = {
-        'preview_survey_data': preview_survey, 
-        'enocded_pid' : enocded_pid,  
-        'surveyid' : surveyid 
+        'preview_survey_data': preview_survey,
+        'enocded_pid': enocded_pid,
+        'surveyid': surveyid,
+        'answer_options': answer_options,  # Add this line
     }
 
-    return render(request, 'Participant/preview_survey.html', context = context) 
+    return render(request, 'Participant/preview_survey.html', context=context)
+
 
 def SubmitSurvey(request):  
     print("Submit Survey!")

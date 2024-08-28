@@ -34,7 +34,7 @@ def TeamFormDetails(request):
     countries = fetchmasterobj.FetchCountry()
     context = {
         'countries': countries,
-        'itereration' : range(1,9), 
+        'iterations' : range(1,9), 
         'teamtype':  (eval(settings.TEAM_TYPE)), 
         'encoded_pid' : pid_encoded
     }
@@ -43,12 +43,13 @@ def TeamFormDetails(request):
 
 def load_states(request):
     country_id = request.POST.get('country_id')
+    print('load_states')
     states = fetchmasterobj.FetchState(country_id)
     return states
 
-
 def SaveData(request):
     if request.method == 'POST':
+        print("Save Data")
         pid_encoded = request.POST.get('strnameparticipantid', None)
         pid_encoded = str(pid_encoded.replace(' ', '+'))
         # Print encoded_pid for debugging purposes
@@ -63,12 +64,33 @@ def SaveData(request):
         states = request.POST.getlist('intnamestate')
         country_names = request.POST.getlist('country_name[]')
         state_names = request.POST.getlist('state_name[]')
+
+        # Print data for debugging
+        print("Names:", names)
+        print("Emails:", emails)
+        print("Contacts:", contacts)
+        print("Locations:", locations)
+        print("Team Types:", teamtypes)
+        print("Countries:", countries)
+        print("States:", states)
+        print("Country Names:", country_names)
+        print("State Names:", state_names)
+
+        # Handle team types with empty values
         teamtype_name_list = []
         for i in teamtypes:
-            teamtype_name_list.append(eval(settings.TEAM_TYPE)[int(i)])
-        
+            try:
+                if i:  # Check if the value is not empty
+                    teamtype_name_list.append(eval(settings.TEAM_TYPE)[int(i)])
+                else:
+                    teamtype_name_list.append('')  # Or handle empty values as needed
+            except (ValueError, IndexError) as e:
+                # Handle potential errors from invalid integers or out-of-bounds indices
+                print(f"Error processing team type '{i}': {e}")
+                teamtype_name_list.append('')  # Or handle errors as needed
+
         names = [name for name in names if name.strip()]
-  
+
         TeamInviteList = []
         for i in range(len(names)): 
             teamdata = { 
@@ -84,7 +106,7 @@ def SaveData(request):
                 'teamtype_id' : teamtypes[i]
             }
             TeamInviteList.append(teamdata)
-        print('participants', teamdata) 
+        print('participants', TeamInviteList) 
         context = {
             'TeamInviteList': TeamInviteList,
             'encoded_pid' : pid_encoded
@@ -92,7 +114,6 @@ def SaveData(request):
         }
         
         return render(request, 'Team/invite_preview.html', context)
-
 
 def TeamInvite(request):
     if request.method == 'POST':

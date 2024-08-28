@@ -7,7 +7,7 @@
     <div class="content-wrapper">
         <div class="container text-center">
             <h4 class="instruction-text">
-                For better results and assessment, 8 references will be ideal. However, participants are free to provide at least 5, including 1 Reporting Manager, 2 Peers, and 3 Subordinates.
+                For better results and assessment, 8 references will be ideal. However, participants are free to provide at least 6, including 1 Reporting Manager, 2 Peers, and 3 Subordinates.
             </h4>
         </div>
         <div class="container mt-4 form-container">
@@ -30,7 +30,7 @@
                     <div class="col"><strong>State</strong></div>
                 </div>
                 <div class="container">
-                    {% for i in itereration %}
+                    {% for i in iterations %}
                         <div id="invite_form_{{ i }}" class="row mb-3" data-index="{{ i }}">
                             {% include 'Team/_invite_form.html' with index=i %}
                         </div>
