@@ -16,6 +16,10 @@
             background-color: #F6911D; /* Dropdown button background color */
             border-color: #06054b; /* Dropdown button border color */
         }
+        
+        .dropdown{
+            margin-left: 90%;
+        }
 
         .navbar {
             position: relative; /* Ensure positioning context for dropdown */
@@ -92,12 +96,12 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">
+            <!-- <a class="navbar-brand" href="#">
                 <a href="{% url 'index' %}">
                     <img src="{% static 'images/header.png' %}" alt="Header Image" class="header-image">
                 </a>
             </a>
-        
+         -->
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     Menu

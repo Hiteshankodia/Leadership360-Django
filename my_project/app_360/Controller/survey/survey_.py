@@ -18,33 +18,26 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
 
     if encoded_pid is None:
         encoded_pid = request.POST.get('strnameparticipantid', encoded_pid)
-    print(encoded_pid)
+    
     
     if survey_id == 0:
         survey_id = request.POST.get('intnamesurveyid', survey_id)
-    print(survey_id)
+    
     
     if page_number == 1: 
         page_number = int(request.POST.get('hiddenpage_number', page_number)) 
     encoded_pid = str(encoded_pid.replace(' ', '+'))
-    print(f"Encoded PID: {encoded_pid}")
-    print(f"Survey ID: {survey_id}") 
-    print(encoded_pid) 
-    print("Page Number", page_number) 
+    
     record_count = 5
  
     if encoded_pid:
         participant_id = utilityobj.decrypt(encoded_pid) 
     
-    print(f"Participant ID: {participant_id}")
-    print(f"Survey ID: {survey_id}")
-    print(f"Page Number: {page_number}")
-
     
 
     access_token = request.COOKIES.get('access_token')
     miltestone_message_list = surveyobj.FetchMilestoneMessage(survey_id = survey_id, token = access_token)
-    print(f"Milestone Messages: {miltestone_message_list}")
+    
 
     fetchQuestionRequestSchema = FetchQuestionRequestSchema(
         participantid=participant_id,
@@ -74,7 +67,6 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
     }
     
     if len(question) == 0: 
-        print("*" * 100)
         return PreviewSurvey(request=request, participantid=participant_id, surveyid=survey_id)
     
     elif ((int(page_number)-1) * record_count) == context['miestone_index'] :
@@ -84,7 +76,6 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
         return render(request, 'Survey/milestone_message.html', context)
     
     elif len(question) == 0: 
-        print("*" * 100)
         return PreviewSurvey(request=request, participantid=participant_id, surveyid=survey_id)
     
     else:
@@ -128,7 +119,7 @@ def SaveAndFetchNextQuestions(request):
                         "answerid": answer_id,
                         "presequencesurveyrequestid": presequence_id
                     })
-
+            print('question_responses', question_responses)
             # Construct survey data object
             survey_data = {
                 "surveyid": surveyid,
@@ -146,24 +137,45 @@ def SaveAndFetchNextQuestions(request):
 
 
 def PreviewSurvey(request, participantid=0, surveyid=1):
-    print('PreviewSurvey ')
+    '''question_responses = []
+
+    if request.method == 'POST':
+        for key, value in request.POST.items():
+            if key.startswith('rdioAnswer_'):
+                question_id = int(key.split('_')[1])
+                answer_id = int(value)
+                presequence_id = int(request.POST.get(f'hiddenpresequenceid_{question_id}', '0') or '0')
+
+                question_responses.append({
+                    "questionid": question_id,
+                    "answerid": answer_id,
+                    "presequencesurveyrequestid": presequence_id
+                })'''
+
+    # Print the extracted data for debugging
+    #print(question_responses)
+    print('Preview Survey Method!')
     enocded_pid = request.POST.get('hiddenstrpid', '')
     surveyid = request.POST.get('hiddenintsurveyid', '1')
      
     participantid = utilityobj.decrypt(enocded_pid)
-    print(participantid)
-    print(surveyid)
+    
     previewParticipantSurvey = PreviewParticipantSurvey(
         participantid=participantid, 
         surveyid=surveyid
     )
     access_token = request.COOKIES.get('access_token')
+    '''survey_data = {
+                "surveyid": surveyid,
+                "participantid": participantid,
+                "questionresponse": question_responses,
+                "teammemberid": 0  # Adjust as per your data structure
+            }
+    saved_status = surveyobj.SaveSurveyAnswers(survey_data = survey_data, token=access_token)
+    print(saved_status, "saved_status")'''
     preview_survey = surveyobj.PreviewSurvey(previewParticipantSurvey=previewParticipantSurvey, token=access_token)
-    print(preview_survey) 
     
-    print("Length of preview survey List", len(preview_survey))
     
-    # Define the possible answers
     answer_options = {1 : 'Strongly Agree', 2 : 'Agree', 3 : 'Neutral', 4 : 'Disagree', 5 : 'Strongly Disagree'}
     
     context = {
@@ -178,8 +190,7 @@ def PreviewSurvey(request, participantid=0, surveyid=1):
 
 def SubmitSurvey(request):  
     answers_json = request.POST.get('answers')
-    print("Submit Survey Method!")
-    print(answers_json)
+    
     surveyid = request.POST.get('hiddenintsurveyid')
     enocded_pid = request.POST.get('hiddenstrpid')
     participantid = utilityobj.decrypt(enocded_pid)
@@ -194,7 +205,8 @@ def SubmitSurvey(request):
                 for item in answers_list
             ] 
         update_survey_answers = UpdateSurveyAnswers(participantid=participantid,surveyid = surveyid, answers=answers_list)
-        surveyobj.UpdateSurveyAnswer(update_survey_answers = update_survey_answers) 
+        surveyobj.UpdateSurveyAnswer(update_survey_answers = update_survey_answers)
+         
     
     
     saveParticipantSurvey = SaveParticipantSurvey(

@@ -26,3 +26,8 @@ class UpdateSurveyAnswers(BaseModel):
     participantid: int
     surveyid : int
     answers: List[QuestionAnswerPair]
+    
+class UpdateSurveyAnswerTeam(BaseModel):
+    teammemberid : int 
+    participantid: int
+    answers: List[QuestionAnswerPair]    

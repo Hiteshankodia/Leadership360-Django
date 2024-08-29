@@ -35,7 +35,12 @@
         justify-content: center;
         flex-grow: 1;
     }
-    
+    .button-container {
+        display: flex;
+        justify-content: center; /* Centers the buttons horizontally */
+        gap: 35rem; /* Adds space between the buttons */
+        margin-top: 2rem; /* Adds space above the button container */
+    }
 </style>
 
 
@@ -63,16 +68,42 @@
                         {{ message }}
                         
                     </div>
+                    <div class="button-container mt-5">
+                        {% if show_back_button %}
+                        <button type="button" class="btn btn-secondary btn-lg" id="backButton">Back</button>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary btn-lg" style="background-color: #00008B; border-color: #00008B;" onclick="showLoader()">Continue</button>
+                    </div>
                 </div>
-                <div class="mt-5">
-                    {% if show_back_button %}
-                    <button type="button" class="btn btn-secondary btn-lg" id="backButton">Back</button>
-                    {% endif %}
-                    <br><br>
-                    <button type="submit" class="btn btn-primary btn-lg" style="background-color: #00008B; border-color: #00008B;">Continue</button>
-                </div>
+                
             </form>   
         </div>
     </div>
 </div>
+
+
+<!-- Loader HTML -->
+<div id="loader" class="loader-overlay">
+    <div class="loader"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const backButton = document.getElementById('backButton');
+        if (backButton) {
+            backButton.addEventListener('click', function() {
+                window.history.back(); // Go back to the previous page in browser history
+            });
+        }
+    });
+
+    function showLoader() {
+        document.getElementById('loader').style.display = 'flex';
+
+        // Ensure loader remains visible long enough before submitting
+        setTimeout(() => {
+            document.getElementById('surveyForm').submit();
+        }, 500); // Adjust delay as needed to ensure loader is visible
+    }
+</script>
 {% endblock %}

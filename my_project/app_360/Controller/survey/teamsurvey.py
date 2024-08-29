@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from app_360.utility.utility import UtilityClass
 from app_360.Schema.Team.survey import TeamFetchQuestionSchema
 from app_360.Schema.Team.survey import TeamPreviewSurvey, TeamSubmitSurvey, TeamFetchAllSurveySchema, TeamSurveyUpdateStatusSchema
+from app_360.Schema.Participant.survey import QuestionAnswerPair, UpdateSurveyAnswerTeam
+import json
 
 teamsurevyobj = Survey()
 utilityobj = UtilityClass()
@@ -135,25 +137,37 @@ def PreviewSurvey(request, teamPreviewSurvey : TeamPreviewSurvey):
     print(preview_survey) 
     
     print("Length of preview survey List", len(preview_survey))
-    
+    answer_options = {1 : 'Strongly Agree', 2 : 'Agree', 3 : 'Neutral', 4 : 'Disagree', 5 : 'Strongly Disagree'}
     context = {
         'preview_survey_data': preview_survey, 
         'enocded_pid' : teamPreviewSurvey.participantid,  
         'surveyid' : teamPreviewSurvey.surveyid,
-        'teammemberid' : teamPreviewSurvey.teammemberid
-        
+        'teammemberid' : teamPreviewSurvey.teammemberid,
+        'answer_options': answer_options,
     }
 
     return render(request, 'Team/survey_preview.html', context = context) 
 
 def SubmitSurvey(request):  
     print("Submit Survey!")
+    answers_json = request.POST.get('answers')
+
+
     surveyid = request.POST.get('hiddenintsurveyid')
     participantid = request.POST.get('hiddenstrpid')
     teammemberid = request.POST.get('hiddentintteammemberid')
-    print(surveyid)
-    print(participantid)
-    print(teammemberid)
+    
+    # Update Survey Answers 
+    if answers_json is not None:
+        answers_list = json.loads(answers_json)
+        # Ensure it's a list of dictionaries
+        if isinstance(answers_list, list) and all(isinstance(item, dict) for item in answers_list):
+            answers_list = [
+                QuestionAnswerPair(questionid=int(item["questionId"]), answerid=int(item["answerId"]))
+                for item in answers_list
+            ] 
+        update_survey_answers = UpdateSurveyAnswerTeam(participantid=participantid,surveyid = surveyid, answers=answers_list, teammemberid = teammemberid)
+        teamsurevyobj.UpdateSurveyAnswer(update_survey_answers = update_survey_answers)
 
     teamSubmitSurvey = TeamSubmitSurvey(
             participantid = int(participantid), 

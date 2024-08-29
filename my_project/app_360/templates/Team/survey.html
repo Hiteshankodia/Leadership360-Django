@@ -57,6 +57,14 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const backButton = document.getElementById('backButton');
+            if (backButton) {
+                backButton.addEventListener('click', function() {
+                    window.history.back(); // Navigates to the previous page in history
+                });
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('surveyForm');
             form.addEventListener('submit', function(event) {
                 const questions = form.querySelectorAll('input[name^="rdioAnswer_"]');

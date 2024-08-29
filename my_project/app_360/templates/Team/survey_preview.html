@@ -11,21 +11,116 @@
         <input type="hidden" name="hiddenstrpid" value="{{ enocded_pid }}">
         <input type="hidden" name="hiddenintsurveyid" value="{{ surveyid }}">
         <input type="hidden" name="hiddentintteammemberid" value="{{ teammemberid }}">
-                    
+        <div class="alert alert-info">
+            Please save your answers before submitting.
+        </div>           
         <table class="table table-borderless table-hover">
             <tbody>
                 {% for obj in preview_survey_data %}
                 <tr>
                     <td>{{ obj.question }}</td>
-                    <td>{{ obj.answer }}</td>
+                    <td>
+                        <select name="answer_{{ obj.questionid }}" class="form-control answer-dropdown" data-question-id="{{ obj.questionid }}" disabled>
+                            {% for value, text in answer_options.items %}
+                                <option value="{{ value }}" {% if obj.answer == text %}selected{% endif %}>{{ text }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>   
                 {% endfor %}
             </tbody>
         </table>
-        <div class="text-end mt-5">
-            <button type="submit" class="btn btn-success btn-lg" name="action" value="submit" onclick="showLoader()">Submit</button>
+        <div class="d-flex justify-content-between align-items-center mt-5">
+            <button type="button" class="btn btn-secondary btn-lg" id="editButton">Edit</button>
+            
+            <div class="ml-auto">
+                <button type="submit" class="btn btn-success btn-lg" id="submitButton" name="action" value="submit" onclick="showLoader()">Submit</button>
+            </div>
+        </div>
+        <!-- Loader HTML -->
+        <div id="loader" class="loader-overlay">
+            <div class="loader"></div>
         </div>
     </form>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editButton = document.getElementById('editButton');
+        const submitButton = document.getElementById('submitButton');
+        const dropdowns = document.querySelectorAll('.answer-dropdown');
+        const form = document.getElementById('surveyForm');
+        const errorMessage = document.getElementById('error-message');
+        const loader = document.getElementById('loader');
+        let isEditMode = false;
+
+        function showLoader() {
+            loader.style.display = 'flex';
+        }
+
+        function hideLoader() {
+            loader.style.display = 'none';
+        }
+
+        editButton.addEventListener('click', function() {
+            isEditMode = !isEditMode;
+            console.log('Edit mode:', isEditMode);
+
+            dropdowns.forEach(dropdown => {
+                dropdown.disabled = !isEditMode;
+                console.log(`Dropdown ${dropdown.name} disabled:`, dropdown.disabled);
+            });
+
+            this.textContent = isEditMode ? 'Save' : 'Edit';
+            console.log('Button text:', this.textContent);
+
+            if (isEditMode) {
+                submitButton.disabled = true;
+            } else {
+                // Show loader when 'Save' is clicked
+                showLoader();
+                submitButton.disabled = true;
+
+                const formData = new FormData(form);
+                const answers = [];
+                dropdowns.forEach(dropdown => {
+                    answers.push({
+                        questionId: dropdown.dataset.questionId,
+                        answerId: dropdown.value
+                    });
+                });
+                formData.append('answers', JSON.stringify(answers));
+                
+                fetch('{% url "teamsubmitsurvey" %}', {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json())
+                  .then(data => {
+                      console.log(data);
+                      submitButton.disabled = false;
+                      hideLoader();
+                      errorMessage.style.display = 'none';
+                  })
+                  .catch(error => {
+                      console.error('Error:', error);
+                      submitButton.disabled = false;
+                      hideLoader();
+                     
+                      errorMessage.style.display = 'block';
+                  });
+            }
+        });
+
+        form.addEventListener('submit', function(event) {
+            if (isEditMode) {
+                event.preventDefault();
+                errorMessage.style.display = 'block';
+                console.log('Attempted to submit while in edit mode.');
+            } else {
+                showLoader();
+            }
+        });
+    });
+</script>
 {% endblock %}
 
 
