@@ -112,6 +112,10 @@
       const namePattern = /^[A-Za-z\s]*$/;
       return namePattern.test(name);
     }
+    function validateLocation(location) {
+      const locationPattern = /^[A-Za-z\s]*$/;
+      return locationPattern.test(location);
+    }
 
 
     function validateEmail(email) {
@@ -263,7 +267,18 @@
         clearErr(element.id);
       }
     });
-
+    
+    //location 
+    $("[name=txtnamelocation]").on("input", function () {
+      const value = $(this).val();
+      const element = $(this)[0];
+      
+      if (!validateLocation(value)) {
+        showErr("Please enter a valid Location (letters and spaces only)", element.id);
+      } else {
+        clearErr(element.id);
+      }
+    });
 
     $("select[name=intnamecountry]").change(function () {
       var country_id = $(this).val();
@@ -344,6 +359,17 @@
       }
     });
 
+    $("input[name=txtnamelocation]").change(function (idx) {
+      $("#alert").css("display", "none");
+      const locationRegex = /^[A-Za-z\s]+$/;
+      const value = $(this).val().trim();
+      if (value === "" || locationRegex.test(value)) {
+        clearErr($(this).attr("id"));
+      } else {
+        showErr("fill Location properly", $(this).attr("id"));
+      }
+    });
+
       $("form").submit(function (event) {
       event.preventDefault(); // Prevent default form submission initially
 
@@ -366,6 +392,17 @@
           showErr("Please enter a valid Name (letters and spaces only)", $(this).attr("id"));
         }
       });
+      
+      $("input[name=txtnamelocation]").each(function (idx) {
+        if (!validateForm.rowFilled.includes(idx)) return;
+        
+        const location = $(this).val().trim();
+        if (!validateName(location)) {
+          isValid = false;
+          showErr("Please enter a valid Location (letters and spaces only)", $(this).attr("id"));
+        }
+      });
+
 
       $("input[type=email]").each(function (idx) {
         if (!validateForm.rowFilled.includes(idx)) {
