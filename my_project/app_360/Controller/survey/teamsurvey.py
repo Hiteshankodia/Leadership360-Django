@@ -168,23 +168,25 @@ def SubmitSurvey(request):
             ] 
         update_survey_answers = UpdateSurveyAnswerTeam(participantid=participantid,surveyid = surveyid, answers=answers_list, teammemberid = teammemberid)
         teamsurevyobj.UpdateSurveyAnswer(update_survey_answers = update_survey_answers)
+        
+    else:
 
-    teamSubmitSurvey = TeamSubmitSurvey(
-            participantid = int(participantid), 
-            surveyid = int(surveyid), 
-            teammmeberid = int(teammemberid)
-        )
-    save_survey_status = teamsurevyobj.TeamSubmitSurvey(teamSubmitSurvey)
-    
-    print(save_survey_status)
-    if save_survey_status['StatusCode'] == 1:
-        teamSurveyUpdateStatusSchema = TeamSurveyUpdateStatusSchema(
-            participantid = participantid, 
-            teammemberid = teammemberid,
-            surveyid = surveyid, 
-            status = 3
-        )
-        response = teamsurevyobj.TeamSurveyUpdateStatus(teamSurveyUpdateStatusSchema)
-        if response['StatusCode'] == 1:
-            return render(request, 'Team/AfterSurveyThankyou.html') 
-    return render(request, 'Team/AfterSurveyThankyou.html')
+        teamSubmitSurvey = TeamSubmitSurvey(
+                participantid = int(participantid), 
+                surveyid = int(surveyid), 
+                teammmeberid = int(teammemberid)
+            )
+        save_survey_status = teamsurevyobj.TeamSubmitSurvey(teamSubmitSurvey)
+
+        print(save_survey_status)
+        if save_survey_status['StatusCode'] == 1:
+            teamSurveyUpdateStatusSchema = TeamSurveyUpdateStatusSchema(
+                participantid = participantid, 
+                teammemberid = teammemberid,
+                surveyid = surveyid, 
+                status = 3
+            )
+            response = teamsurevyobj.TeamSurveyUpdateStatus(teamSurveyUpdateStatusSchema)
+            if response['StatusCode'] == 1:
+                return render(request, 'Team/AfterSurveyThankyou.html') 
+        return render(request, 'Team/AfterSurveyThankyou.html')

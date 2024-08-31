@@ -9,6 +9,9 @@ class Survey:
         self.utilityobj = UtilityClass()
         
     def TeamMemberAssignSurvey(self, teamMemberSurveyIds : TeamMemberSurveyIds):
+        print("TeamMemberAssignSurveyMethod!")
+        print(teamMemberSurveyIds.participantid)
+        print(teamMemberSurveyIds.teammemberid)
         data = self.ApiBaseObj.ToJSON(teamMemberSurveyIds)
         return self.ApiBaseObj.PostRequest(data = data, url = '/surveyteammember/teammemberassign', token='')
     
@@ -39,6 +42,9 @@ class Survey:
         return response 
     
     def FetchTeamSurveyStatus(self, teamFetchAllSurveySchema : TeamFetchAllSurveySchema): 
+        print('FetchTeamSurveyStatus!')
+        print(teamFetchAllSurveySchema.participantid)
+        print(teamFetchAllSurveySchema.teammemberid)
         data = self.ApiBaseObj.ToJSON(teamFetchAllSurveySchema)
         response = self.ApiBaseObj.PostRequest(data = data, url = '/surveyteammember/teamfetchallsurvey', token = '')
         print(response)  # Add this line to see the response structure

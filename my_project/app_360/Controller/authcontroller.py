@@ -120,22 +120,31 @@ def TeamMemberAssignSurvey(request):
     id = utilityobj.decrypt(encoded_id)
     id_list = id.split(':')
     print(id_list)
-
+    participantid = id_list[1]
+    teammemberid = id_list[0]
+    surveyid = id_list[2]
     teamMemberSurveyIds = TeamMemberSurveyIds(
-        participantid  = id_list[0], 
-        teammemberid = id_list[1], 
-        surveyid = id_list[2]
+        teammemberid  = teammemberid, 
+        participantid = participantid, 
+        surveyid = surveyid
     )
+    #edited
+    print('participantid')
+    print(participantid)
+    print(teammemberid)
+
     
+
+
     assign_survey = surveyobj.TeamMemberAssignSurvey(teamMemberSurveyIds=teamMemberSurveyIds)
     print(assign_survey)
     if assign_survey['StatusCode'] == 1:
 
         teamFetchAllSurveySchema = TeamFetchAllSurveySchema( 
-            participantid = id_list[0], 
-            teammemberid = id_list[1]
+            participantid = participantid, 
+            teammemberid = teammemberid
         )
-        print()
+        
         status = surveyobj.FetchTeamSurveyStatus(teamFetchAllSurveySchema)
         print("FetchTeamSurveyStatus", status)
         
@@ -151,9 +160,9 @@ def TeamMemberAssignSurvey(request):
         print('Company ID:', company_id)
 
         context = {
-            'participantid' : id_list[0],
-            'teammemberid' : id_list[1],
-            'surveyid': id_list[2], 
+            'participantid' : participantid,
+            'teammemberid' : teammemberid,
+            'surveyid': surveyid, 
             'companyid': company_id 
         }
 
@@ -161,7 +170,7 @@ def TeamMemberAssignSurvey(request):
             return render(request, 'Team/before_survey_message.html', context=context) 
         
         elif status["status"]  == "In Progress":
-            return TeamFetchQuestions(request = request, participantid = id_list[0], teamemberid = id_list[1], surveyid = id_list[2], page_number = 1)
+            return TeamFetchQuestions(request = request, participantid = participantid, teamemberid = teammemberid, surveyid = surveyid, page_number = 1)
         
         elif status["status"] == "Completed":
             return render(request, 'Team/AfterSurveyThankyou.html', context = context)

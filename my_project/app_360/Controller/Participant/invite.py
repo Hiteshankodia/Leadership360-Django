@@ -15,7 +15,6 @@ participantInviteServiceHelperObj = ParticipantInviteServiceHelperClass()
 
 def ParticipantDeatils(request):
   
-   
     countries = fetchmasterobj.FetchCountry()
     context = {
         'countries': countries,
@@ -23,6 +22,7 @@ def ParticipantDeatils(request):
         'departments' : ['HR', 'Data Science', 'Data Engineering', 'Softwares']
     }
     return render(request, 'Participant/invite.html', context)
+
 
 
 def load_states(request):
