@@ -61,13 +61,13 @@ def auth(request):
                     # Create a response object to set the cookie
                     response = HttpResponse()
                     # Set the access_token in a cookie
-                    response.set_cookie('access_token', access_token, max_age=3600)  # Cookie will expire in 1 hour
+                    response.set_cookie('access_token', access_token, max_age=18600)  # Cookie will expire in 1 hour
                     
                     # Continue processing based on role_id
                     role_id = token_details.get('role_id')
                     if role_id == 2:
                         response = redirect('thanksfrom360')
-                        response.set_cookie('access_token', access_token, max_age=3600)  # Ensure the cookie is set
+                        response.set_cookie('access_token', access_token, max_age=18600)  # Ensure the cookie is set
                         return response
                     
                     elif role_id == 3:

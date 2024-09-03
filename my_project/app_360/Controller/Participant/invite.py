@@ -14,12 +14,16 @@ fetchmasterobj = FetchMasterData()
 participantInviteServiceHelperObj = ParticipantInviteServiceHelperClass()
 
 def ParticipantDeatils(request):
-  
     countries = fetchmasterobj.FetchCountry()
+    
+    states = fetchmasterobj.FetchState()
+    
+    
     context = {
         'countries': countries,
-        'itereration' : range(1,6), 
-        'departments' : ['HR', 'Data Science', 'Data Engineering', 'Softwares']
+        'states': json.dumps(states),
+        'itereration': range(1, 6), 
+        'departments': ['HR', 'Data Science', 'Data Engineering', 'Software']
     }
     return render(request, 'Participant/invite.html', context)
 

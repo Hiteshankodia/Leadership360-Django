@@ -25,7 +25,7 @@
                             </thead>
                             <tbody>
                                 {% for i in itereration %}
-                                    {% include 'Participant/_invite_form.html' with index=i %}
+                                    {% include 'Participant/_invite_form.html' with index=i departments=departments countries=countries states=states %}
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -34,75 +34,36 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-custom ">Save and Next</button>
+                    <button type="submit" class="btn btn-custom">Save and Next</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('saveForm');
-
-    form.addEventListener('submit', function(event) {
-        let isValid = true;
-
-        // Get all rows of the table
-        const rows = document.querySelectorAll('.table tbody tr');
-
-        rows.forEach(row => {
-            const inputs = row.querySelectorAll('input, select');
-            const isRowFilled = Array.from(inputs).every(input => {
-                return input.type === 'hidden' || (input.type === 'text' && input.value.trim() !== '') || (input.type === 'email' && input.value.trim() !== '') || (input.type === 'date' && input.value.trim() !== '') || (input.type === 'select-one' && input.value.trim() !== '');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Populate state dropdown based on selected country
+        const statesData = {{ states|safe }};
+        
+        document.querySelectorAll('select[id^="intcountry_"]').forEach(countrySelect => {
+            countrySelect.addEventListener('change', function() {
+                const index = this.id.split('_')[1];
+                const stateSelect = document.getElementById(`intstate_${index}`);
+                const countryId = this.value;
+                
+                // Clear previous options
+                stateSelect.innerHTML = '<option value="" disabled selected>Select a State</option>';
+                
+                // Populate new options
+                const filteredStates = statesData.filter(state => state.countryid == countryId);
+                filteredStates.forEach(state => {
+                    const option = document.createElement('option');
+                    option.value = state.id;
+                    option.textContent = state.statename;
+                    stateSelect.appendChild(option);
+                });
             });
-
-            const isRowEmpty = Array.from(inputs).every(input => input.value.trim() === '');
-
-            if (!isRowEmpty && !isRowFilled) {
-                isValid = false;
-                row.classList.add('invalid-row');
-            } else {
-                row.classList.remove('invalid-row');
-            }
         });
-
-        if (!isValid) {
-            event.preventDefault();
-            alert('Please ensure that all rows are either completely filled or left empty. Partially filled rows are not allowed.');
-        }
     });
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Flatpickr for date inputs
-    flatpickr('input[name=datenamedob]', {
-        dateFormat: "Y-m-d", // Format of the date
-        maxDate: "today", // Prevent selecting future dates
-        minDate: new Date().getFullYear() - 100 + "-01-01", // Prevent selecting dates too far in the past
-        onChange: function(selectedDates, dateStr, instance) {
-            const dob = new Date(dateStr);
-            const today = new Date();
-            let age = today.getFullYear() - dob.getFullYear();
-            const m = today.getMonth() - dob.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-                age--;
-            }
-            const index = instance.element.getAttribute('id').split('_')[1];
-            if (age < 18) {
-                instance.element.classList.add('is-invalid');
-                document.getElementById('dobError_' + index).style.display = 'block';
-            } else {
-                instance.element.classList.remove('is-invalid');
-                document.getElementById('dobError_' + index).style.display = 'none';
-            }
-        }
-    });
-
-    // Other JavaScript code remains unchanged
-});
 </script>
 {% endblock %}
-
-

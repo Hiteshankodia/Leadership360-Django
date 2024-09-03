@@ -16,10 +16,8 @@ class FetchMasterData:
         
 
 
-    def FetchState(self, country_id ): 
-        state_request = {'id': int(country_id)}  
-        url = ApiBase.GetBaseUrl(self)
-        response = requests.post( url + '/masterdata/fetchstate', json=state_request)
-        response.raise_for_status()  
-        states = response.json()
-        return JsonResponse(states, safe=False)  
+    def FetchState(self): 
+        url = '/masterdata/fetchstate'
+        response = self.apibaseobj.GetRequest(url)
+        states = response.json()  
+        return states

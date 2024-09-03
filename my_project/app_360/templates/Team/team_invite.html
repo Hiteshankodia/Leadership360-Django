@@ -47,35 +47,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     
-        // Existing AJAX functionality
-        $('select[name=intnamecountry]').change(function() {
-            var country_id = $(this).val();
-            var country_name = $(this).find('option:selected').data('name');
-            var index = $(this).attr('id').split('_')[1];
-    
-            $('#country_name_' + index).val(country_name);
-    
-            $.ajax({
-                url: '{% url "load_states" %}',
-                type: 'POST',
-                data: {
-                    'csrfmiddlewaretoken': '{{ csrf_token }}',
-                    'country_id': country_id
-                },
-                success: function(data) {
-                    var options = '<option value="" disabled selected>Select a State</option>';
-                    data.forEach(function(state) {
-                        options += '<option value="' + state.id + '" data-name="' + state.statename + '">' + state.statename + '</option>';
-                    });
-                    $('#intstate_' + index).html(options);
-                    $('#intstate_' + index).change();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Populate state dropdown based on selected country
+        const statesData = {{ states|safe }};
+        
+        document.querySelectorAll('select[id^="intcountry_"]').forEach(countrySelect => {
+            countrySelect.addEventListener('change', function() {
+                const index = this.id.split('_')[1];
+                const stateSelect = document.getElementById(`intstate_${index}`);
+                const countryId = this.value;
+                
+                // Clear previous options
+                stateSelect.innerHTML = '<option value="" disabled selected>Select a State</option>';
+                
+                // Populate new options
+                const filteredStates = statesData.filter(state => state.countryid == countryId);
+                filteredStates.forEach(state => {
+                    const option = document.createElement('option');
+                    option.value = state.id;
+                    option.textContent = state.statename;
+                    stateSelect.appendChild(option);
+                });
             });
         });
-    
+    });
         
    
     

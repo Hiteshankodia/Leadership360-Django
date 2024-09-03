@@ -46,7 +46,7 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
         no_of_question=10,
         page_number=page_number
     )
-
+    print("Page Number", page_number)
     question = surveyobj.displayquestions(fetchQuestionRequestSchema = fetchQuestionRequestSchema, token = access_token)
     print(f"Questions: {question}")
     

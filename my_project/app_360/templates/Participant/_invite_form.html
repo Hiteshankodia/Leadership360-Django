@@ -2,26 +2,26 @@
     <td><input type="text" class="form-control" id="txtname_{{ index }}" name="txtnamename" placeholder="Name" ></td>
     <td><input type="text" class="form-control" id="txtdesignation_{{ index }}" name="txtnamedesignation" placeholder="Designation" ></td>
     <td>
-        <select id="intdepartment_{{ index }}" name="intnamedepartment" class="form-control" >
+        <select id="intdepartment_{{ index }}" name="intnamedepartment" class="form-control">
             <option value="" disabled selected>Select a Department</option>
             {% for department in departments %}
                 <option value="{{ department }}">{{ department }}</option>
             {% endfor %}
         </select>
     </td>
-    <td><input type="text" class="form-control" id="txtlocation_{{ index }}" name="txtnamelocation" placeholder="Location" ></td>
+    <td><input type="text" class="form-control" id="txtlocation_{{ index }}" name="txtnamelocation" placeholder="Location"></td>
     <td>
-        <input type="email" class="form-control" id="txtEmail_{{ index }}" name="txtnameEmail" placeholder="Email" >
+        <input type="email" class="form-control" id="txtEmail_{{ index }}" name="txtnameEmail" placeholder="Email">
         <div class="invalid-feedback" id="emailError_{{ index }}">Invalid email format</div>
         <div class="invalid-feedback" id="emailDuplicateError_{{ index }}">Email already entered above</div>
     </td>
     <td>
-        <input type="date" class="form-control" id="dateDob_{{ index }}" name="datenamedob" placeholder="Date of Birth" >
+        <input type="date" class="form-control" id="dateDob_{{ index }}" name="datenamedob" placeholder="Date of Birth">
         <div class="invalid-feedback" id="dobError_{{ index }}">Age cannot be below 18 years</div>
     </td>
     <td>
         <input type="hidden" id="country_name_{{ index }}" name="country_name[]" value="">
-        <select id="intcountry_{{ index }}" name="intnamecountry" class="form-control" >
+        <select id="intcountry_{{ index }}" name="intnamecountry" class="form-control">
             <option value="" disabled selected>Select a Country</option>
             {% for country in countries %}
                 <option value="{{ country.id }}" data-name="{{ country.countryname }}">{{ country.countryname }}</option>
@@ -30,14 +30,12 @@
     </td>
     <td>
         <input type="hidden" id="state_name_{{ index }}" name="state_name[]" value="">
-        <select id="intstate_{{ index }}" name="intnamestate" class="form-control" >
+        <select id="intstate_{{ index }}" name="intnamestate" class="form-control">
             <option value="" disabled selected>Select a State</option>
-            {% for state in states %}
-                <option value="{{ state.id }}" data-name="{{ state.statename }}">{{ state.statename }}</option>
-            {% endfor %}
         </select>
     </td>
 </tr>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
@@ -48,42 +46,7 @@
             return emailPattern.test(email);
         }
     
-        // Update country name and load states based on selected country
-        $('select[name=intnamecountry]').change(function() {
-            var country_id = $(this).val();
-            var country_name = $(this).find('option:selected').data('name');
-            var index = $(this).attr('id').split('_')[1];
-    
-            $('#country_name_' + index).val(country_name);
-    
-            $.ajax({
-                url: "{% url 'load_states' %}",
-                type: 'POST',
-                data: {
-                    'csrfmiddlewaretoken': '{{ csrf_token }}',
-                    'country_id': country_id
-                },
-                success: function(data) {
-                    var options = '<option value="" disabled selected>Select a State</option>';
-                    for (var i = 0; i < data.length; i++) {
-                        options += '<option value="' + data[i].id + '" data-name="' + data[i].statename + '">' + data[i].statename + '</option>';
-                    }
-                    $('#intstate_' + index).html(options);
-                    $('#intstate_' + index).change();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
-        });
-    
-        // Update state name based on selected state
-        $('select[name=intnamestate]').change(function() {
-            var state_name = $(this).find('option:selected').data('name');
-            var index = $(this).attr('id').split('_')[1];
-            $('#state_name_' + index).val(state_name);
-        });
-    
+        
         // Validate date of birth to ensure age is 18 or older
         $('input[name=datenamedob]').change(function() {
             var dob = new Date($(this).val());

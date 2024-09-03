@@ -4,7 +4,7 @@ from django.conf import settings
 from app_360.Schema.Participant.survey import ParticipantSurvveyStatusUpdateSchema 
 from app_360.ServiceHelper.survey import Survey
 from app_360.Schema.Team.invite import TeamMemberInvitedDetailSchema, TeamMemberInviteSchema
-import requests
+import json
 from app_360.ServiceHelper.TeamInvite import TeamInviteClass
 from app_360.utility.utility import UtilityClass
 
@@ -32,8 +32,10 @@ def TeamFormDetails(request):
     print('participantid in teamform details', pid_encoded)
 
     countries = fetchmasterobj.FetchCountry()
+    states = fetchmasterobj.FetchState()
     context = {
         'countries': countries,
+        'states': json.dumps(states),
         'iterations' : range(1,9), 
         'teamtype':  (eval(settings.TEAM_TYPE)), 
         'encoded_pid' : pid_encoded
@@ -62,8 +64,25 @@ def SaveData(request):
         teamtypes = request.POST.getlist('intnameteamtype')
         countries = request.POST.getlist('intnamecountry')
         states = request.POST.getlist('intnamestate')
-        country_names = request.POST.getlist('country_name[]')
-        state_names = request.POST.getlist('state_name[]')
+        #country_names = request.POST.getlist('country_name[]')
+        #state_names = request.POST.getlist('state_name[]')
+
+
+        print(countries)
+        
+
+
+        countriedb = fetchmasterobj.FetchCountry()
+        statedb = fetchmasterobj.FetchState()
+        
+        #Code - 
+        country_dict = {str(item['id']): item['countryname'] for item in countriedb}
+        country_names = [country_dict.get(cid, 'Unknown') for cid in countries if cid]
+        
+        state_dict = {str(item['id']): item['statename'] for item in statedb}
+        state_names = [state_dict.get(cid, 'Unknown') for cid in states if cid]
+        
+        print("***", country_names)
 
         # Print data for debugging
         print("Names:", names)
