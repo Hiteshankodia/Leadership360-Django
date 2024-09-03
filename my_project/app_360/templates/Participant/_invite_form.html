@@ -46,7 +46,27 @@
             return emailPattern.test(email);
         }
     
-        
+        // Function to validate alphabetic input
+        function validateAlphabetic(input) {
+            var alphabeticPattern = /^[a-zA-Z\s]+$/;
+            return alphabeticPattern.test(input);
+        }
+
+        // Validate name, designation, and location fields
+        $('input[name=txtnamename], input[name=txtnamedesignation], input[name=txtnamelocation]').on('input', function() {
+            var value = $(this).val();
+            var isValid = validateAlphabetic(value);
+            var fieldName = $(this).attr('name').replace('txtname', '');
+            var index = $(this).attr('id').split('_')[1];
+
+            if (!isValid && value !== '') {
+                $(this).addClass('is-invalid');
+                $('#' + fieldName + 'Error_' + index).show();
+            } else {
+                $(this).removeClass('is-invalid');
+                $('#' + fieldName + 'Error_' + index).hide();
+            }
+        });
         // Validate date of birth to ensure age is 18 or older
         $('input[name=datenamedob]').change(function() {
             var dob = new Date($(this).val());
@@ -104,9 +124,8 @@
         // Form submission validation
         $('form').submit(function(event) {
             var isValid = true;
-            var emails = [];
             var rows = $('.table tbody tr');
-    
+
             rows.each(function() {
                 var inputs = $(this).find('input, select');
                 var isRowFilled = inputs.toArray().every(function(input) {
@@ -115,33 +134,41 @@
                 var isRowEmpty = inputs.toArray().every(function(input) {
                     return $(input).val().trim() === '';
                 });
-    
+
                 if (!isRowEmpty && !isRowFilled) {
                     isValid = false;
                     $(this).addClass('invalid-row');
                 } else {
                     $(this).removeClass('invalid-row');
                 }
+
+                // Validate alphabetic fields
+                $(this).find('input[name=txtnamename], input[name=txtnamedesignation], input[name=txtnamelocation]').each(function() {
+                    if ($(this).val().trim() !== '' && !validateAlphabetic($(this).val())) {
+                        isValid = false;
+                        $(this).addClass('is-invalid');
+                    }
+                });
             });
-    
+
             if (!isValid) {
                 event.preventDefault();
-                alert('Please ensure that all rows are either completely filled or left empty. Partially filled rows are not allowed.');
+                alert('Please correct the errors in the form. Ensure all fields are either completely filled or left empty, and contain only alphabetic characters where required.');
             }
         });
     });
     </script>
     
     <style>
-    .is-invalid {
-        border-color: #dc3545;
-    }
-    .invalid-feedback {
-        display: none;
-        color: #dc3545;
-    }
-    .invalid-row {
-        border: 2px solid #dc3545;
-    }
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .invalid-feedback {
+            display: none;
+            color: #dc3545;
+        }
+        .invalid-row {
+            border: 2px solid #dc3545;
+        }
     </style>
     

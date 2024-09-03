@@ -4,9 +4,7 @@ import json
 from app_360.ServiceHelper.ParticipantInviteServiceHelper import ParticipantInviteServiceHelperClass
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from app_360.Schema.master_data import StateRequestSchema
-from app_360.Schema.Participant.participant_invite import ParticipantInviteRequestSchema
-import requests
+
 #from fastapi.encoders import jsonable_encoder
 
 
