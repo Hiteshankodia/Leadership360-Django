@@ -17,7 +17,7 @@ utilityobj = UtilityClass()
 
 def Beforeinvite(request, encoded_pid):
     encoded_pid = request.GET.get('encoded_pid', encoded_pid)
-    print(encoded_pid)  
+    
     context = {
             'encoded_pid' : encoded_pid     
     }
@@ -29,7 +29,7 @@ def TeamFormDetails(request):
     
     pid_encoded = request.GET.get('encoded_pid', None)
     pid_encoded = str(pid_encoded.replace(' ', '+'))
-    print('participantid in teamform details', pid_encoded)
+    
 
     countries = fetchmasterobj.FetchCountry()
     states = fetchmasterobj.FetchState()
@@ -45,17 +45,17 @@ def TeamFormDetails(request):
 
 def load_states(request):
     country_id = request.POST.get('country_id')
-    print('load_states')
+    
     states = fetchmasterobj.FetchState(country_id)
     return states
 
 def SaveData(request):
     if request.method == 'POST':
-        print("Save Data")
+        
         pid_encoded = request.POST.get('strnameparticipantid', None)
         pid_encoded = str(pid_encoded.replace(' ', '+'))
         # Print encoded_pid for debugging purposes
-        print(pid_encoded, "saveData")
+        
 
         names = request.POST.getlist('txtnamename')
         emails = request.POST.getlist('txtnameEmail')
@@ -68,7 +68,7 @@ def SaveData(request):
         #state_names = request.POST.getlist('state_name[]')
 
 
-        print(countries)
+        
         
 
 
@@ -82,18 +82,7 @@ def SaveData(request):
         state_dict = {str(item['id']): item['statename'] for item in statedb}
         state_names = [state_dict.get(cid, 'Unknown') for cid in states if cid]
         
-        print("***", country_names)
-
-        # Print data for debugging
-        print("Names:", names)
-        print("Emails:", emails)
-        print("Contacts:", contacts)
-        print("Locations:", locations)
-        print("Team Types:", teamtypes)
-        print("Countries:", countries)
-        print("States:", states)
-        print("Country Names:", country_names)
-        print("State Names:", state_names)
+        
 
         # Handle team types with empty values
         teamtype_name_list = []
@@ -142,9 +131,9 @@ def TeamInvite(request):
         emails = request.POST.getlist('emails[]')
         contacts = request.POST.getlist('contacts[]')
         locations = request.POST.getlist('locations[]')
-        teamtypes = request.POST.getlist('teamtypes[]')
-        countries = request.POST.getlist('countries[]')
-        states = request.POST.getlist('states[]')
+        # teamtypes = request.POST.getlist('teamtypes[]')
+        # countries = request.POST.getlist('countries[]')
+        # states = request.POST.getlist('states[]')
         country_ids = request.POST.getlist('country_ids[]')
         state_ids = request.POST.getlist('state_ids[]')
         teamtype_ids = request.POST.getlist('teamtype_id[]')
@@ -174,9 +163,10 @@ def TeamInvite(request):
             teammembers=teammembers_list
         )
          
-        print("Team Inivte Method!") 
-        response = teamInviteobj.TeamInvite(teamMemberInviteSchema)
-        print(response)
+        access_token = request.COOKIES.get('access_token')
+       
+        response = teamInviteobj.TeamInvite(teamMemberInviteSchema = teamMemberInviteSchema, token=access_token)
+        
         if response.get('StatusCode') == 1: 
             
             participantSurvveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(

@@ -34,10 +34,7 @@ def auth(request):
             surveyid = request.POST.get('intnamesurveyid', '')
             encoded_pid = str(encoded_pid.replace(' ', '+'))
             surveyid = 1
-            print(username)
-            print(password)
-            print(encoded_pid)
-            print(surveyid)
+            
 
             userLoginRequestSchema = UserLoginRequestSchema(
                 username=username,
@@ -45,18 +42,15 @@ def auth(request):
                 company_id=int(request.COOKIES.get('company_id'))
             )
 
-            print("Auth Method!")
-            print(encoded_pid)
-            print(surveyid)
+            
             
             try:
                 token_details = AuthServiceHelperobj.Login(userLoginRequestSchema)
-                print('token_details', token_details)
-                print("-" * 30)
+                
                 
                 access_token = token_details.get('access_token', None)
 
-                print('access_token', access_token)
+                
                 if access_token:
                     # Create a response object to set the cookie
                     response = HttpResponse()
@@ -73,10 +67,10 @@ def auth(request):
                     elif role_id == 3:
                         participantid = token_details['login_user_entity_id']
                         encoded_pid = utilityobj.encrypt(str(participantid)) 
-                        print("participantid For now", participantid)
+                        
                         status = participantsurveyobj.FetchSurveyStatus(participantid)
 
-                        print("FetchSurveyStatus", status)
+                      
                         
                         context = {
                             'encoded_pid': encoded_pid,
@@ -116,10 +110,10 @@ def TeamMemberAssignSurvey(request):
 
     encoded_id = str(request.GET.get('id', None)) 
     encoded_id = str(encoded_id.replace(' ', '+'))
-    print(encoded_id)
+    
     id = utilityobj.decrypt(encoded_id)
     id_list = id.split(':')
-    print(id_list)
+   
     participantid = id_list[1]
     teammemberid = id_list[0]
     surveyid = id_list[2]
@@ -128,16 +122,13 @@ def TeamMemberAssignSurvey(request):
         participantid = participantid, 
         surveyid = surveyid
     )
-    #edited
-    print('participantid')
-    print(participantid)
-    print(teammemberid)
+    
 
     
 
 
     assign_survey = surveyobj.TeamMemberAssignSurvey(teamMemberSurveyIds=teamMemberSurveyIds)
-    print(assign_survey)
+    
     if assign_survey['StatusCode'] == 1:
 
         teamFetchAllSurveySchema = TeamFetchAllSurveySchema( 
@@ -146,18 +137,17 @@ def TeamMemberAssignSurvey(request):
         )
         
         status = surveyobj.FetchTeamSurveyStatus(teamFetchAllSurveySchema)
-        print("FetchTeamSurveyStatus", status)
+        
         
 
         full_url = request.build_absolute_uri()
         parsed_url = urlparse(full_url)
         base_url = f"{parsed_url.scheme}://{parsed_url.netloc}/"
-        print('Base URL:', base_url)
         
         # Fetch company ID using the base URL
         response_data = AuthServiceHelperobj.FetchCompanyid(base_url)
         company_id = response_data.get('companyid')
-        print('Company ID:', company_id)
+        
 
         context = {
             'participantid' : participantid,
@@ -181,8 +171,7 @@ def ParticipantSurveyAfterInvite(request):
 
     encoded_pid = request.GET.get('encoded_pid', None) 
     
-    print('participantSurveyAfterInvite!')
-    print(encoded_pid)
+    
     context = {
             'encoded_pid': encoded_pid,
             'surveyid': 1, 

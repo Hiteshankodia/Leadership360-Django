@@ -13,12 +13,9 @@ def CheckStatus(request):
         encoded_pid = request.POST.get('strnameparticipantid', '')
         survey_id = request.POST.get('intnamesurveyid', '')
 
-        print(encoded_pid)
-        print(survey_id)
-
+        
         pid = utilityobj.decrypt(encoded_pid)
-        print(pid)
-
+        
         participant_survey_status = participantobj.FetchSurveyStatus(pid)
         context = {
             'encoded_pid' : encoded_pid, 

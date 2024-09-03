@@ -11,6 +11,7 @@
         <input type="hidden" name="hiddenstrpid" value="{{ enocded_pid }}">
         <input type="hidden" name="hiddenintsurveyid" value="{{ surveyid }}">
         <input type="hidden" name="milestone_message_index" value="{{ milestone_message_index }}">
+        <input type="hidden" name="answers" id="answersJson">
         <div class="alert alert-info">
             Please save your answers before submitting.
         </div>      
@@ -26,7 +27,7 @@
                             {% endfor %}
                         </select>
                     </td>
-                </tr>
+                </tr>   
                 {% endfor %}
             </tbody>
         </table>
@@ -45,15 +46,22 @@
         
     </form>
 </div>
-
 <script>
+    function showLoader() {
+        document.getElementById('loader').style.display = 'flex';
+
+        // Ensure loader remains visible long enough before submitting
+        setTimeout(() => {
+            document.getElementById('surveyForm').submit();
+        }, 500); // Adjust delay as needed to ensure loader is visible
+    }
     document.addEventListener('DOMContentLoaded', function() {
         const editButton = document.getElementById('editButton');
         const submitButton = document.getElementById('submitButton');
         const dropdowns = document.querySelectorAll('.answer-dropdown');
         const form = document.getElementById('surveyForm');
-        const errorMessage = document.getElementById('error-message');
         const loader = document.getElementById('loader');
+        const answersJsonInput = document.getElementById('answersJson');
         let isEditMode = false;
 
         function showLoader() {
@@ -64,71 +72,55 @@
             loader.style.display = 'none';
         }
 
+        function collectAnswers() {
+            const answers = [];
+            dropdowns.forEach(dropdown => {
+                answers.push({
+                    questionId: dropdown.dataset.questionId,
+                    answerId: dropdown.value
+                });
+            });
+            return JSON.stringify(answers);
+        }
+
         editButton.addEventListener('click', function() {
             isEditMode = !isEditMode;
-            console.log('Edit mode:', isEditMode);
 
             dropdowns.forEach(dropdown => {
                 dropdown.disabled = !isEditMode;
-                console.log(`Dropdown ${dropdown.name} disabled:`, dropdown.disabled);
             });
 
             this.textContent = isEditMode ? 'Save' : 'Edit';
-            console.log('Button text:', this.textContent);
+            submitButton.disabled = isEditMode;
 
-            if (isEditMode) {
-                submitButton.disabled = true;
-            } else {
-                // Show loader when 'Save' is clicked
-                showLoader();
-                submitButton.disabled = true;
-
-                const formData = new FormData(form);
-                const answers = [];
-                dropdowns.forEach(dropdown => {
-                    answers.push({
-                        questionId: dropdown.dataset.questionId,
-                        answerId: dropdown.value
-                    });
-                });
-                formData.append('answers', JSON.stringify(answers));
-                
-                fetch('{% url "submitsurvey" %}', {
-                    method: 'POST',
-                    body: formData
-                }).then(response => response.json())
-                  .then(data => {
-                      console.log(data);
-                      submitButton.disabled = false;
-                      hideLoader();
-                      errorMessage.style.display = 'none';
-                  })
-                  .catch(error => {
-                      console.error('Error:', error);
-                      submitButton.disabled = false;
-                      hideLoader();
-                     
-                      errorMessage.style.display = 'block';
-                  });
+            if (!isEditMode) {
+                // Save answers when exiting edit mode
+                answersJsonInput.value = collectAnswers();
             }
         });
 
         form.addEventListener('submit', function(event) {
             if (isEditMode) {
                 event.preventDefault();
-                errorMessage.style.display = 'block';
-                console.log('Attempted to submit while in edit mode.');
+                alert('Please save your changes before submitting.');
             } else {
+                // Ensure answers are collected before submission
+                answersJsonInput.value = collectAnswers();
+
+                // Optional: Log answers to verify they are captured
+                console.log('Form data before submission:', answersJsonInput.value);
+
+                // Show loader
                 showLoader();
             }
         });
     });
 </script>
-    
+
 {% endblock %}
 
 {% block extra_styles %}
-<style>
+/* Loader styles */
 .loader-overlay {
     position: fixed;
     top: 0;
@@ -136,15 +128,15 @@
     width: 100%;
     height: 100%;
     background-color: rgba(255, 255, 255, 0.8);
-    display: none;
+    display: none; /* Hidden by default */
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 9999; /* Ensure loader is above other content */
 }
 
 .loader {
-    border: 16px solid #f3f3f3;
-    border-top: 16px solid #3498db;
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
     border-radius: 50%;
     width: 120px;
     height: 120px;
@@ -155,5 +147,4 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-</style>
 {% endblock %}

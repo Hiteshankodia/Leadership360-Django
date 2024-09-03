@@ -1,4 +1,4 @@
-
+from django.http import JsonResponse
 from app_360.ServiceHelper.Teamsurvey import Survey
 from django.shortcuts import render, redirect
 from app_360.utility.utility import UtilityClass
@@ -11,30 +11,29 @@ teamsurevyobj = Survey()
 utilityobj = UtilityClass()
 
 def TeamFetchQuestions(request, participantid = 0 , teamemberid = 0 , surveyid = 0 , page_number = 1):
-    print(page_number, "Page Number")
-    print('FetchQuestionS')
+    
     if participantid is None or participantid == 0:
         participantid = int(request.POST.get('hiddenstrpid', participantid))
-    print(participantid)
+   
       
     if teamemberid is None or teamemberid == 0 or teamemberid == '':
         teamemberid = int(request.POST.get('hiddentintteammemberid', teamemberid))
-    print(teamemberid)
+    
 
     milestone_message_index = int(request.POST.get('milestone_message_index', '0'))
 
     if surveyid is None or surveyid == 0 :
         surveyid = int(request.POST.get('hiddenintsurveyid', surveyid))
-    print(surveyid)
+    
 
     if page_number == 1:
         page_number = int(request.POST.get('hiddenpage_number', page_number))
-    print(page_number) 
+    
 
     record_count = 5
     
     miltestone_message_list = teamsurevyobj.FetchMilestoneMessage(surveyid)
-    print(f"Milestone Messages: {miltestone_message_list}")
+    
 
     teamFetchQuestionSchema = TeamFetchQuestionSchema(
         participantid = participantid, 
@@ -47,7 +46,7 @@ def TeamFetchQuestions(request, participantid = 0 , teamemberid = 0 , surveyid =
     )
 
     question = teamsurevyobj.displayquestions(teamFetchQuestionSchema)
-    print(f"Questions: {question}")
+    
     
     show_submit_button = len(question) < record_count
     
@@ -63,7 +62,7 @@ def TeamFetchQuestions(request, participantid = 0 , teamemberid = 0 , surveyid =
         'teammemberid' : teamemberid, 
         
     }
-    print(page_number, "Page Number")
+    
     if len(question) == 0: 
         
         teamPreviewSurvey = TeamPreviewSurvey(
@@ -122,8 +121,7 @@ def SaveAndFetchNextQuestions(request):
                 "teammemberid": teammemberid
             }
 
-            print("Survey Data:", survey_data)
-        
+           
             saved_status = teamsurevyobj.TeamSaveSurveyAnswers(survey_data)
             
             if saved_status['StatusCode'] == 1: 
@@ -131,12 +129,9 @@ def SaveAndFetchNextQuestions(request):
 
 
 def PreviewSurvey(request, teamPreviewSurvey : TeamPreviewSurvey):
-    print('PreviewSurvey ')
-    print(teamPreviewSurvey)
-    preview_survey = teamsurevyobj.TeamPreviewSurvey(teamPreviewSurvey)
-    print(preview_survey) 
     
-    print("Length of preview survey List", len(preview_survey))
+    preview_survey = teamsurevyobj.TeamPreviewSurvey(teamPreviewSurvey)
+    print(preview_survey)
     answer_options = {1 : 'Strongly Agree', 2 : 'Agree', 3 : 'Neutral', 4 : 'Disagree', 5 : 'Strongly Disagree'}
     context = {
         'preview_survey_data': preview_survey, 
@@ -149,27 +144,31 @@ def PreviewSurvey(request, teamPreviewSurvey : TeamPreviewSurvey):
     return render(request, 'Team/survey_preview.html', context = context) 
 
 def SubmitSurvey(request):  
-    print("Submit Survey!")
-    answers_json = request.POST.get('answers')
+    if request.method == 'POST':
+        answers_json = request.POST.get('answers')
+        surveyid = request.POST.get('hiddenintsurveyid')
+        participantid = request.POST.get('hiddenstrpid')
+        teammemberid = request.POST.get('hiddentintteammemberid')
+        print(answers_json)
+        # Update Survey Answers 
+        if answers_json:
+            try:
+                # Parse and validate answers_json
+                answers_list = json.loads(answers_json)
+                if isinstance(answers_list, list) and all(isinstance(item, dict) for item in answers_list):
+                    answers_list = [
+                        QuestionAnswerPair(questionid=int(item["questionId"]), answerid=int(item["answerId"]))
+                        for item in answers_list
+                    ]
 
-
-    surveyid = request.POST.get('hiddenintsurveyid')
-    participantid = request.POST.get('hiddenstrpid')
-    teammemberid = request.POST.get('hiddentintteammemberid')
-    
-    # Update Survey Answers 
-    if answers_json is not None:
-        answers_list = json.loads(answers_json)
-        # Ensure it's a list of dictionaries
-        if isinstance(answers_list, list) and all(isinstance(item, dict) for item in answers_list):
-            answers_list = [
-                QuestionAnswerPair(questionid=int(item["questionId"]), answerid=int(item["answerId"]))
-                for item in answers_list
-            ] 
-        update_survey_answers = UpdateSurveyAnswerTeam(participantid=participantid,surveyid = surveyid, answers=answers_list, teammemberid = teammemberid)
-        teamsurevyobj.UpdateSurveyAnswer(update_survey_answers = update_survey_answers)
+                    # Update survey answers
+                    update_survey_answers = update_survey_answers = UpdateSurveyAnswerTeam(participantid=participantid,surveyid = surveyid, answers=answers_list, teammemberid = teammemberid)
+                    teamsurevyobj.UpdateSurveyAnswer(update_survey_answers=update_survey_answers)
+            except json.JSONDecodeError:
+                # Handle JSON parsing errors
+                return JsonResponse({'status': 'error', 'message': 'Invalid answers data format'}, status=400)
+            
         
-    else:
 
         teamSubmitSurvey = TeamSubmitSurvey(
                 participantid = int(participantid), 
@@ -178,7 +177,7 @@ def SubmitSurvey(request):
             )
         save_survey_status = teamsurevyobj.TeamSubmitSurvey(teamSubmitSurvey)
 
-        print(save_survey_status)
+            
         if save_survey_status['StatusCode'] == 1:
             teamSurveyUpdateStatusSchema = TeamSurveyUpdateStatusSchema(
                 participantid = participantid, 

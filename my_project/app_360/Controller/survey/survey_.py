@@ -7,6 +7,8 @@ from app_360.utility.utility import UtilityClass
 from app_360.Schema.Participant.survey import ParticipantSurvveyStatusUpdateSchema 
 from app_360.Schema.Participant.survey import QuestionAnswerPair, UpdateSurveyAnswers
 import json
+from django.http import JsonResponse
+
 surveyobj = Survey()
 utilityobj = UtilityClass()
 
@@ -46,9 +48,8 @@ def FetchQuestions(request, encoded_pid=None, survey_id =0 , page_number=1):
         no_of_question=10,
         page_number=page_number
     )
-    print("Page Number", page_number)
+    
     question = surveyobj.displayquestions(fetchQuestionRequestSchema = fetchQuestionRequestSchema, token = access_token)
-    print(f"Questions: {question}")
     
     show_submit_button = len(question) < record_count
     
@@ -91,11 +92,7 @@ def SaveAndFetchNextQuestions(request):
         page_number = int(request.POST.get('hiddenpage_number', '1')) + 1 
         enocded_pid = request.POST.get('hiddenstrpid', '')
         surveyid = request.POST.get('hiddenintsurveyid', '1')
-        print(enocded_pid)
         participant_id = utilityobj.decrypt(enocded_pid)
-        print(page_number)
-        print(participant_id)
-        print(surveyid)
         
         #Update Participant Survey Status to Inprogress. 
         participantSurvveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(
@@ -119,7 +116,7 @@ def SaveAndFetchNextQuestions(request):
                         "answerid": answer_id,
                         "presequencesurveyrequestid": presequence_id
                     })
-            print('question_responses', question_responses)
+            
             # Construct survey data object
             survey_data = {
                 "surveyid": surveyid,
@@ -128,7 +125,7 @@ def SaveAndFetchNextQuestions(request):
                 "teammemberid": 0  # Adjust as per your data structure
             }
 
-            print("Survey Data:", survey_data)
+            
             access_token = request.COOKIES.get('access_token')
 
             saved_status = surveyobj.SaveSurveyAnswers(survey_data = survey_data, token=access_token)
@@ -137,24 +134,10 @@ def SaveAndFetchNextQuestions(request):
 
 
 def PreviewSurvey(request, participantid=0, surveyid=1):
-    '''question_responses = []
+    
 
-    if request.method == 'POST':
-        for key, value in request.POST.items():
-            if key.startswith('rdioAnswer_'):
-                question_id = int(key.split('_')[1])
-                answer_id = int(value)
-                presequence_id = int(request.POST.get(f'hiddenpresequenceid_{question_id}', '0') or '0')
-
-                question_responses.append({
-                    "questionid": question_id,
-                    "answerid": answer_id,
-                    "presequencesurveyrequestid": presequence_id
-                })'''
-
-    # Print the extracted data for debugging
-    #print(question_responses)
-    print('Preview Survey Method!')
+    
+    
     enocded_pid = request.POST.get('hiddenstrpid', '')
     surveyid = request.POST.get('hiddenintsurveyid', '1')
      
@@ -165,17 +148,12 @@ def PreviewSurvey(request, participantid=0, surveyid=1):
         surveyid=surveyid
     )
     access_token = request.COOKIES.get('access_token')
-    '''survey_data = {
-                "surveyid": surveyid,
-                "participantid": participantid,
-                "questionresponse": question_responses,
-                "teammemberid": 0  # Adjust as per your data structure
-            }
-    saved_status = surveyobj.SaveSurveyAnswers(survey_data = survey_data, token=access_token)
-    print(saved_status, "saved_status")'''
+    
     preview_survey = surveyobj.PreviewSurvey(previewParticipantSurvey=previewParticipantSurvey, token=access_token)
     
-    
+    print(preview_survey)
+
+
     answer_options = {1 : 'Strongly Agree', 2 : 'Agree', 3 : 'Neutral', 4 : 'Disagree', 5 : 'Strongly Disagree'}
     
     context = {
@@ -188,50 +166,53 @@ def PreviewSurvey(request, participantid=0, surveyid=1):
     return render(request, 'Participant/preview_survey.html', context=context)
 
 
-def SubmitSurvey(request):  
-    answers_json = request.POST.get('answers')
-    
-    surveyid = request.POST.get('hiddenintsurveyid')
-    enocded_pid = request.POST.get('hiddenstrpid')
-    participantid = utilityobj.decrypt(enocded_pid)
 
-    # Update Survey Answers 
-    if answers_json is not None:
-        answers_list = json.loads(answers_json)
-        # Ensure it's a list of dictionaries
-        if isinstance(answers_list, list) and all(isinstance(item, dict) for item in answers_list):
-            answers_list = [
-                QuestionAnswerPair(questionid=int(item["questionId"]), answerid=int(item["answerId"]))
-                for item in answers_list
-            ] 
-        update_survey_answers = UpdateSurveyAnswers(participantid=participantid,surveyid = surveyid, answers=answers_list)
-        surveyobj.UpdateSurveyAnswer(update_survey_answers = update_survey_answers)
-         
-    
-    
-    saveParticipantSurvey = SaveParticipantSurvey(
-            participantid = participantid, 
-            surveyid = surveyid
+
+def SubmitSurvey(request):
+    if request.method == 'POST':
+        answers_json = request.POST.get('answers')
+        surveyid = request.POST.get('hiddenintsurveyid')
+        encoded_pid = request.POST.get('hiddenstrpid')
+        participantid = utilityobj.decrypt(encoded_pid)
+
+        if answers_json:
+            try:
+                # Parse and validate answers_json
+                answers_list = json.loads(answers_json)
+                if isinstance(answers_list, list) and all(isinstance(item, dict) for item in answers_list):
+                    answers_list = [
+                        QuestionAnswerPair(questionid=int(item["questionId"]), answerid=int(item["answerId"]))
+                        for item in answers_list
+                    ]
+
+                    # Update survey answers
+                    update_survey_answers = UpdateSurveyAnswers(participantid=participantid, surveyid=surveyid, answers=answers_list)
+                    surveyobj.UpdateSurveyAnswer(update_survey_answers=update_survey_answers)
+            except json.JSONDecodeError:
+                # Handle JSON parsing errors
+                return JsonResponse({'status': 'error', 'message': 'Invalid answers data format'}, status=400)
+        
+        # Submit the survey
+        saveParticipantSurvey = SaveParticipantSurvey(
+            participantid=participantid, 
+            surveyid=surveyid
         )
-    
-    access_token = request.COOKIES.get('access_token')
+        access_token = request.COOKIES.get('access_token')
+        save_survey_status = surveyobj.SubmitSurvey(submitParticipantSurveyRequestSchema=saveParticipantSurvey, token=access_token)
+        
+        # Update participant survey status to Inprogress
+        participantSurveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(
+            participantid=participantid, 
+            surveyid=surveyid, 
+            status=3
+        )
+        surveyobj.ParticipantUpdateSurveyStatus(participantSurveyStatusUpdateSchema)
 
+        if save_survey_status['StatusCode'] == 1:
+            return render(request, 'Survey/Thankyou.html')
+        else:
+            # Handle the case where the survey submission fails
+            return render(request, 'Survey/Error.html', {'message': 'There was an issue submitting the survey.'})
     
-
-    save_survey_status = surveyobj.SubmitSurvey(submitParticipantSurveyRequestSchema = saveParticipantSurvey, token=access_token)
-    print(save_survey_status)
-    
-
-     
-    #Update Participant Survey Status to Inprogress. 
-    participantSurvveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(
-        participantid = participantid, 
-        surveyid = surveyid, 
-        status = 3
-    )
-    
-    surveyobj.ParticipantUpdateSurveyStatus(participantSurvveyStatusUpdateSchema)
-
-    if save_survey_status['StatusCode'] == 1:
-        return render(request, 'Survey/Thankyou.html')
-    return render(request, 'Survey/Thankyou.html')
+    # Handle non-POST requests
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)

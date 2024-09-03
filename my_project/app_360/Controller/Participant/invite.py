@@ -49,10 +49,16 @@ def save_data(request):
         dobs = request.POST.getlist('datenamedob')
         countries = request.POST.getlist('intnamecountry')
         states = request.POST.getlist('intnamestate')
-        country_names = request.POST.getlist('country_name[]')  # Get country names
-        state_names = request.POST.getlist('state_name[]')  # Get state names
-
-
+        #country_names = request.POST.getlist('country_name[]')  # Get country names
+        #state_names = request.POST.getlist('state_name[]')  # Get state names
+        countriedb = fetchmasterobj.FetchCountry()
+        statedb = fetchmasterobj.FetchState()
+        country_dict = {str(item['id']): item['countryname'] for item in countriedb}
+        country_names = [country_dict.get(cid, 'Unknown') for cid in countries if cid]
+        
+        state_dict = {str(item['id']): item['statename'] for item in statedb}
+        state_names = [state_dict.get(cid, 'Unknown') for cid in states if cid]
+        
         names = [name for name in names if name.strip()]
         
 
@@ -113,8 +119,7 @@ def ParticipantInvite(request):
                 'dobs' : dobs[i]
             }
             participants.append(participant)
-        print('After Preview - ')    
-        print('participants', participants)
+        
 
         # Convert participants list to desired format 
         data = []

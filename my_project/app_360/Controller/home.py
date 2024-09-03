@@ -10,16 +10,16 @@ def index(request):
     response = HttpResponse(render(request, 'Homepage/homepage.html'))
     for cookie in request.COOKIES:
             response.delete_cookie(cookie)
-    print("indeX method!")
+    
     if request.method == 'POST':
         response = HttpResponse(render(request, 'Homepage/homepage.html'))
         for cookie in request.COOKIES:
             response.delete_cookie(cookie)
-        print("indeX method!")
+        
         encoded_pid = request.POST.get('strnameparticipantid', '')
     
         survey_id = request.POST.get('intnamesurveyid', '')
-        print("survey_id ", survey_id)   
+        
         
         
         context = {
@@ -29,13 +29,10 @@ def index(request):
         }  
 
         
-        print("Index Page!")
-        print(encoded_pid)
-        print(survey_id)
+        
         
         url = request.build_absolute_uri()
-        print(url)
-        print('If part!')
+        
 
 
         return render(request, 'Homepage/homepage.html', context = context)
@@ -45,12 +42,12 @@ def index(request):
         response = HttpResponse(render(request, 'Homepage/homepage.html'))
         for cookie in request.COOKIES:
             response.delete_cookie(cookie)
-        print('company_id', request.COOKIES.get('company_id'))    
+         
         company_id = None
 
         
         company_id_json = request.COOKIES.get('company_id')
-        print('print("indeX method!")', company_id_json)
+        
         if not company_id_json:
             print("above FetchCompnayid()")
             # Cookie not present, fetch company ID
@@ -66,9 +63,7 @@ def index(request):
             # Set the cookie in the response
             response.set_cookie('company_id', str(company_id))
              
-            # Debugging information
-            print('Cookie set:', response.cookies)
-            print('Company ID:', company_id)
+            
             
             return response
 
@@ -97,6 +92,5 @@ def index(request):
 
 
 def ThanksFrom360(request):
-    print("Thanks from 360")
-    print("Here!")
+    
     return render(request, 'Homepage/before_survey_hr.html')    

@@ -12,7 +12,6 @@ utilityobj = UtilityClass()
 authobj = AuthServiceHelper()
 
 def fetchparticipantid(request, pid_encoded=1, surveyid=1):
-    print('fetchparticipantid')
     
     # Retrieve the participant ID from the GET or POST data
     pid_encoded = request.GET.get('pid', 'null')
@@ -25,22 +24,17 @@ def fetchparticipantid(request, pid_encoded=1, surveyid=1):
     full_url = request.build_absolute_uri()
     parsed_url = urlparse(full_url)
     base_url = f"{parsed_url.scheme}://{parsed_url.netloc}/"
-    print('Base URL:', base_url)
     
     # Fetch company ID using the base URL
     response_data = authobj.FetchCompanyid(base_url)
     company_id = response_data.get('companyid')
-    print('Company ID:', company_id)
     
     # Prepare the participant ID and survey ID
     pid_encoded = str(pid_encoded.replace(' ', '+'))
     survey_id = request.POST.get('intnamesurveyid', surveyid)
-    print('pid_encoded', pid_encoded)
-    print('survey_id', survey_id)
     
     # Fetch participant ID and determine the response
     response_data = participantobj.fetchparticipantid(pid_encoded=pid_encoded)
-    print('Participant Response:', response_data)
     
     # Prepare the context for rendering the response
     context = {
@@ -65,11 +59,7 @@ def setpassword(request):
     date_of_birth = request.POST.get('datenamedob', '')
     email = request.POST.get('idemailemail', '')
     survey_id = request.POST.get('intnamesurveyid')
-    print(pid_encoded)
-    print(company_id)
-    print(date_of_birth)
-    print(email)    
-
+    
     #decode and user the participantid here
     participantid = utilityobj.decrypt(pid_encoded)
     validateParticipantDetailsSchema = ValidateParticipantDetailsSchema(
@@ -89,9 +79,7 @@ def setpassword(request):
         }
     
     response = participantobj.CheckParticipantDetails(validateParticipantDetailsSchema)
-    print(response)
-    print('Check Participant Ran Successfully !')
-
+    
     if response['StatusCode'] == 5:
         # Render the setpassword.html template
         return render(request, 'Participant/setpassword.html', context=context)
@@ -109,12 +97,6 @@ def save_password(request):
     confirmpassword = request.POST.get('str_name_new_password')
     email = request.POST.get('emailnameemailid')
     survey_id = request.POST.get('intnamesurveyid')
-    print(encoded_pid)
-    print(company_id)
-    print(password)
-    print(confirmpassword)
-    print(email) 
-    print('save_password!')
     
     participantid = utilityobj.decrypt(encoded_pid)
     participantid = participantid
@@ -131,7 +113,6 @@ def save_password(request):
     )
 
     response = participantobj.CreateUser(createUserRequestSchema)
-    print(survey_id)
     participantSurvveyStatusUpdateSchema = ParticipantSurvveyStatusUpdateSchema(
         participantid = participantid, 
         surveyid = 1, 
