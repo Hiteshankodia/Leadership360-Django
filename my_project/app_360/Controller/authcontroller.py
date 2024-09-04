@@ -49,7 +49,7 @@ def auth(request):
                 
                 
                 access_token = token_details.get('access_token', None)
-
+                   
                 
                 if access_token:
                     # Create a response object to set the cookie
@@ -78,7 +78,10 @@ def auth(request):
                             'companyid': int(request.COOKIES.get('company_id'))
                         }
                         if status["status"] == "TeamInvite":
-                            return Beforeinvite(request=request, encoded_pid=encoded_pid)
+                            response = Beforeinvite(request=request, encoded_pid=encoded_pid)
+                            response.set_cookie('access_token', access_token, max_age=18600)  # Ensure the cookie is set
+                            return response
+
                         if status["status"] == "Assigned":
                             response = render(request, 'Participant/before_survey_message.html', context=context)
                             response.set_cookie('access_token', access_token, max_age=3600)  # Ensure the cookie is set

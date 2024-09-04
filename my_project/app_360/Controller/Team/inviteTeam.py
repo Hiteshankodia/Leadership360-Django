@@ -8,6 +8,7 @@ import json
 from app_360.ServiceHelper.TeamInvite import TeamInviteClass
 from app_360.utility.utility import UtilityClass
 
+from django.http import HttpResponse
 
 surveyobj = Survey()
 fetchmasterobj = FetchMasterData()
@@ -16,12 +17,13 @@ utilityobj = UtilityClass()
 
 
 def Beforeinvite(request, encoded_pid):
-    encoded_pid = request.GET.get('encoded_pid', encoded_pid)
+    
+    
     
     context = {
             'encoded_pid' : encoded_pid     
     }
-        
+      
     return render(request, "Team/before_invite.html", context=context)
 
 
@@ -40,6 +42,8 @@ def TeamFormDetails(request):
         'teamtype':  (eval(settings.TEAM_TYPE)), 
         'encoded_pid' : pid_encoded
     }
+    access_token = request.COOKIES.get('access_token')
+    print('Access Token From browser', access_token)   
     return render(request, 'Team/team_invite.html', context)
 
 
