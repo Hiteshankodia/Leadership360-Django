@@ -148,5 +148,19 @@
     function showLoader() {
         document.getElementById('loader').style.display = 'flex';
     }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ensure loader is hidden when DOM is fully loaded
+        document.getElementById('loader').style.display = 'none';
+    });
+
+    window.addEventListener('load', function() {
+        // Ensure loader is hidden when all page resources are fully loaded
+        document.getElementById('loader').style.display = 'none';
+    });
+
+    document.getElementById('participantForm').addEventListener('submit', function() {
+        showLoader(); // Show loader on form submission
+    });
 </script>
 {% endblock %}
