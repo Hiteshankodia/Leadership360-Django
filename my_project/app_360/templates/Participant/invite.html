@@ -49,8 +49,14 @@
         document.getElementById('loader').style.display = 'flex';
     }
 
+    function hideLoader() {
+        document.getElementById('loader').style.display = 'none';
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
+        // Hide loader on page load
+        hideLoader();
+
         // Populate state dropdown based on selected country
         const statesData = {{ states|safe }};
         
@@ -74,13 +80,18 @@
             });
         });
     });
+
+    // Hide loader when navigating back to this page
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            hideLoader();
+        }
+    });
 </script>
 {% endblock %}
 
 {% block extra_styles %}
 <style>
-    
-
     /* Loader styles */
     .loader-overlay {
         position: fixed;

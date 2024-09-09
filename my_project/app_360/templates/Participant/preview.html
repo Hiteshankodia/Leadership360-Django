@@ -148,7 +148,10 @@
     function showLoader() {
         document.getElementById('loader').style.display = 'flex';
     }
-    
+    function hideLoader() {
+        document.getElementById('loader').style.display = 'none';
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Ensure loader is hidden when DOM is fully loaded
         document.getElementById('loader').style.display = 'none';

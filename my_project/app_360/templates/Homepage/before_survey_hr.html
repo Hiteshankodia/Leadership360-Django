@@ -59,17 +59,12 @@
         }
     });
 
-    function showLoader(event) {
-        event.preventDefault(); // Prevent default link behavior
-        document.getElementById('loader').style.display = 'flex';
-
-        // Store a flag in sessionStorage to show the loader on next visit
-        sessionStorage.setItem('showLoader', 'true');
-
-        // Navigate to the URL after a short delay
-        setTimeout(function() {
-            window.location.href = event.target.href;
-        }, 500); // Adjust the delay as needed
-    }
+    function showLoader() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+    
+        function hideLoader() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
 </script>
 {% endblock %}
