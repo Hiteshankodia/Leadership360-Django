@@ -24,8 +24,6 @@ class ApiBase:
         print(endpoint)
 
         response = requests.post(endpoint, json=data, headers=headers)
-        #print('response', response)
-        #print(response.json())  
         return response.json() 
     
     def GetRequest(self, url, token=None):

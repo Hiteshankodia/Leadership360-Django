@@ -1,0 +1,151 @@
+{% extends 'Base/surveybase.html' %}
+{% load static %}
+{% block title %}Project360{% endblock %}
+
+{% block content %}
+<!-- Content Section -->
+<!-- Table for survey status -->
+<div class="status-table p-2">
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Till Now</th>
+        <th>Survey Completed</th>
+        <th>Pending Survey</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Number of Participants</th>
+        <td>{{ survey_status.participants.assigned }}</td>
+        <td>{{ survey_status.participants.completed }}</td>
+        <td>{{ survey_status.participants.left }}</td>
+      </tr>
+      <tr>
+        <th>Number of Departments</th>
+        <td>{{ survey_status.departments.assigned }}</td>
+        <td>{{ survey_status.departments.completed }}</td>
+        <td>{{ survey_status.departments.left }}</td>
+      </tr>
+      <tr>
+        <th colspan="4" class="text-start">
+          Number of Team Members Invited:
+        </th>
+      </tr>
+      <tr>
+        <th>Reporting Manager</th>
+        <td>{{ survey_status.reporting_managers.assigned }}</td>
+        <td>{{ survey_status.reporting_managers.completed }}</td>
+        <td>{{ survey_status.reporting_managers.left }}</td>
+      </tr>
+      <tr>
+        <th>Peer</th>
+        <td>{{ survey_status.peers.assigned }}</td>
+        <td>{{ survey_status.peers.completed }}</td>
+        <td>{{ survey_status.peers.left }}</td>
+      </tr>
+      <tr>
+        <th>Subordinate</th>
+        <td>{{ survey_status.subordinates.assigned }}</td>
+        <td>{{ survey_status.subordinates.completed }}</td>
+        <td>{{ survey_status.subordinates.left }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Back Button -->
+  <div class="d-flex justify-content-end m-4">
+    <button class="btn btn-custom w-100" onclick="goBack()">Back</button>
+  </div>
+</div>
+
+   
+  </div>
+<script>
+    function goBack() {
+        window.history.back(); // Change this if you need to redirect to a specific URL
+    }
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: white;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    
+    /* Table styling */
+    .status-table {
+      width: 80%;
+      max-width: 1200px;
+      margin: 30px auto;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .status-table table {
+      table-layout: fixed;
+      width: 100%;
+    }
+
+    .status-table td,
+    .status-table th {
+      padding: 15px;
+      text-align: center;
+      border: 4px solid white;
+      background-color: white;
+      word-wrap: break-word;
+    }
+
+    /* Alternate row coloring */
+    .status-table tbody tr:nth-child(odd) td {
+      background-color: #a9a9a9;
+    }
+
+    .status-table tbody tr:nth-child(even) td {
+      background-color: #dcdcdc;
+    }
+
+    .btn-custom {
+      background-color: #1a1a2e;
+      color: white;
+      max-width: 200px;
+      border-radius: 10px;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+    }
+    .btn-custom:hover {
+      background-color: #2a2a4e;
+      color: white;
+    }
+
+    /* Back button styling */
+    .back-btn {
+      background-color: #1a1a2e;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      display: block;
+      margin: 20px auto;
+      max-width: 200px;
+      text-align: center;
+    }
+    .back-btn:hover {
+      background-color: #2a2a4e;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .status-table {
+        width: 100%;
+        padding: 10px;
+      }} 
+</style>
+{% endblock %}

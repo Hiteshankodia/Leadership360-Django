@@ -1,0 +1,120 @@
+{% extends 'Base/surveybase.html' %}
+{% load static %}
+
+
+{% block title %}Survey Status{% endblock %}
+
+{% block content %}
+
+
+<!-- Buttons Section -->
+<div class="button-group w-100 d-flex justify-content-center gap-5 mt-5">
+    <button class="btn btn-custom">Organization Wise</button>
+    <button class="btn btn-custom">Participant Wise</button>
+    <button class="btn btn-custom">Department Wise</button>
+</div>
+
+<!-- Chart Section -->
+<div class="chart-container mt-5">
+    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+</div>
+
+<!-- Load Google Charts -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            [
+                "Dimension",
+                "Participant Average",
+                "Peer Average",
+                "Subordinate Average",
+                "Reporting Manager Average",
+            ],
+            ["Emotional Intelligence", 3.5, 4.5, 4.0, 5.0],
+            ["Integrity", 2.5, 4.0, 3.5, 5.0],
+            ["Task Orientation", 1.5, 2.0, 3.0, 2.5],
+            ["Tenacity and Courage", 5.0, 3.0, 4.0, 5.0],
+        ]);
+
+        var options = {
+            title: "Leading Self",
+            curveType: "function",
+            legend: { position: "bottom" },
+            hAxis: {
+                title: "Dimension Name",
+                gridlines: { count: 5 },
+            },
+            vAxis: {
+                title: "Average Rating",
+                minValue: 0,
+                maxValue: 6,
+                gridlines: { count: 6 },
+            },
+            pointSize: 8,
+            lineWidth: 3,
+            colors: ["#007bff", "#ff9900", "#4caf50", "#e91e63"],
+        };
+
+        var chart = new google.visualization.LineChart(
+            document.getElementById("curve_chart")
+        );
+
+        chart.draw(data, options);
+    }
+</script>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+/* Heading styling */
+.heading {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+.btn-custom {
+  background-color: #1a1a2e;
+  color: white;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
+  padding: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  padding: 0.8rem;
+}
+.btn-custom:hover {
+  background-color: #2a2a4e;
+  color: white;
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Centering the chart */
+.chart-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+  .chart-container {
+    width: 100%;
+    padding: 10px;
+  }
+}
+</style>
+<!-- Include Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

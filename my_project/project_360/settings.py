@@ -18,6 +18,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 AUTH_TOKEN_ENDPOINT = config('AUTH_TOKEN_ENDPOINT')
 TEAM_TYPE = config('TEAM_TYPE')
 
+# AZURE_CONNECTION_STRING = os.getenv('AZURE_CONNECTION_STRING')
+AZURE_CONNECTION_STRING = config('AZURE_CONNECTION_STRING')
+
+
 # Quick-start development settings - unsuitable for production
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-0mca=*unr4fhbe2y&%rkku9%3#f66tt!ghxr3qas5^8tyh=dq_')
 DEBUG = config('DEBUG', default=True, cast=bool)

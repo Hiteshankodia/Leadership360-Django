@@ -1,0 +1,151 @@
+{% extends 'Base/surveybase.html' %}
+
+{% block title %}Project360{% endblock %}
+
+{% block content %}
+    <!-- Content Section -->
+    <div class="container mt-xl-5 px-0 mx-auto" style="max-width: 800px">
+      <div class="col-lg-8 m-auto w-100 col-md-10 col-sm-12">
+        <h4 class="mb-5">
+          Welcome to your dashboard! Here, you can easily navigate to view 
+          insights or download your reports with just a click.
+        </h4>
+        <div class="d-flex flex-column align-items-center w-100">
+          <!-- Add New Participant Button -->
+          <button class="btn btn-custom mb-3 w-100" onclick="JSDashboard()">
+            Dashboard
+          </button>
+
+          <!-- View Current Status Button -->
+          <button class="btn btn-custom mb-3 w-100" onclick="DownloadReport()">
+            Report Download
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loader HTML -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Function to show loader
+      function showLoader() {
+          document.getElementById('loader').style.display = 'flex';
+      }
+
+      // Function to hide loader
+      function hideLoader() {
+          document.getElementById('loader').style.display = 'none';
+      }
+
+      // Hide loader when the page is loaded or revisited
+      document.addEventListener('DOMContentLoaded', hideLoader);
+      window.addEventListener('pageshow', function(event) {
+          if (event.persisted) {
+              // This is for when the page is loaded from the bfcache (back-forward cache)
+              hideLoader();
+          }
+      });
+
+      // Placeholder functions for button actions
+      function DownloadReport() {
+        showLoader();
+        window.location.href = "{% url 'downlaod_report' %}";  // Adjust this URL as necessary
+      }
+
+      function JSDashboard() {
+        showLoader();
+        window.location.href = "{% url 'js_dashboard' %}";  // Adjust this URL as necessary
+      }
+    </script>
+
+    <style>
+        /* Loader styles */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Ensure loader is above other content */
+        }
+
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Custom Button Styles with Transitions */
+        .btn-custom {
+            background-color: #1a1a2e;
+            color: white;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 10px;
+            padding: 1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-custom:hover {
+            background-color: #2a2a4e;
+            color: white;
+            transform: scale(1.05); /* Slight zoom on hover */
+        }
+
+        /* Card container */
+        .container {
+            text-align: center;
+            margin-top: 50px;
+            padding: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            /* Smaller margin for mobile screens */
+            .container {
+                margin-top: 20px;
+                padding: 0.5rem;
+            }
+
+            /* Adjust font size for smaller devices */
+            h4 {
+                font-size: 1.2rem;
+            }
+
+            /* Ensure button spacing looks good on small screens */
+            .btn-custom {
+                padding: 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            /* Adjustments for very small screens */
+            .btn-custom {
+                padding: 0.6rem;
+            }
+
+            .container {
+                margin-top: 10px;
+            }
+
+            h4 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+{% endblock %}

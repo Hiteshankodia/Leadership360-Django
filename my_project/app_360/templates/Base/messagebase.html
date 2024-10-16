@@ -130,21 +130,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function showLoader() {
+        // Show loader when the page is about to be unloaded
+        window.addEventListener('beforeunload', function() {
             document.getElementById('loading-overlay').style.display = 'flex';
-        }
+        });
 
-        function hideLoader() {
+        // Hide the loader once the page is fully loaded
+        window.addEventListener('load', function() {
             document.getElementById('loading-overlay').style.display = 'none';
-        }
-
-        // Example to show the loader (you can adapt this as needed)
-        document.addEventListener('DOMContentLoaded', function() {
-            // You can show the loader manually for testing
-            // showLoader();
-
-            // Example: Hide the loader after 3 seconds
-            setTimeout(hideLoader, 3000);
         });
     </script>
 </body>

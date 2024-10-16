@@ -1,7 +1,6 @@
 from app_360.ServiceHelper.ApiBase import ApiBase
-from app_360.Schema.master_data import StateRequestSchema
-import requests
-from django.http import JsonResponse
+
+
 
 
 class FetchMasterData:

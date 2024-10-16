@@ -26,6 +26,8 @@ from app_360.Controller.Participant import participantsurvey
 from app_360.Controller.Team import inviteTeam
 from app_360.utility.utility import UtilityClass
 from app_360.views import set_participant_id, get_participant_id
+from app_360.Controller.HR_functionality import hr_functionality
+from app_360.utility.downlaod_report import download_pdf
 urlpatterns = [
          
     path("admin/", admin.site.urls),
@@ -55,9 +57,13 @@ urlpatterns = [
     path('auth/teamtoken/', authcontroller.TeamMemberAssignSurvey, name = 'teammemberverify'),
     path('set-participant-id/<int:participantid>/', set_participant_id),
     path('get-participant-id/', get_participant_id),
-    path('participant_survey_after_invite/', authcontroller.ParticipantSurveyAfterInvite, name = 'participant_survey_after_invite')
-    
-  
-  
+    path('participant_survey_after_invite/', authcontroller.ParticipantSurveyAfterInvite, name = 'participant_survey_after_invite'), 
+    path('hr_landing_page/', hr_functionality.HRLandingPage, name='hr_landing_page'),
+    path('view_survey_status/', hr_functionality.ViewSurveyStatus, name = 'view_survey_status'), 
+    path('dashboard_download_button/', hr_functionality.DashboardDownloadButton, name = 'dashboard_download_button'), 
+    path('js_dashboard/', hr_functionality.JSDashBoard, name = 'js_dashboard'), 
+    path('downlaod_report/', hr_functionality.DownloadReport, name = 'downlaod_report'), 
+    path('download/<int:participant_id>/<str:name>', download_pdf, name='download_pdf')
+
 ] 
 
