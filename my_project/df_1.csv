@@ -1,0 +1,324 @@
+,department,companyid,participantname,dimensionid,participantaverage,peeraverage,reportingmanageraverage,subordinateaverage,dimensionname,participantid
+0,Data Engineering,1,ANKIT MAURYA,2,4.0,2.0,4.0,2.0,Change Orientation,383
+1,Data Engineering,1,ANKIT MAURYA,2,4.0,2.0,4.0,2.0,Change Orientation,383
+2,Data Engineering,1,ANKIT MAURYA,2,4.0,2.0,4.0,2.0,Change Orientation,383
+3,Data Engineering,1,ANKIT MAURYA,2,4.0,2.0,4.0,2.0,Change Orientation,383
+4,Data Engineering,1,ANKIT MAURYA,2,4.0,2.0,4.0,2.0,Change Orientation,383
+5,Data Engineering,1,ANKIT MAURYA,2,4.0,2.0,4.0,2.0,Change Orientation,383
+6,Data Engineering,1,ANKIT MAURYA,3,3.0,1.0,3.0,1.0,Energizing,383
+7,Data Engineering,1,ANKIT MAURYA,3,3.0,1.0,3.0,1.0,Energizing,383
+8,Data Engineering,1,ANKIT MAURYA,3,3.0,1.0,3.0,1.0,Energizing,383
+9,Data Engineering,1,ANKIT MAURYA,3,3.0,1.0,3.0,1.0,Energizing,383
+10,Data Engineering,1,ANKIT MAURYA,3,3.0,1.0,3.0,1.0,Energizing,383
+11,Data Engineering,1,ANKIT MAURYA,3,3.0,1.0,3.0,1.0,Energizing,383
+12,Data Engineering,1,ANKIT MAURYA,4,2.0,4.0,5.0,2.0,Client & Stakeholders,383
+13,Data Engineering,1,ANKIT MAURYA,4,2.0,4.0,5.0,2.0,Client & Stakeholders,383
+14,Data Engineering,1,ANKIT MAURYA,4,2.0,4.0,5.0,2.0,Client & Stakeholders,383
+15,Data Engineering,1,ANKIT MAURYA,4,2.0,4.0,5.0,2.0,Client & Stakeholders,383
+16,Data Engineering,1,ANKIT MAURYA,4,2.0,4.0,5.0,2.0,Client & Stakeholders,383
+17,Data Engineering,1,ANKIT MAURYA,4,2.0,4.0,5.0,2.0,Client & Stakeholders,383
+18,Data Engineering,1,ANKIT MAURYA,5,1.0,2.0,4.0,3.0,Coaching & Feedback,383
+19,Data Engineering,1,ANKIT MAURYA,5,1.0,2.0,4.0,3.0,Coaching & Feedback,383
+20,Data Engineering,1,ANKIT MAURYA,5,1.0,2.0,4.0,3.0,Coaching & Feedback,383
+21,Data Engineering,1,ANKIT MAURYA,5,1.0,2.0,4.0,3.0,Coaching & Feedback,383
+22,Data Engineering,1,ANKIT MAURYA,5,1.0,2.0,4.0,3.0,Coaching & Feedback,383
+23,Data Engineering,1,ANKIT MAURYA,5,1.0,2.0,4.0,3.0,Coaching & Feedback,383
+24,Data Engineering,1,ANKIT MAURYA,6,2.0,4.0,3.0,4.0,Emotional Intelligence,383
+25,Data Engineering,1,ANKIT MAURYA,6,2.0,4.0,3.0,4.0,Emotional Intelligence,383
+26,Data Engineering,1,ANKIT MAURYA,6,2.0,4.0,3.0,4.0,Emotional Intelligence,383
+27,Data Engineering,1,ANKIT MAURYA,6,2.0,4.0,3.0,4.0,Emotional Intelligence,383
+28,Data Engineering,1,ANKIT MAURYA,6,2.0,4.0,3.0,4.0,Emotional Intelligence,383
+29,Data Engineering,1,ANKIT MAURYA,6,2.0,4.0,3.0,4.0,Emotional Intelligence,383
+30,Data Engineering,1,ANKIT MAURYA,7,4.0,5.0,2.0,3.0,Empowering,383
+31,Data Engineering,1,ANKIT MAURYA,7,4.0,5.0,2.0,3.0,Empowering,383
+32,Data Engineering,1,ANKIT MAURYA,7,4.0,5.0,2.0,3.0,Empowering,383
+33,Data Engineering,1,ANKIT MAURYA,7,4.0,5.0,2.0,3.0,Empowering,383
+34,Data Engineering,1,ANKIT MAURYA,7,4.0,5.0,2.0,3.0,Empowering,383
+35,Data Engineering,1,ANKIT MAURYA,7,4.0,5.0,2.0,3.0,Empowering,383
+36,Data Engineering,1,ANKIT MAURYA,8,5.0,4.0,1.0,2.0,Integrity,383
+37,Data Engineering,1,ANKIT MAURYA,8,5.0,4.0,1.0,2.0,Integrity,383
+38,Data Engineering,1,ANKIT MAURYA,8,5.0,4.0,1.0,2.0,Integrity,383
+39,Data Engineering,1,ANKIT MAURYA,8,5.0,4.0,1.0,2.0,Integrity,383
+40,Data Engineering,1,ANKIT MAURYA,8,5.0,4.0,1.0,2.0,Integrity,383
+41,Data Engineering,1,ANKIT MAURYA,8,5.0,4.0,1.0,2.0,Integrity,383
+42,Data Engineering,1,ANKIT MAURYA,9,4.0,3.0,2.0,4.0,Life Stressors,383
+43,Data Engineering,1,ANKIT MAURYA,9,4.0,3.0,2.0,4.0,Life Stressors,383
+44,Data Engineering,1,ANKIT MAURYA,9,4.0,3.0,2.0,4.0,Life Stressors,383
+45,Data Engineering,1,ANKIT MAURYA,9,4.0,3.0,2.0,4.0,Life Stressors,383
+46,Data Engineering,1,ANKIT MAURYA,9,4.0,3.0,2.0,4.0,Life Stressors,383
+47,Data Engineering,1,ANKIT MAURYA,9,4.0,3.0,2.0,4.0,Life Stressors,383
+48,Data Engineering,1,ANKIT MAURYA,10,3.0,2.0,3.0,5.0,Network & Alliances,383
+49,Data Engineering,1,ANKIT MAURYA,10,3.0,2.0,3.0,5.0,Network & Alliances,383
+50,Data Engineering,1,ANKIT MAURYA,10,3.0,2.0,3.0,5.0,Network & Alliances,383
+51,Data Engineering,1,ANKIT MAURYA,10,3.0,2.0,3.0,5.0,Network & Alliances,383
+52,Data Engineering,1,ANKIT MAURYA,10,3.0,2.0,3.0,5.0,Network & Alliances,383
+53,Data Engineering,1,ANKIT MAURYA,10,3.0,2.0,3.0,5.0,Network & Alliances,383
+54,Data Engineering,1,ANKIT MAURYA,11,2.0,4.0,3.0,4.0,Perceieve leadership performance,383
+55,Data Engineering,1,ANKIT MAURYA,11,2.0,4.0,3.0,4.0,Perceieve leadership performance,383
+56,Data Engineering,1,ANKIT MAURYA,11,2.0,4.0,3.0,4.0,Perceieve leadership performance,383
+57,Data Engineering,1,ANKIT MAURYA,11,2.0,4.0,3.0,4.0,Perceieve leadership performance,383
+58,Data Engineering,1,ANKIT MAURYA,11,2.0,4.0,3.0,4.0,Perceieve leadership performance,383
+59,Data Engineering,1,ANKIT MAURYA,11,2.0,4.0,3.0,4.0,Perceieve leadership performance,383
+60,Data Engineering,1,ANKIT MAURYA,12,1.0,5.0,2.0,3.0,Relationship Orientationship,383
+61,Data Engineering,1,ANKIT MAURYA,12,1.0,5.0,2.0,3.0,Relationship Orientationship,383
+62,Data Engineering,1,ANKIT MAURYA,12,1.0,5.0,2.0,3.0,Relationship Orientationship,383
+63,Data Engineering,1,ANKIT MAURYA,12,1.0,5.0,2.0,3.0,Relationship Orientationship,383
+64,Data Engineering,1,ANKIT MAURYA,12,1.0,5.0,2.0,3.0,Relationship Orientationship,383
+65,Data Engineering,1,ANKIT MAURYA,12,1.0,5.0,2.0,3.0,Relationship Orientationship,383
+66,Data Engineering,1,ANKIT MAURYA,13,3.0,4.0,4.0,2.0,Well-Being Resources,383
+67,Data Engineering,1,ANKIT MAURYA,13,3.0,4.0,4.0,2.0,Well-Being Resources,383
+68,Data Engineering,1,ANKIT MAURYA,13,3.0,4.0,4.0,2.0,Well-Being Resources,383
+69,Data Engineering,1,ANKIT MAURYA,13,3.0,4.0,4.0,2.0,Well-Being Resources,383
+70,Data Engineering,1,ANKIT MAURYA,13,3.0,4.0,4.0,2.0,Well-Being Resources,383
+71,Data Engineering,1,ANKIT MAURYA,13,3.0,4.0,4.0,2.0,Well-Being Resources,383
+72,Data Engineering,1,ANKIT MAURYA,14,4.0,3.0,2.0,1.0,Team Building,383
+73,Data Engineering,1,ANKIT MAURYA,14,4.0,3.0,2.0,1.0,Team Building,383
+74,Data Engineering,1,ANKIT MAURYA,14,4.0,3.0,2.0,1.0,Team Building,383
+75,Data Engineering,1,ANKIT MAURYA,14,4.0,3.0,2.0,1.0,Team Building,383
+76,Data Engineering,1,ANKIT MAURYA,14,4.0,3.0,2.0,1.0,Team Building,383
+77,Data Engineering,1,ANKIT MAURYA,14,4.0,3.0,2.0,1.0,Team Building,383
+78,Data Engineering,1,ANKIT MAURYA,15,4.0,4.0,4.0,2.0,Task Orientation,383
+79,Data Engineering,1,ANKIT MAURYA,15,4.0,4.0,4.0,2.0,Task Orientation,383
+80,Data Engineering,1,ANKIT MAURYA,15,4.0,4.0,4.0,2.0,Task Orientation,383
+81,Data Engineering,1,ANKIT MAURYA,15,4.0,4.0,4.0,2.0,Task Orientation,383
+82,Data Engineering,1,ANKIT MAURYA,15,4.0,4.0,4.0,2.0,Task Orientation,383
+83,Data Engineering,1,ANKIT MAURYA,15,4.0,4.0,4.0,2.0,Task Orientation,383
+84,Data Engineering,1,ANKIT MAURYA,16,2.0,1.0,2.0,4.0,Tenacity and Courage,383
+85,Data Engineering,1,ANKIT MAURYA,16,2.0,1.0,2.0,4.0,Tenacity and Courage,383
+86,Data Engineering,1,ANKIT MAURYA,16,2.0,1.0,2.0,4.0,Tenacity and Courage,383
+87,Data Engineering,1,ANKIT MAURYA,16,2.0,1.0,2.0,4.0,Tenacity and Courage,383
+88,Data Engineering,1,ANKIT MAURYA,16,2.0,1.0,2.0,4.0,Tenacity and Courage,383
+89,Data Engineering,1,ANKIT MAURYA,16,2.0,1.0,2.0,4.0,Tenacity and Courage,383
+90,Data Engineering,1,ANKIT MAURYA,17,1.0,3.0,1.0,5.0,Visioning,383
+91,Data Engineering,1,ANKIT MAURYA,17,1.0,3.0,1.0,5.0,Visioning,383
+92,Data Engineering,1,ANKIT MAURYA,17,1.0,3.0,1.0,5.0,Visioning,383
+93,Data Engineering,1,ANKIT MAURYA,17,1.0,3.0,1.0,5.0,Visioning,383
+94,Data Engineering,1,ANKIT MAURYA,17,1.0,3.0,1.0,5.0,Visioning,383
+95,Data Engineering,1,ANKIT MAURYA,17,1.0,3.0,1.0,5.0,Visioning,383
+96,Data Engineering,1,ANKIT MAURYA,1,5.0,3.0,5.0,3.0,Ability to Execute,383
+97,Data Engineering,1,ANKIT MAURYA,1,5.0,3.0,5.0,3.0,Ability to Execute,383
+98,Data Engineering,1,ANKIT MAURYA,1,5.0,3.0,5.0,3.0,Ability to Execute,383
+99,Data Engineering,1,ANKIT MAURYA,1,5.0,3.0,5.0,3.0,Ability to Execute,383
+100,Data Engineering,1,ANKIT MAURYA,1,5.0,3.0,5.0,3.0,Ability to Execute,383
+101,Data Engineering,1,ANKIT MAURYA,1,5.0,3.0,5.0,3.0,Ability to Execute,383
+102,Data Science,1,HITESH ANKODIA,1,5.0,3.875,4.0,3.75,Ability to Execute,373
+103,Data Science,1,HITESH ANKODIA,1,5.0,3.875,4.0,3.75,Ability to Execute,373
+104,Data Science,1,HITESH ANKODIA,1,5.0,3.875,4.0,3.75,Ability to Execute,373
+105,Data Science,1,HITESH ANKODIA,1,5.0,3.875,4.0,3.75,Ability to Execute,373
+106,Data Science,1,HITESH ANKODIA,1,5.0,3.875,4.0,3.75,Ability to Execute,373
+107,Data Science,1,HITESH ANKODIA,1,5.0,3.875,4.0,3.75,Ability to Execute,373
+108,Data Science,1,HITESH ANKODIA,2,5.0,2.875,3.25,3.625,Change Orientation,373
+109,Data Science,1,HITESH ANKODIA,2,5.0,2.875,3.25,3.625,Change Orientation,373
+110,Data Science,1,HITESH ANKODIA,2,5.0,2.875,3.25,3.625,Change Orientation,373
+111,Data Science,1,HITESH ANKODIA,2,5.0,2.875,3.25,3.625,Change Orientation,373
+112,Data Science,1,HITESH ANKODIA,2,5.0,2.875,3.25,3.625,Change Orientation,373
+113,Data Science,1,HITESH ANKODIA,2,5.0,2.875,3.25,3.625,Change Orientation,373
+114,Data Science,1,HITESH ANKODIA,3,2.3333333333333335,3.6666666666666665,1.0,2.0,Energizing,381
+115,Data Science,1,HITESH ANKODIA,3,2.3333333333333335,3.6666666666666665,1.0,2.0,Energizing,381
+116,Data Science,1,HITESH ANKODIA,3,2.3333333333333335,3.6666666666666665,1.0,2.0,Energizing,381
+117,Data Science,1,HITESH ANKODIA,3,2.3333333333333335,3.6666666666666665,1.0,2.0,Energizing,381
+118,Data Science,1,HITESH ANKODIA,3,2.3333333333333335,3.6666666666666665,1.0,2.0,Energizing,381
+119,Data Science,1,HITESH ANKODIA,3,2.3333333333333335,3.6666666666666665,1.0,2.0,Energizing,381
+120,Data Science,1,HITESH ANKODIA,3,2.3333333333333335,3.6666666666666665,1.0,2.0,Energizing,381
+121,Data Science,1,HITESH ANKODIA,12,2.4,3.6666666666666665,2.0,5.0,Relationship Orientationship,381
+122,Data Science,1,HITESH ANKODIA,12,2.4,3.6666666666666665,2.0,5.0,Relationship Orientationship,381
+123,Data Science,1,HITESH ANKODIA,12,2.4,3.6666666666666665,2.0,5.0,Relationship Orientationship,381
+124,Data Science,1,HITESH ANKODIA,12,2.4,3.6666666666666665,2.0,5.0,Relationship Orientationship,381
+125,Data Science,1,HITESH ANKODIA,12,2.4,3.6666666666666665,2.0,5.0,Relationship Orientationship,381
+126,Data Science,1,HITESH ANKODIA,12,2.4,3.6666666666666665,2.0,5.0,Relationship Orientationship,381
+127,Data Science,1,HITESH ANKODIA,12,2.4,3.6666666666666665,2.0,5.0,Relationship Orientationship,381
+128,Data Science,1,HITESH ANKODIA,15,4.25,2.75,3.0,1.0,Task Orientation,381
+129,Data Science,1,HITESH ANKODIA,15,4.25,2.75,3.0,1.0,Task Orientation,381
+130,Data Science,1,HITESH ANKODIA,15,4.25,2.75,3.0,1.0,Task Orientation,381
+131,Data Science,1,HITESH ANKODIA,15,4.25,2.75,3.0,1.0,Task Orientation,381
+132,Data Science,1,HITESH ANKODIA,15,4.25,2.75,3.0,1.0,Task Orientation,381
+133,Data Science,1,HITESH ANKODIA,15,4.25,2.75,3.0,1.0,Task Orientation,381
+134,Data Science,1,HITESH ANKODIA,15,4.25,2.75,3.0,1.0,Task Orientation,381
+135,Data Science,1,HITESH ANKODIA,3,4.666666666666667,4.333333333333334,3.6666666666666665,3.833333333333333,Energizing,373
+136,Data Science,1,HITESH ANKODIA,3,4.666666666666667,4.333333333333334,3.6666666666666665,3.833333333333333,Energizing,373
+137,Data Science,1,HITESH ANKODIA,3,4.666666666666667,4.333333333333334,3.6666666666666665,3.833333333333333,Energizing,373
+138,Data Science,1,HITESH ANKODIA,3,4.666666666666667,4.333333333333334,3.6666666666666665,3.833333333333333,Energizing,373
+139,Data Science,1,HITESH ANKODIA,3,4.666666666666667,4.333333333333334,3.6666666666666665,3.833333333333333,Energizing,373
+140,Data Science,1,HITESH ANKODIA,3,4.666666666666667,4.333333333333334,3.6666666666666665,3.833333333333333,Energizing,373
+141,Data Science,1,HITESH ANKODIA,4,2.0,3.25,4.0,2.375,Client & Stakeholders,373
+142,Data Science,1,HITESH ANKODIA,4,2.0,3.25,4.0,2.375,Client & Stakeholders,373
+143,Data Science,1,HITESH ANKODIA,4,2.0,3.25,4.0,2.375,Client & Stakeholders,373
+144,Data Science,1,HITESH ANKODIA,4,2.0,3.25,4.0,2.375,Client & Stakeholders,373
+145,Data Science,1,HITESH ANKODIA,4,2.0,3.25,4.0,2.375,Client & Stakeholders,373
+146,Data Science,1,HITESH ANKODIA,4,2.0,3.25,4.0,2.375,Client & Stakeholders,373
+147,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,3.0,4.0,2.0,Coaching & Feedback,373
+148,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,3.0,4.0,2.0,Coaching & Feedback,373
+149,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,3.0,4.0,2.0,Coaching & Feedback,373
+150,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,3.0,4.0,2.0,Coaching & Feedback,373
+151,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,3.0,4.0,2.0,Coaching & Feedback,373
+152,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,3.0,4.0,2.0,Coaching & Feedback,373
+153,Data Science,1,HITESH ANKODIA,6,4.0,2.875,5.0,3.25,Emotional Intelligence,373
+154,Data Science,1,HITESH ANKODIA,6,4.0,2.875,5.0,3.25,Emotional Intelligence,373
+155,Data Science,1,HITESH ANKODIA,6,4.0,2.875,5.0,3.25,Emotional Intelligence,373
+156,Data Science,1,HITESH ANKODIA,6,4.0,2.875,5.0,3.25,Emotional Intelligence,373
+157,Data Science,1,HITESH ANKODIA,6,4.0,2.875,5.0,3.25,Emotional Intelligence,373
+158,Data Science,1,HITESH ANKODIA,6,4.0,2.875,5.0,3.25,Emotional Intelligence,373
+159,Data Science,1,HITESH ANKODIA,7,3.5,2.5,2.25,3.375,Empowering,373
+160,Data Science,1,HITESH ANKODIA,7,3.5,2.5,2.25,3.375,Empowering,373
+161,Data Science,1,HITESH ANKODIA,7,3.5,2.5,2.25,3.375,Empowering,373
+162,Data Science,1,HITESH ANKODIA,7,3.5,2.5,2.25,3.375,Empowering,373
+163,Data Science,1,HITESH ANKODIA,7,3.5,2.5,2.25,3.375,Empowering,373
+164,Data Science,1,HITESH ANKODIA,7,3.5,2.5,2.25,3.375,Empowering,373
+165,Data Science,1,HITESH ANKODIA,8,4.666666666666667,4.0,4.0,4.166666666666666,Integrity,373
+166,Data Science,1,HITESH ANKODIA,8,4.666666666666667,4.0,4.0,4.166666666666666,Integrity,373
+167,Data Science,1,HITESH ANKODIA,8,4.666666666666667,4.0,4.0,4.166666666666666,Integrity,373
+168,Data Science,1,HITESH ANKODIA,8,4.666666666666667,4.0,4.0,4.166666666666666,Integrity,373
+169,Data Science,1,HITESH ANKODIA,8,4.666666666666667,4.0,4.0,4.166666666666666,Integrity,373
+170,Data Science,1,HITESH ANKODIA,8,4.666666666666667,4.0,4.0,4.166666666666666,Integrity,373
+171,Data Science,1,HITESH ANKODIA,9,3.5,3.0,1.0,2.75,Life Stressors,373
+172,Data Science,1,HITESH ANKODIA,9,3.5,3.0,1.0,2.75,Life Stressors,373
+173,Data Science,1,HITESH ANKODIA,9,3.5,3.0,1.0,2.75,Life Stressors,373
+174,Data Science,1,HITESH ANKODIA,9,3.5,3.0,1.0,2.75,Life Stressors,373
+175,Data Science,1,HITESH ANKODIA,9,3.5,3.0,1.0,2.75,Life Stressors,373
+176,Data Science,1,HITESH ANKODIA,9,3.5,3.0,1.0,2.75,Life Stressors,373
+177,Data Science,1,HITESH ANKODIA,10,1.0,4.0,4.0,2.25,Network & Alliances,373
+178,Data Science,1,HITESH ANKODIA,10,1.0,4.0,4.0,2.25,Network & Alliances,373
+179,Data Science,1,HITESH ANKODIA,10,1.0,4.0,4.0,2.25,Network & Alliances,373
+180,Data Science,1,HITESH ANKODIA,10,1.0,4.0,4.0,2.25,Network & Alliances,373
+181,Data Science,1,HITESH ANKODIA,10,1.0,4.0,4.0,2.25,Network & Alliances,373
+182,Data Science,1,HITESH ANKODIA,10,1.0,4.0,4.0,2.25,Network & Alliances,373
+183,Data Science,1,HITESH ANKODIA,11,1.0,3.25,4.0,2.375,Perceieve leadership performance,373
+184,Data Science,1,HITESH ANKODIA,11,1.0,3.25,4.0,2.375,Perceieve leadership performance,373
+185,Data Science,1,HITESH ANKODIA,11,1.0,3.25,4.0,2.375,Perceieve leadership performance,373
+186,Data Science,1,HITESH ANKODIA,11,1.0,3.25,4.0,2.375,Perceieve leadership performance,373
+187,Data Science,1,HITESH ANKODIA,11,1.0,3.25,4.0,2.375,Perceieve leadership performance,373
+188,Data Science,1,HITESH ANKODIA,11,1.0,3.25,4.0,2.375,Perceieve leadership performance,373
+189,Data Science,1,HITESH ANKODIA,12,1.0,3.8,4.4,2.7,Relationship Orientationship,373
+190,Data Science,1,HITESH ANKODIA,12,1.0,3.8,4.4,2.7,Relationship Orientationship,373
+191,Data Science,1,HITESH ANKODIA,12,1.0,3.8,4.4,2.7,Relationship Orientationship,373
+192,Data Science,1,HITESH ANKODIA,12,1.0,3.8,4.4,2.7,Relationship Orientationship,373
+193,Data Science,1,HITESH ANKODIA,12,1.0,3.8,4.4,2.7,Relationship Orientationship,373
+194,Data Science,1,HITESH ANKODIA,12,1.0,3.8,4.4,2.7,Relationship Orientationship,373
+195,Data Science,1,HITESH ANKODIA,13,1.0,2.25,4.5,1.75,Well-Being Resources,373
+196,Data Science,1,HITESH ANKODIA,13,1.0,2.25,4.5,1.75,Well-Being Resources,373
+197,Data Science,1,HITESH ANKODIA,13,1.0,2.25,4.5,1.75,Well-Being Resources,373
+198,Data Science,1,HITESH ANKODIA,13,1.0,2.25,4.5,1.75,Well-Being Resources,373
+199,Data Science,1,HITESH ANKODIA,13,1.0,2.25,4.5,1.75,Well-Being Resources,373
+200,Data Science,1,HITESH ANKODIA,13,1.0,2.25,4.5,1.75,Well-Being Resources,373
+201,Data Science,1,HITESH ANKODIA,14,3.5,3.0,1.0,2.5,Team Building,373
+202,Data Science,1,HITESH ANKODIA,14,3.5,3.0,1.0,2.5,Team Building,373
+203,Data Science,1,HITESH ANKODIA,14,3.5,3.0,1.0,2.5,Team Building,373
+204,Data Science,1,HITESH ANKODIA,14,3.5,3.0,1.0,2.5,Team Building,373
+205,Data Science,1,HITESH ANKODIA,14,3.5,3.0,1.0,2.5,Team Building,373
+206,Data Science,1,HITESH ANKODIA,14,3.5,3.0,1.0,2.5,Team Building,373
+207,Data Science,1,HITESH ANKODIA,15,4.5,4.0,2.25,3.125,Task Orientation,373
+208,Data Science,1,HITESH ANKODIA,15,4.5,4.0,2.25,3.125,Task Orientation,373
+209,Data Science,1,HITESH ANKODIA,15,4.5,4.0,2.25,3.125,Task Orientation,373
+210,Data Science,1,HITESH ANKODIA,15,4.5,4.0,2.25,3.125,Task Orientation,373
+211,Data Science,1,HITESH ANKODIA,15,4.5,4.0,2.25,3.125,Task Orientation,373
+212,Data Science,1,HITESH ANKODIA,15,4.5,4.0,2.25,3.125,Task Orientation,373
+213,Data Science,1,HITESH ANKODIA,16,4.666666666666667,4.0,1.6666666666666667,3.6666666666666665,Tenacity and Courage,373
+214,Data Science,1,HITESH ANKODIA,16,4.666666666666667,4.0,1.6666666666666667,3.6666666666666665,Tenacity and Courage,373
+215,Data Science,1,HITESH ANKODIA,16,4.666666666666667,4.0,1.6666666666666667,3.6666666666666665,Tenacity and Courage,373
+216,Data Science,1,HITESH ANKODIA,16,4.666666666666667,4.0,1.6666666666666667,3.6666666666666665,Tenacity and Courage,373
+217,Data Science,1,HITESH ANKODIA,16,4.666666666666667,4.0,1.6666666666666667,3.6666666666666665,Tenacity and Courage,373
+218,Data Science,1,HITESH ANKODIA,16,4.666666666666667,4.0,1.6666666666666667,3.6666666666666665,Tenacity and Courage,373
+219,Data Science,1,HITESH ANKODIA,17,4.0,4.166666666666667,1.0,4.5,Visioning,373
+220,Data Science,1,HITESH ANKODIA,17,4.0,4.166666666666667,1.0,4.5,Visioning,373
+221,Data Science,1,HITESH ANKODIA,17,4.0,4.166666666666667,1.0,4.5,Visioning,373
+222,Data Science,1,HITESH ANKODIA,17,4.0,4.166666666666667,1.0,4.5,Visioning,373
+223,Data Science,1,HITESH ANKODIA,17,4.0,4.166666666666667,1.0,4.5,Visioning,373
+224,Data Science,1,HITESH ANKODIA,17,4.0,4.166666666666667,1.0,4.5,Visioning,373
+225,Data Science,1,HITESH ANKODIA,1,2.25,2.5833333333333335,3.0,3.0,Ability to Execute,381
+226,Data Science,1,HITESH ANKODIA,1,2.25,2.5833333333333335,3.0,3.0,Ability to Execute,381
+227,Data Science,1,HITESH ANKODIA,1,2.25,2.5833333333333335,3.0,3.0,Ability to Execute,381
+228,Data Science,1,HITESH ANKODIA,1,2.25,2.5833333333333335,3.0,3.0,Ability to Execute,381
+229,Data Science,1,HITESH ANKODIA,1,2.25,2.5833333333333335,3.0,3.0,Ability to Execute,381
+230,Data Science,1,HITESH ANKODIA,1,2.25,2.5833333333333335,3.0,3.0,Ability to Execute,381
+231,Data Science,1,HITESH ANKODIA,1,2.25,2.5833333333333335,3.0,3.0,Ability to Execute,381
+232,Data Science,1,HITESH ANKODIA,2,1.0,2.3333333333333335,4.0,2.0,Change Orientation,381
+233,Data Science,1,HITESH ANKODIA,2,1.0,2.3333333333333335,4.0,2.0,Change Orientation,381
+234,Data Science,1,HITESH ANKODIA,2,1.0,2.3333333333333335,4.0,2.0,Change Orientation,381
+235,Data Science,1,HITESH ANKODIA,2,1.0,2.3333333333333335,4.0,2.0,Change Orientation,381
+236,Data Science,1,HITESH ANKODIA,2,1.0,2.3333333333333335,4.0,2.0,Change Orientation,381
+237,Data Science,1,HITESH ANKODIA,2,1.0,2.3333333333333335,4.0,2.0,Change Orientation,381
+238,Data Science,1,HITESH ANKODIA,2,1.0,2.3333333333333335,4.0,2.0,Change Orientation,381
+239,Data Science,1,HITESH ANKODIA,4,2.75,3.5,5.0,2.0,Client & Stakeholders,381
+240,Data Science,1,HITESH ANKODIA,4,2.75,3.5,5.0,2.0,Client & Stakeholders,381
+241,Data Science,1,HITESH ANKODIA,4,2.75,3.5,5.0,2.0,Client & Stakeholders,381
+242,Data Science,1,HITESH ANKODIA,4,2.75,3.5,5.0,2.0,Client & Stakeholders,381
+243,Data Science,1,HITESH ANKODIA,4,2.75,3.5,5.0,2.0,Client & Stakeholders,381
+244,Data Science,1,HITESH ANKODIA,4,2.75,3.5,5.0,2.0,Client & Stakeholders,381
+245,Data Science,1,HITESH ANKODIA,4,2.75,3.5,5.0,2.0,Client & Stakeholders,381
+246,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,2.5555555555555554,4.0,3.0,Coaching & Feedback,381
+247,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,2.5555555555555554,4.0,3.0,Coaching & Feedback,381
+248,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,2.5555555555555554,4.0,3.0,Coaching & Feedback,381
+249,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,2.5555555555555554,4.0,3.0,Coaching & Feedback,381
+250,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,2.5555555555555554,4.0,3.0,Coaching & Feedback,381
+251,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,2.5555555555555554,4.0,3.0,Coaching & Feedback,381
+252,Data Science,1,HITESH ANKODIA,5,3.3333333333333335,2.5555555555555554,4.0,3.0,Coaching & Feedback,381
+253,Data Science,1,HITESH ANKODIA,6,3.0,4.166666666666667,3.0,4.0,Emotional Intelligence,381
+254,Data Science,1,HITESH ANKODIA,6,3.0,4.166666666666667,3.0,4.0,Emotional Intelligence,381
+255,Data Science,1,HITESH ANKODIA,6,3.0,4.166666666666667,3.0,4.0,Emotional Intelligence,381
+256,Data Science,1,HITESH ANKODIA,6,3.0,4.166666666666667,3.0,4.0,Emotional Intelligence,381
+257,Data Science,1,HITESH ANKODIA,6,3.0,4.166666666666667,3.0,4.0,Emotional Intelligence,381
+258,Data Science,1,HITESH ANKODIA,6,3.0,4.166666666666667,3.0,4.0,Emotional Intelligence,381
+259,Data Science,1,HITESH ANKODIA,6,3.0,4.166666666666667,3.0,4.0,Emotional Intelligence,381
+260,Data Science,1,HITESH ANKODIA,7,3.0,4.833333333333333,2.0,3.0,Empowering,381
+261,Data Science,1,HITESH ANKODIA,7,3.0,4.833333333333333,2.0,3.0,Empowering,381
+262,Data Science,1,HITESH ANKODIA,7,3.0,4.833333333333333,2.0,3.0,Empowering,381
+263,Data Science,1,HITESH ANKODIA,7,3.0,4.833333333333333,2.0,3.0,Empowering,381
+264,Data Science,1,HITESH ANKODIA,7,3.0,4.833333333333333,2.0,3.0,Empowering,381
+265,Data Science,1,HITESH ANKODIA,7,3.0,4.833333333333333,2.0,3.0,Empowering,381
+266,Data Science,1,HITESH ANKODIA,7,3.0,4.833333333333333,2.0,3.0,Empowering,381
+267,Data Science,1,HITESH ANKODIA,8,3.3333333333333335,4.222222222222222,1.0,2.0,Integrity,381
+268,Data Science,1,HITESH ANKODIA,8,3.3333333333333335,4.222222222222222,1.0,2.0,Integrity,381
+269,Data Science,1,HITESH ANKODIA,8,3.3333333333333335,4.222222222222222,1.0,2.0,Integrity,381
+270,Data Science,1,HITESH ANKODIA,8,3.3333333333333335,4.222222222222222,1.0,2.0,Integrity,381
+271,Data Science,1,HITESH ANKODIA,8,3.3333333333333335,4.222222222222222,1.0,2.0,Integrity,381
+272,Data Science,1,HITESH ANKODIA,8,3.3333333333333335,4.222222222222222,1.0,2.0,Integrity,381
+273,Data Science,1,HITESH ANKODIA,8,3.3333333333333335,4.222222222222222,1.0,2.0,Integrity,381
+274,Data Science,1,HITESH ANKODIA,9,3.0,3.1666666666666665,2.0,4.0,Life Stressors,381
+275,Data Science,1,HITESH ANKODIA,9,3.0,3.1666666666666665,2.0,4.0,Life Stressors,381
+276,Data Science,1,HITESH ANKODIA,9,3.0,3.1666666666666665,2.0,4.0,Life Stressors,381
+277,Data Science,1,HITESH ANKODIA,9,3.0,3.1666666666666665,2.0,4.0,Life Stressors,381
+278,Data Science,1,HITESH ANKODIA,9,3.0,3.1666666666666665,2.0,4.0,Life Stressors,381
+279,Data Science,1,HITESH ANKODIA,9,3.0,3.1666666666666665,2.0,4.0,Life Stressors,381
+280,Data Science,1,HITESH ANKODIA,9,3.0,3.1666666666666665,2.0,4.0,Life Stressors,381
+281,Data Science,1,HITESH ANKODIA,10,2.75,2.0,3.0,5.0,Network & Alliances,381
+282,Data Science,1,HITESH ANKODIA,10,2.75,2.0,3.0,5.0,Network & Alliances,381
+283,Data Science,1,HITESH ANKODIA,10,2.75,2.0,3.0,5.0,Network & Alliances,381
+284,Data Science,1,HITESH ANKODIA,10,2.75,2.0,3.0,5.0,Network & Alliances,381
+285,Data Science,1,HITESH ANKODIA,10,2.75,2.0,3.0,5.0,Network & Alliances,381
+286,Data Science,1,HITESH ANKODIA,10,2.75,2.0,3.0,5.0,Network & Alliances,381
+287,Data Science,1,HITESH ANKODIA,10,2.75,2.0,3.0,5.0,Network & Alliances,381
+288,Data Science,1,HITESH ANKODIA,11,2.5,3.1666666666666665,3.0,4.0,Perceieve leadership performance,381
+289,Data Science,1,HITESH ANKODIA,11,2.5,3.1666666666666665,3.0,4.0,Perceieve leadership performance,381
+290,Data Science,1,HITESH ANKODIA,11,2.5,3.1666666666666665,3.0,4.0,Perceieve leadership performance,381
+291,Data Science,1,HITESH ANKODIA,11,2.5,3.1666666666666665,3.0,4.0,Perceieve leadership performance,381
+292,Data Science,1,HITESH ANKODIA,11,2.5,3.1666666666666665,3.0,4.0,Perceieve leadership performance,381
+293,Data Science,1,HITESH ANKODIA,11,2.5,3.1666666666666665,3.0,4.0,Perceieve leadership performance,381
+294,Data Science,1,HITESH ANKODIA,11,2.5,3.1666666666666665,3.0,4.0,Perceieve leadership performance,381
+295,Data Science,1,HITESH ANKODIA,13,1.0,3.0,4.0,2.0,Well-Being Resources,381
+296,Data Science,1,HITESH ANKODIA,13,1.0,3.0,4.0,2.0,Well-Being Resources,381
+297,Data Science,1,HITESH ANKODIA,13,1.0,3.0,4.0,2.0,Well-Being Resources,381
+298,Data Science,1,HITESH ANKODIA,13,1.0,3.0,4.0,2.0,Well-Being Resources,381
+299,Data Science,1,HITESH ANKODIA,13,1.0,3.0,4.0,2.0,Well-Being Resources,381
+300,Data Science,1,HITESH ANKODIA,13,1.0,3.0,4.0,2.0,Well-Being Resources,381
+301,Data Science,1,HITESH ANKODIA,13,1.0,3.0,4.0,2.0,Well-Being Resources,381
+302,Data Science,1,HITESH ANKODIA,14,2.0,3.1666666666666665,2.0,1.0,Team Building,381
+303,Data Science,1,HITESH ANKODIA,14,2.0,3.1666666666666665,2.0,1.0,Team Building,381
+304,Data Science,1,HITESH ANKODIA,14,2.0,3.1666666666666665,2.0,1.0,Team Building,381
+305,Data Science,1,HITESH ANKODIA,14,2.0,3.1666666666666665,2.0,1.0,Team Building,381
+306,Data Science,1,HITESH ANKODIA,14,2.0,3.1666666666666665,2.0,1.0,Team Building,381
+307,Data Science,1,HITESH ANKODIA,14,2.0,3.1666666666666665,2.0,1.0,Team Building,381
+308,Data Science,1,HITESH ANKODIA,14,2.0,3.1666666666666665,2.0,1.0,Team Building,381
+309,Data Science,1,HITESH ANKODIA,16,4.333333333333333,1.2222222222222223,2.0,4.0,Tenacity and Courage,381
+310,Data Science,1,HITESH ANKODIA,16,4.333333333333333,1.2222222222222223,2.0,4.0,Tenacity and Courage,381
+311,Data Science,1,HITESH ANKODIA,16,4.333333333333333,1.2222222222222223,2.0,4.0,Tenacity and Courage,381
+312,Data Science,1,HITESH ANKODIA,16,4.333333333333333,1.2222222222222223,2.0,4.0,Tenacity and Courage,381
+313,Data Science,1,HITESH ANKODIA,16,4.333333333333333,1.2222222222222223,2.0,4.0,Tenacity and Courage,381
+314,Data Science,1,HITESH ANKODIA,16,4.333333333333333,1.2222222222222223,2.0,4.0,Tenacity and Courage,381
+315,Data Science,1,HITESH ANKODIA,16,4.333333333333333,1.2222222222222223,2.0,4.0,Tenacity and Courage,381
+316,Data Science,1,HITESH ANKODIA,17,3.3333333333333335,3.0,1.0,5.0,Visioning,381
+317,Data Science,1,HITESH ANKODIA,17,3.3333333333333335,3.0,1.0,5.0,Visioning,381
+318,Data Science,1,HITESH ANKODIA,17,3.3333333333333335,3.0,1.0,5.0,Visioning,381
+319,Data Science,1,HITESH ANKODIA,17,3.3333333333333335,3.0,1.0,5.0,Visioning,381
+320,Data Science,1,HITESH ANKODIA,17,3.3333333333333335,3.0,1.0,5.0,Visioning,381
+321,Data Science,1,HITESH ANKODIA,17,3.3333333333333335,3.0,1.0,5.0,Visioning,381
+322,Data Science,1,HITESH ANKODIA,17,3.3333333333333335,3.0,1.0,5.0,Visioning,381

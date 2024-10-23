@@ -26,7 +26,7 @@ from app_360.Controller.Participant import participantsurvey
 from app_360.Controller.Team import inviteTeam
 from app_360.utility.utility import UtilityClass
 from app_360.views import set_participant_id, get_participant_id
-from app_360.Controller.HR_functionality import hr_functionality
+from app_360.Controller.HR_functionality import hr_functionality, hr_dashboard
 from app_360.utility.downlaod_report import download_pdf
 urlpatterns = [
          
@@ -61,9 +61,11 @@ urlpatterns = [
     path('hr_landing_page/', hr_functionality.HRLandingPage, name='hr_landing_page'),
     path('view_survey_status/', hr_functionality.ViewSurveyStatus, name = 'view_survey_status'), 
     path('dashboard_download_button/', hr_functionality.DashboardDownloadButton, name = 'dashboard_download_button'), 
-    path('js_dashboard/', hr_functionality.JSDashBoard, name = 'js_dashboard'), 
+    path('js_dashboard/', hr_dashboard.JSDashBoard, name = 'js_dashboard'), 
     path('downlaod_report/', hr_functionality.DownloadReport, name = 'downlaod_report'), 
-    path('download/<int:participant_id>/<str:name>', download_pdf, name='download_pdf')
+    path('download/<int:participant_id>/<str:name>', download_pdf, name='download_pdf'), 
+    path('participant_wise/<int:participant_id>/', hr_dashboard.participant_wise, name='participant_wise'),
+    path('department_wise/<str:department_name>/', hr_dashboard.department_wise, name='department_wise'),
 
 ] 
 

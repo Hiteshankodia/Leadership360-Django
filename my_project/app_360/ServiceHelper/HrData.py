@@ -12,3 +12,7 @@ class HrDataClass:
     def DownloadPDFSurveyDetails(self, company_id) : 
         data = {'companyid': int(company_id)}
         return self.apibaseobj.PostRequest(data = data, url = '/hrdatarouter/participant_survey_data_download', token = '') 
+    
+    def HRDashboardData(self, company_id) : 
+        data = {'companyid': int(company_id)}
+        return self.apibaseobj.PostRequest(data = data, url = '/hrdatarouter/hrdashboarddata', token = '') 

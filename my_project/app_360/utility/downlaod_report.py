@@ -9,7 +9,7 @@ AZURE_CONNECTION_STRING = settings.AZURE_CONNECTION_STRING
 
 def download_pdf(request, name, participant_id):
     #company_id = int(request.COOKIES.get('company_id'))
-    company_id = 1
+    company_id = 2
     
     # Create a BlobServiceClient
     blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONNECTION_STRING)

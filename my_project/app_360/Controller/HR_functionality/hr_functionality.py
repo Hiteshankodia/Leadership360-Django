@@ -3,7 +3,7 @@ from app_360.ServiceHelper.HrData import HrDataClass
 from datetime import datetime
 
 hrdataobj = HrDataClass()
-
+#Hitesh
 
 def HRLandingPage(request) : 
     return render(request, 'Hr_pages/landing_page_after_login.html')
@@ -59,6 +59,5 @@ def DownloadReport(request):
 
 
 
-def JSDashBoard(request) : 
-    return render(request, 'Hr_pages/JS_dashboard.html')
+
 

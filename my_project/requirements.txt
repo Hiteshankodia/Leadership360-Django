@@ -8,3 +8,4 @@ python-dotenv
 pycryptodome==3.20.0
 django-cors-headers
 azure-storage-blob
+pandas

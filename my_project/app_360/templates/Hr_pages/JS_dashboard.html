@@ -1,120 +1,562 @@
-{% extends 'Base/surveybase.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survey DashBoard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: white;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .header-image {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+      }
+      .dropdown {
+        width: 300px;
+      }
+      .option-btn-custom:hover {
+        background-color: #1a1a2e;
+        color: white;
+        transform: scale(1.05);
+      }
+      .option-btn-custom {
+        background-color: #2a2a4e;
+        color: white;
+        width: 100%;
+        max-width: 300px;
+        margin-top: 10px;
+        padding: 0.8rem;
+        border-radius: 7px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+      .btn-custom {
+        background-color: #1a1a2e;
+        color: white;
+        width: 100%;
+        max-width: 300px;
+        margin-top: 10px;
+        padding: 0.8rem;
+        border-radius: 7px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+      }
+      .checkbox-container input[type="checkbox"] {
+        margin-right: 8px;
+      }
+      .btn-custom:hover {
+        background-color: #2a2a4e;
+        color: white;
+        transform: scale(1.05);
+      }
+      .chart-container {
+        display: flex;
+        height: 600px;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .tooltip {
+        position: absolute;
+        text-align: center;
+        padding: 5px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .scale {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+      }
+      .dropdown {
+        position: relative;
+      }
+      .dropdown_container {
+        display: none; /* Initially hidden */
+        position: absolute;
+        background: #2a2a4e;
+        color: white;
+        width: 100%;
+        margin: auto;
+        user-select: none;
+        transform: translateX(-50%);
+        left: 50%;
+        border-radius: 6px;
+        top: 110%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        padding: 10px 0;
+        z-index: 1000;
+      }
+      .dropdown_container li {
+        list-style: none;
+        padding: 8px 16px;
+        transition: background-color 0.2s ease;
+      }
+      .dropdown_container li:hover {
+        background-color: #3d3d69;
+      }
+      .each_checkbox_container,
+      .each_radio_container {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+      /* Common styling for checkbox and radio button containers */
+      .each_checkbox_container input[type="checkbox"],
+      .each_radio_container input[type="radio"] {
+        margin-right: 10px;
+        accent-color: #50b5ff;
+        width: 16px;
+        height: 16px;
+      }
+      /* Checked state for radio */
+      .dropdown_container input[type="radio"]:checked + .radio {
+        background-color: #50b5ff;
+      }
+      /* Styling for checkboxes */
+      .dropdown_container input[type="checkbox"]:checked + .checkbox {
+        background-color: #50b5ff;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- <img
+            src="static/images/header.png"
+            alt="Header Image"
+            class="header-image"
+            /> -->
+    </header>
+    <div class="button-group w-100 d-flex justify-content-center gap-5 mt-5">
+      <button class="btn btn-custom">Organization wise</button>
+      <div class="dropdown">
+        <button
+          class="btn-custom"
+          type="button"
+          onclick="toggleDropdown('participant-dropdown')"
+          id="dropdownMenuButton"
+          aria-expanded="false"
+        >
+          Participant Wise
+        </button>
+        <ul
+          class="dropdown_container participant-dropdown"
+          aria-labelledby="dropdownMenuButton"
+        >
+          {% for participant in participants %}
+          <li>
+            <label class="each_radio_container">
+              <input
+                type="radio"
+                name="participant"
+                id="{{ participant.participantid }}"
+                onchange="participantSelected('{{ participant.participantid }}')"
+              />
+              <span class="radio"></span>
+              {{ participant.participantname }}
+            </label>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="dropdown">
+        <button
+          class="btn-custom"
+          type="button"
+          onclick="toggleDropdown('department-dropdown')"
+          id="dropdownMenuButton"
+          aria-expanded="false"
+        >
+          Department Wise
+        </button>
+        <ul
+          class="dropdown_container department-dropdown"
+          aria-labelledby="dropdownMenuButton"
+        >
+          {% for dept in department %}
+          <li>
+            <label class="each_radio_container">
+              <input
+                type="radio"
+                name="department"
+                id="{{ dept|slugify }}"
+                onchange="departmentSelected('{{ dept }}')"
+              />
+              <span class="radio"></span>
+              {{ dept }}
+            </label>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="chart-container" style="width: 80vw; margin: 2rem auto 0">
+      <svg id="myChart"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+    <div style="height: 100px"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let colors = ["#1976D2", "#D32F2F"];
+      let labels = [
+        { key: "participantaverage", label: "Participant Average" },
+        { key: "reportingmanageraverage", label: "Manager Average" },
+      ];
+      function participantSelected(participantId) {
+        // Make an AJAX request to the server with the participant ID
+        fetch(`/participant_wise/${participantId}/`)
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the response data as needed
+            console.log(data);
+            console.log(participantId);
+            labels = [
+              { key: "participantaverage", label: "Participant Average" },
+              { key: "reportingmanageraverage", label: "Manager Average" },
+              { key: "peeraverage", label: "peer Average" },
+              { key: "subordinateaverage", label: "subordinate Average" },
+            ];
+            colors = ["#1976D2", "#D32F2F", "#4CAF50", "#FFC107"];
+            const parsedData = JSON.parse(data);
 
+            d3.select("#myChart").selectAll("*").remove();
+            drawChart(parsedData);
+            // For example, update the UI or trigger another function
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
 
-{% block title %}Survey Status{% endblock %}
+      function departmentSelected(departmentName) {
+        // Make an AJAX request to the server with the department name
+        fetch(`/department_wise/${departmentName}/`)
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the response data as needed
+            console.log(data);
+            colors = ["#1976D2", "#D32F2F"];
+            labels = [
+              { key: "participantaverage", label: "Participant Average" },
+              { key: "reportingmanageraverage", label: "Manager Average" },
+            ];
+            const parsedData = JSON.parse(data);
+            console.log(departmentName);
 
-{% block content %}
+            d3.select("#myChart").selectAll("*").remove();
+            drawChart(parsedData);
+            // For example, update the UI or trigger another function
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+    <script>
+      let participantDropdownVisible = false;
+      let departmentDropdownVisible = false;
 
+      function toggleDropdown(id) {
+        const dropdown = document.querySelector(`.${id}`);
+        if (id === "participant-dropdown") {
+          participantDropdownVisible = !participantDropdownVisible;
+          dropdown.style.display = participantDropdownVisible
+            ? "block"
+            : "none";
+        } else if (id === "department-dropdown") {
+          departmentDropdownVisible = !departmentDropdownVisible;
+          dropdown.style.display = departmentDropdownVisible ? "block" : "none";
+        }
+      }
+    </script>
+    <script>
+      // Parse the data passed from Django template
+      document.addEventListener("click", function(event) {
+       if(event.target.matches("#dropdownMenuButton")) return
+        document.querySelectorAll(".dropdown_container").forEach(function(container) {
+          container.style.display = "none";
+             participantDropdownVisible = false;
+      departmentDropdownVisible = false;
+        });
+      });
+      const data = {{ data|safe }};
 
-<!-- Buttons Section -->
-<div class="button-group w-100 d-flex justify-content-center gap-5 mt-5">
-    <button class="btn btn-custom">Organization Wise</button>
-    <button class="btn btn-custom">Participant Wise</button>
-    <button class="btn btn-custom">Department Wise</button>
-</div>
+      function resizeChart() {
+        d3.select("#myChart").selectAll("*").remove();
+        drawChart(data);
+      }
 
-<!-- Chart Section -->
-<div class="chart-container mt-5">
-    <div id="curve_chart" style="width: 900px; height: 500px"></div>
-</div>
+      window.addEventListener("resize", resizeChart);
+      resizeChart();
 
-<!-- Load Google Charts -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load("current", { packages: ["corechart"] });
-    google.charts.setOnLoadCallback(drawChart);
+      function drawChart(data) {
+       console.log(labels);
+       console.log(colors);
 
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            [
-                "Dimension",
-                "Participant Average",
-                "Peer Average",
-                "Subordinate Average",
-                "Reporting Manager Average",
-            ],
-            ["Emotional Intelligence", 3.5, 4.5, 4.0, 5.0],
-            ["Integrity", 2.5, 4.0, 3.5, 5.0],
-            ["Task Orientation", 1.5, 2.0, 3.0, 2.5],
-            ["Tenacity and Courage", 5.0, 3.0, 4.0, 5.0],
-        ]);
+      let average = {
+      peeraverage: 0,
+      participantaverage: 0,
+      reportingmanageraverage: 0,
+      subordinateaverage: 0,
+      };
+      data.forEach((d, i) => {
+      average.peeraverage += d.peeraverage;
+      average.participantaverage += d.participantaverage;
+      average.reportingmanageraverage += d.reportingmanageraverage;
+      average.subordinateaverage += d.subordinateaverage;
+      });
+      console.log(average);
 
-        var options = {
-            title: "Leading Self",
-            curveType: "function",
-            legend: { position: "bottom" },
-            hAxis: {
-                title: "Dimension Name",
-                gridlines: { count: 5 },
-            },
-            vAxis: {
-                title: "Average Rating",
-                minValue: 0,
-                maxValue: 6,
-                gridlines: { count: 6 },
-            },
-            pointSize: 8,
-            lineWidth: 3,
-            colors: ["#007bff", "#ff9900", "#4caf50", "#e91e63"],
+      average["peeraverage"] /= data.length;
+      average["participantaverage"] /= data.length;
+      average["reportingmanageraverage"] /= data.length;
+      average["subordinateaverage"] /= data.length;
+
+        const margin = {
+            top: 50,
+            right: 60,
+            bottom: 120,
+            left: 65
         };
 
-        var chart = new google.visualization.LineChart(
-            document.getElementById("curve_chart")
-        );
+        const containerWidth = document.querySelector(".chart-container").offsetWidth;
+        const width = containerWidth - margin.left - margin.right;
+        const height = 500 - margin.top - margin.bottom;
 
-        chart.draw(data, options);
-    }
-</script>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background-color: white;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+        // Clear existing SVG
+        d3.select("#myChart").selectAll("*").remove();
+
+        const svg = d3
+            .select("#myChart")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Add background with border
+        svg.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("fill", "#ffffff")
+            .attr("stroke", "#e0e0e0")
+            .attr("stroke-width", 1);
+
+        const x = d3.scaleLinear()
+            .domain([0, data.length - 1])
+            .range([0, width]);
+
+          const maxAverage = d3.max(data, d =>
+              Math.max(d.participantaverage, d.reportingmanageraverage,
+                d.subordinateaverage,
+                d.peeraverage)
+          );
+        const y = d3.scaleLinear()
+            .domain([0, maxAverage * 1.1])
+            .range([height, 0]);
+
+        // Add grid lines
+        svg.append("g")
+            .attr("class", "grid-vertical")
+            .attr("opacity", 0.1)
+            .call(d3.axisBottom(x).tickSize(height).tickFormat(""));
+
+        svg.append("g")
+            .attr("class", "grid-horizontal")
+            .attr("opacity", 0.1)
+            .call(d3.axisLeft(y).tickSize(-width).tickFormat(""));
+
+        // X-axis
+        const xAxis = d3.axisBottom(x)
+            .tickFormat((d, i) => data[i] ? data[i].dimensionname : '');
+
+        svg.append("g")
+            .attr("transform", `translate(0,${height})`)
+            .attr("class", "x-axis")
+            .call(xAxis)
+            .selectAll("text")
+            .attr("dy", "1em")
+            .attr("dx", "-1em")
+            .attr("transform", "rotate(-45)")
+            .style("text-anchor", "end")
+            .style("font-size", "12px")
+            .style("font-family", "Arial, sans-serif")
+            .style("font-weight", "500");
+
+        // Y-axis
+        svg.append("g")
+            .attr("class", "y-axis")
+            .call(d3.axisLeft(y))
+            .selectAll("text")
+            .style("font-size", "12px")
+            .style("font-family", "Arial, sans-serif")
+            .style("font-weight", "500");
+
+        // Style axis lines
+        svg.selectAll(".x-axis path, .y-axis path")
+            .style("stroke", "#333")
+            .style("stroke-width", "1.5px");
+
+        svg.selectAll(".x-axis line, .y-axis line")
+            .style("stroke", "#333")
+            .style("stroke-width", "1px");
+
+        // Create line generator
+        const line = d3.line()
+            .x((d, i) => x(i))
+            .y(d => y(d.value));
+
+        // Colors and labels
+
+
+        // Draw lines and points
+        labels.forEach((label, index) => {
+            const lineData = data.map(d => ({
+                dimensionname: d.dimensionname,
+                value: d[label.key],
+            }));
+      const tooltipData = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0)
+      .style("position", "absolute")
+      .style("background", "lightsteelblue")
+      .style("padding", "5px")
+      .style("border-radius", "5px");
+            // Add line
+            svg.append("path")
+                .datum(lineData)
+                .attr("fill", "none")
+                .attr("stroke", colors[index])
+                .attr("stroke-width", 2)
+                .attr("d", line)
+                 .on("mouseover", function(event, d) {
+                 console.log(label);
+
+      tooltipData.transition()
+      .style("opacity", .9);
+      tooltipData.html(`${label.key} is : ` + average[label.key])
+      .style("left", (event.pageX + 5) + "px")
+      .style("top", (event.pageY - 28) + "px");
+      })
+      .on("mouseout", function(d) {
+      tooltipData.transition()
+      .style("opacity", 0);
+      });;
+
+            // Add points
+            svg.selectAll(`.${label.key}-circle`)
+                .data(lineData)
+                .enter()
+                .append("circle")
+                .attr("class", `${label.key}-circle`)
+                .attr("cx", (d, i) => x(i))
+                .attr("cy", (d) => y(d.value))
+                .attr("r", 5)
+                .attr("fill", "#fff")
+                .attr("stroke", colors[index])
+                .attr("stroke-width", 2)
+                .style("cursor", "pointer")
+                .on("mouseover", function(event, d) {
+                 console.log(d);
+
+                    d3.select(this)
+                        .transition()
+                        .duration(150)
+                        .attr("r", 7)
+                        .attr("stroke-width", 3);
+
+                    // Enhanced tooltip
+                    const tooltip = svg.append("g")
+                        .attr("class", "tooltip")
+                        .attr("transform", `translate(${x(data.indexOf(d))},${y(d.value) - 20})`);
+
+                    tooltip.append("rect")
+                        .attr("x", -30)
+                        .attr("y", -25)
+                        .attr("width", 60)
+                        .attr("height", 20)
+                        .attr("fill", "rgba(0,0,0,0.7)")
+                        .attr("rx", 3);
+
+                    tooltip.append("text")
+                        .attr("x", 0)
+                        .attr("y", -10)
+                        .text(`${d.value.toFixed(1)}`)
+                        .attr("text-anchor", "middle")
+                        .style("font-size", "11px")
+                        .style("font-weight", "bold")
+                        .style("fill", "#ffffff");
+                          tooltipData.transition()
+      .style("opacity", .9);
+      tooltipData.html(`${label.key} is : ` + average[label.key])
+      .style("left", (event.pageX + 5) + "px")
+      .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                      tooltipData.transition()
+      .style("opacity", 0);
+                    d3.select(this)
+                        .transition()
+                        .duration(150)
+                        .attr("r", 5)
+                        .attr("stroke-width", 2);
+                    svg.selectAll(".tooltip").remove();
+                });
+        });
+
+
+        svg.select(".legend-group").remove();
+      const legendGroup = svg.append("g").attr("class", "legend-group").attr("transform", `translate(${350/labels.length},-40)`);
+
+
+      labels.forEach((label, index) => {
+      const legendItem = legendGroup.append("g")
+      .attr("transform", `translate(${index * 150}, 0)`);
+
+      legendItem.append("line")
+      .attr("x1", 0)
+      .attr("y1", 1.5)
+      .attr("x2", 20)
+      .attr("y2", 1.5)
+      .attr("stroke", colors[index])
+      .attr("stroke-width", 2);
+
+      // Legend point
+      legendItem.append("circle")
+      .attr("cx", 10)
+      .attr("cy", 1.5)
+      .attr("r", 4)
+      .attr("fill", "#fff")
+      .attr("stroke", colors[index])
+      .attr("stroke-width", 2);
+
+      legendItem.append("text")
+      .attr("x", 30)
+      .attr("y", 5)
+      .text(label.label)
+      .style("font-size", "12px")
+      .style("font-family", "Arial, sans-serif")
+      .style("font-weight", "600");
+      });
 
 
 
-/* Heading styling */
-.heading {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-}
-.btn-custom {
-  background-color: #1a1a2e;
-  color: white;
-  width: 100%;
-  max-width: 300px;
-  margin-top: 10px;
-  padding: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  padding: 0.8rem;
-}
-.btn-custom:hover {
-  background-color: #2a2a4e;
-  color: white;
-  transform: scale(1.05); /* Slight zoom on hover */
-}
-
-/* Centering the chart */
-.chart-container {
-  display: flex;
-  justify-content: center;
-}
-
-/* Adjustments for smaller screens */
-@media (max-width: 768px) {
-  .chart-container {
-    width: 100%;
-    padding: 10px;
-  }
-}
-</style>
-<!-- Include Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-{% endblock %}
+      }
+    </script>
+  </body>
+</html>
