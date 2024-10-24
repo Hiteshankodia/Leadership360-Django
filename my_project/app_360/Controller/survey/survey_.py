@@ -195,7 +195,8 @@ def SubmitSurvey(request):
         # Submit the survey
         saveParticipantSurvey = SaveParticipantSurvey(
             participantid=participantid, 
-            surveyid=surveyid
+            surveyid=surveyid, 
+            companyid = int(request.COOKIES.get('company_id'))
         )
         access_token = request.COOKIES.get('access_token')
         save_survey_status = surveyobj.SubmitSurvey(submitParticipantSurveyRequestSchema=saveParticipantSurvey, token=access_token)

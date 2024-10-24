@@ -9,7 +9,7 @@ class PreviewParticipantSurvey(BaseModel):
 class SaveParticipantSurvey(BaseModel):
     participantid : int 
     surveyid : int 
-
+    companyid : int
 
 class TeamPreviewParticipantSurvey(BaseModel):
     participantid : int 

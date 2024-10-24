@@ -8,8 +8,8 @@ from django.conf import settings
 AZURE_CONNECTION_STRING = settings.AZURE_CONNECTION_STRING 
 
 def download_pdf(request, name, participant_id):
-    #company_id = int(request.COOKIES.get('company_id'))
-    company_id = 2
+    company_id = int(request.COOKIES.get('company_id'))
+    
     
     # Create a BlobServiceClient
     blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONNECTION_STRING)
@@ -18,14 +18,14 @@ def download_pdf(request, name, participant_id):
     container_client = blob_service_client.get_container_client(container_name)
     try:
         # Get the blob client for the specific PDF file
-        blob_client = container_client.get_blob_client(str(name) + '_' + str(participant_id) + '_executive_summary.pdf')
+        blob_client = container_client.get_blob_client(str(name) + '_' + str(participant_id) + '_final_report.pdf')
 
         # Download the blob (PDF file)
         stream = blob_client.download_blob()
 
         # Prepare the response
         response = HttpResponse(stream.readall(), content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="{name}_{participant_id}_executive_summary.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="{name}_{participant_id}_final_report.pdf"'
         
         return response
     
