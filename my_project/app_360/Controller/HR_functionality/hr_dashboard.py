@@ -31,10 +31,9 @@ def JSDashBoard(request, company_id = 1):
     # unique_df.to_csv('participants_button.csv', index = True)
     # Convert to list of dictionaries
     participants = unique_df.to_dict('records')
-    print(participants)
-    print(grouped_df)
+    
     department_list = df['department'].drop_duplicates().tolist()
-    print(department_list)
+    
     context = {
         'data': data_json,  
         'participants': participants, 
@@ -67,8 +66,7 @@ def participant_wise(request, participant_id):
         'reportingmanageraverage': 'mean'
     }).reset_index()
     # grouped_df.to_csv('participant_wise.csv', index=True)
-    print('participant wise')
-    print(grouped_df)
+    
     return JsonResponse(grouped_df.to_json(orient='records'), safe=False)
     
 def department_wise(request, department_name) : 
@@ -95,9 +93,8 @@ def department_wise(request, department_name) :
     }).reset_index()
     # grouped_df.to_csv('department_wise.csv', index=True)
 
-    print('department')
-    print(grouped_df)
+    
     return JsonResponse(grouped_df.to_json(orient='records'), safe=False)
 
-    
-    
+
+
